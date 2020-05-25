@@ -7,13 +7,7 @@
 	<link rel="stylesheet" type="text/css" media="all" href="css/default.css"/>
 </head>
 <body>
-	<div class="title">
-		Welcome to the Estimates Management Application.
-	</div>
-
-	<div align="right">
-		<a href="http://localhost:8080/TIW-PureHTMLvsRIA/">Back to Home</a>
-	</div>	
+	<h1>Welcome to the Estimates Management Application.</h1>
 
 	<p>Sign in</p>
 	<form action="CheckLogin" method="POST">
@@ -22,6 +16,7 @@
 			Password: <input type="password" name="password"><br>
 			<input type="submit" value="login">
 		</fieldset>
+		<p th:text=" ${errorMsg}"></p>
 	</form>
 </body>
 </html>
