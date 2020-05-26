@@ -17,7 +17,7 @@ public class UserDAO {
 	}
 
 	public User checkCredentials(String usr, String psw) throws SQLException {
-		String query = "SELECT  id, role, username FROM user WHERE username = ? AND password = ?";
+		String query = "SELECT id, role, username, email, name, surname FROM user WHERE username = ? AND password = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			
@@ -25,7 +25,7 @@ public class UserDAO {
 			pstatement.setString(2, psw);
 			
 			try (ResultSet result = pstatement.executeQuery();) {
-				if (!result.isBeforeFirst()) { // No results, credential check failed.
+				if (!result.isBeforeFirst()) { // No data, failed to login.
 					return null;
 				} else {
 					result.next();
@@ -33,6 +33,9 @@ public class UserDAO {
 					user.setId(result.getInt("id"));
 					user.setRole(result.getString("role"));
 					user.setUsername(result.getString("username"));
+					user.setEmail(result.getString("email"));
+					user.setName(result.getString("name"));
+					user.setSurname(result.getString("surname"));
 					return user;
 				}
 			}
