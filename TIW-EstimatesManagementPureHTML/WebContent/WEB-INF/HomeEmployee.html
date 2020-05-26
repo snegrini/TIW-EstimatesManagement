@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Employee page</title>
+</head>
+<body>
+	<h1>Employee Page</h1>
+	<h3>Welcome Mr./Mrs. <span th:text="${session.user.username}">Employee name</span></h3>
+	
+	<!-- div of priced order -->
+	<div>
+		<h4>Priced order by you:</h4>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>Order ID</th>
+					<th>Name</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
+					<td th:text="${p.id}"></td>
+					<td>
+						<a th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span></a>
+					</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- div of non-priced order -->
+	<div>
+		<h4>Orders not priced yet:</h4>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>Order ID</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
+					<td th:text="${p.id}">1</td>
+					<td>
+						<a href="EstimateOrder.html"
+						   th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span>Prodotto1</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<form action="">
+			
+		</form>
+	</div>
+	
+</body>
+</html>
