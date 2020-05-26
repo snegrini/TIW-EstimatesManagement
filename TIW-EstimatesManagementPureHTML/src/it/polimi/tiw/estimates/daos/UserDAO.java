@@ -9,9 +9,11 @@ import it.polimi.tiw.estimates.beans.User;
 
 public class UserDAO {
 	private Connection connection;
+	private int userID;
 
-	public UserDAO(Connection connection) {
+	public UserDAO(Connection connection,int userID) {
 		this.connection = connection;
+		this.userID = userID;
 	}
 
 	public User checkCredentials(String usr, String psw) throws SQLException {
@@ -36,4 +38,15 @@ public class UserDAO {
 			}
 		}
 	}
+
+	public boolean addPriceQuotation(String productName, String[] optionals) throws SQLException  {
+		//TODO: THE QUERY
+		String query = "";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+		}
+		
+		return false;
+	}
+
 }
