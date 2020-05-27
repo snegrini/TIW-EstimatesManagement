@@ -1,6 +1,6 @@
 package it.polimi.tiw.estimates.beans;
 
-public class Order {
+public class Estimate {
 	private int id;
 	private int client; 
 	private int employee;
