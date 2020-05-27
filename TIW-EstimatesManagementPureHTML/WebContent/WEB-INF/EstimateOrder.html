@@ -1,11 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Estimate product page</title>
+	<meta charset="UTF-8">
+	<title>Estimate product page</title>
+	<link rel="stylesheet" type="text/css" href="../css/estimateorder.css"/>
 </head>
 <body>
-	<h1>Estimate order Page</h1>
-	
+	<header>
+		<h1>Estimate Order page</h1>
+	</header>
+
+	<br>
+
+	<div class="container">
+		<div class="column sideleft">
+			<img alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img">
+		</div>
+		
+		<div class="column middle">
+			
+			<table>
+			  <tr>
+			    <th>Customer:</th>
+			    <td>Bill Gates</td>
+			  </tr>
+			  <tr>
+			    <th>Product ID:</th>
+			    <td>35</td>
+			  </tr>
+			  <tr>
+			    <th>Product name:</th>
+			    <td>Dildo Gommoso</td>
+			  </tr>
+			  <tr>
+			    <th>Optional:</th>
+				    <td>
+				    	<ul>
+							<li>Rosso Fuoco</li>
+							<li>Verde Acqua</li>
+							<li>Jet Black</li>
+						</ul>
+					</td>
+			  </tr>
+			</table>
+		</div>
+		
+		
+		<form action="" class ="column sideright">
+			<label>Insert the price of the product:</label><br>
+			<input type="number" min="0" value="0"> <span>€</span>
+			<input class="submitbtn" type="submit" value="Invia Prezzo">
+		</form>
+		
+	</div>
+	<footer>
+	  <p>Made with ❤️ by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
+	</footer>
 </body>
 </html>

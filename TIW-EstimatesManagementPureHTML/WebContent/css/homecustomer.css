@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Source+Sans+Pro&display=swap');
+*{
+	box-sizing:border-box;
+}
+body{
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 20px;
+	margin: 0px;
+	padding: 0px;
+	
+}
+
+.headerrow{
+	content:"";
+	clear:both;
+	display:table;
+	width:100%;
+	margin: 0px;
+	padding: 15px;
+	background-color:black;
+	color:white;
+	font-size: 30px;
+}
+
+.titlecolumn{
+	float:left;
+}
+
+.titlecolumn h1{
+	margin:0px;
+	margin-left: 20px;
+	margin-bottom: 20px;
+	padding: 0px;
+	border:0px;
+}
+
+.titlecolumn h4{
+	margin:0px;
+	margin-left: 40px;
+	margin-bottom: 10px;
+	padding: 0px;
+	border:0px;
+}
+
+.buttoncolumn{
+	float:right;
+	margin-right: 20px;
+	margin-top:auto;
+	
+}
+
+.buttoncolumn a{
+	color: white;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size:15px;	
+	padding-top: 30px;
+	padding:10px 20px;
+}
+
+
+.column h4{
+	margin-left:auto; 
+	/*margin-left:35%;*/ 
+}
+
+
+.container{
+	content:"";
+	clear:both;
+	display:table;
+	width:100%;
+}
+
+.columnleft{
+	width:40%;
+	float:left;
+	padding:10px;
+	text-align:center;
+}
+
+.columnright{
+	width:60%;
+	float:left;
+	padding:10px;
+	text-align:center;
+}
+.innercolumnright{
+	width:50%;
+	float:left;
+}
+
+table{
+	width:70%; 
+    margin-left:auto; 
+    margin-right:auto;
+    border-collapse:collapse;
+}
+
+th{
+	background-color:black;
+	color:white;
+	text-align:center;
+	padding:5px;
+}
+
+td{
+	text-align: center;
+	padding:3px;
+}
+
+th,td{
+	border-bottom: 0.5px solid #ddd;
+}
+
+.checkbox{
+	list-style:none;
+	float:left;
+	margin:0;
+}
+
+
+footer{
+	width:100%;
+	height:70px;
+	margin:0px;
+	bottom:0;
+	position:absolute;
+	background-color:black;
+	color:white;
+	text-align: center;
+	font-size:14px;
+}
+
+footer p{
+	margin-top:28px;
+}
