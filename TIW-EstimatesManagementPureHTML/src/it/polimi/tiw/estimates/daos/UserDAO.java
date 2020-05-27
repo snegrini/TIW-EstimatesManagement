@@ -42,14 +42,4 @@ public class UserDAO {
 		}
 	}
 
-	public boolean addPriceQuotation(String productName, String[] optionals) throws SQLException  {
-		//TODO: THE QUERY
-		String query = "";
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			
-		}
-		
-		return false;
-	}
-
 }

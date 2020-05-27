@@ -17,14 +17,15 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.estimates.beans.User;
+import it.polimi.tiw.estimates.daos.EstimateDAO;
 import it.polimi.tiw.estimates.daos.UserDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
  * Servlet implementation class CreatePriceQuotation
  */
-@WebServlet("/CreatePriceQuotation")
-public class CreatePriceQuotation extends HttpServlet {
+@WebServlet("/CreateEstimate")
+public class CreateEstimate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private Connection connection;
@@ -33,7 +34,7 @@ public class CreatePriceQuotation extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreatePriceQuotation() {
+    public CreateEstimate() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -70,18 +71,18 @@ public class CreatePriceQuotation extends HttpServlet {
 		String optionalName = request.getParameter("optional");
 		
 		//TODO: Leggere gli optional facoltativi
-		String optionals[] = new String[5];
+		int optionals[] = new int[5];
 		
 		if (productName == null || optionalName == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing project name");
 		}
 		int userid = u.getId();
 		
-		UserDAO uDAO = new UserDAO(connection, userid);
-		optionals[0] = optionalName;
+		EstimateDAO eDAO = new EstimateDAO(connection, userid);
+		optionals[0] = Integer.parseInt(optionalName);
 		
 		try {
-			uDAO.addPriceQuotation(productName, optionals);
+			eDAO.createEstimate(Integer.parseInt(productName), optionals);
 		} catch (SQLException e) {
 		// throw new ServletException(e);
 		response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
