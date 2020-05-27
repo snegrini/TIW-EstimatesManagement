@@ -9,11 +9,9 @@ import it.polimi.tiw.estimates.beans.User;
 
 public class UserDAO {
 	private Connection connection;
-	private int userID;
 
-	public UserDAO(Connection connection,int userID) {
+	public UserDAO(Connection connection) {
 		this.connection = connection;
-		this.userID = userID;
 	}
 
 	public User checkCredentials(String usr, String psw) throws SQLException {
