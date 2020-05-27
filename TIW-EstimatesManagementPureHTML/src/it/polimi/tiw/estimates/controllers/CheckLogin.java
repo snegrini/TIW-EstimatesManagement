@@ -68,7 +68,7 @@ public class CheckLogin extends HttpServlet {
 		}
 
 		// Query the database to authenticate the user
-		UserDAO userDao = new UserDAO(connection);
+		UserDAO userDao = new UserDAO(connection,-1);
 		User user = null;
 		try {
 			user = userDao.checkCredentials(usr, pwd);

@@ -46,7 +46,7 @@ public class CustomerChecker implements Filter {
 		HttpSession s = req.getSession();
 		User u = null;
 		u = (User) s.getAttribute("user");
-		if (!u.getRole().equals("customer")) {
+		if (u == null || !u.getRole().equals("customer")) {
 			res.sendRedirect(indexPath);
 			return;
 		}

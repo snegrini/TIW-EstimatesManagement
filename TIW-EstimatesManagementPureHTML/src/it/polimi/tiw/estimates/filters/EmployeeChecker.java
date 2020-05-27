@@ -46,7 +46,7 @@ public class EmployeeChecker implements Filter {
 		HttpSession s = req.getSession();
 		User u = null;
 		u = (User) s.getAttribute("user");
-		if (!u.getRole().equals("employee")) {
+		if (u == null || !u.getRole().equals("employee")) {
 			res.sendRedirect(indexPath);
 			return;
 		}
