@@ -35,7 +35,6 @@ public class CreatePriceEstimate extends HttpServlet {
      */
     public CreatePriceEstimate() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {

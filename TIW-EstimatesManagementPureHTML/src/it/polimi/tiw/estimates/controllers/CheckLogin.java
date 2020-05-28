@@ -47,8 +47,6 @@ public class CheckLogin extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		
-		
     }
 
 	/**
