@@ -2,21 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Estimates Management</title>
-	
+	<title>Login</title>
 	<link rel="stylesheet" type="text/css" media="all" href="css/default.css"/>
+	<link rel="stylesheet" type="text/css" media="all" href="css/index.css"/>
 </head>
 <body>
-	<h1>Welcome to the Estimates Management Application.</h1>
-
-	<p>Sign in</p>
-	<form action="CheckLogin" method="POST">
-		<fieldset>
-			Username: <input type="text" name="username"><br>
-			Password: <input type="password" name="password"><br>
-			<input type="submit" value="login">
-		</fieldset>
-		<p th:text=" ${errorMsg}"></p>
-	</form>
+	<header>
+		<h1>Welcome to the Estimates Management Application</h1>
+	</header>
+	<br>
+	
+	<div class="container" style="height:45%; background-color:yellow;"></div>
+	
+	<div class="container">
+		<div class="column column-30">
+			
+		</div>
+		
+		<div class="column column-40">
+			<form class="formdiv" action="CheckLogin" method="POST">
+				<fieldset>
+				<legend>Sign in</legend>
+					<div class="container login">
+						<div class="column column-60">
+							<label>Username:</label><input type="text" name="username"><br> <br>
+							<label>Password:</label> <input type="password" name="password"><br>
+						</div>
+						<div class="column column-25"> <input type="submit" value="Login"></div>
+					</div>
+				</fieldset>
+				<p th:text=" ${errorMsg}"></p>
+			</form>
+		</div>
+		
+		<div class="column column-30">
+			
+		</div>
+	</div>
+	
 </body>
 </html>
