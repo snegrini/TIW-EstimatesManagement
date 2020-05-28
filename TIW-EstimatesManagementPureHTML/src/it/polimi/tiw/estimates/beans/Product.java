@@ -1,5 +1,7 @@
 package it.polimi.tiw.estimates.beans;
 
+import java.util.List;
+
 public class Product {
 	private int id;
 	private String name;
@@ -23,5 +25,7 @@ public class Product {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	
+	
 
 }

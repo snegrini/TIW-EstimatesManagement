@@ -30,7 +30,8 @@
  	</filter>
  	<filter-mapping> 
     	<filter-name>CustomerChecker</filter-name> 
-    	<url-pattern>/HomeCustomer</url-pattern> 
+    	<url-pattern>/HomeCustomer</url-pattern>
+    	<url-pattern>/GoToHomeCustomer</url-pattern> 
  	</filter-mapping>
  	<filter-mapping> 
     	<filter-name>EmployeeChecker</filter-name> 

@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Customer page</title>
-	<link rel="stylesheet" type="text/css" href="../css/default.css"/>
-	<link rel="stylesheet" type="text/css" href="../css/homecustomer.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/default.css" th:href="@{/css/default.css}"/>
+	<link rel="stylesheet" type="text/css" href="../css/homecustomer.css" th:href="@{/css/homecustomer.css}"/>
 </head>
 <body>
 	<header class="headerrow">
@@ -57,16 +57,11 @@
 		  			</tr>
 		          </thead>
 		          <tbody>
-		  			<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
+		  			<tr th:each="p : ${products}">
 		  				<td>
-		  					<a href="EstimateOrder.html" th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span>Prodotto1</a>
+		  					<a href="GoToHomeCustomer"><span th:text="${p.name}">
 		  				</td>
 		  			</tr>
-		  				<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
-		  					<td>
-		  						<a href="EstimateOrder.html" th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span>Prodotto2</a>
-		  					</td>
-		  				</tr>
 		  		 </tbody>
 		        </table>
 		      </div>

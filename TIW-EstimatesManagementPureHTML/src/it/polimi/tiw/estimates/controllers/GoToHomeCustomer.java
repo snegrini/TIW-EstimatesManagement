@@ -2,6 +2,8 @@ package it.polimi.tiw.estimates.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,18 +11,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.estimates.beans.Product;
+import it.polimi.tiw.estimates.beans.User;
+import it.polimi.tiw.estimates.daos.ProductDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
  * Servlet implementation class HomeCustomer
  */
-@WebServlet("/HomeCustomer")
-public class HomeCustomer extends HttpServlet {
+@WebServlet("/GoToHomeCustomer")
+public class GoToHomeCustomer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private Connection connection;
@@ -29,7 +36,7 @@ public class HomeCustomer extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HomeCustomer() {
+    public GoToHomeCustomer() {
         super();
     }
     
@@ -47,9 +54,28 @@ public class HomeCustomer extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		User user = null;
+		HttpSession s = request.getSession();
+		user = (User) s.getAttribute("user");
+		
+		ProductDAO pDAO = new ProductDAO(connection);
+		List<Product> products = null;
+		try {
+			products = pDAO.findProducts();
+		} catch (SQLException e) {
+			// throw new ServletException(e);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in product's database extraction");
+		}
+		
+		
+		String path = "/WEB-INF/HomeCustomer.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("products", products);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**

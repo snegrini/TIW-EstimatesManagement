@@ -94,7 +94,7 @@ public class CheckLogin extends HttpServlet {
 		} else {
 			path = getServletContext().getContextPath();
 			request.getSession().setAttribute("user", user);
-			String target = (user.getRole().equals("employee")) ? "/HomeEmployee" : "/HomeCustomer";
+			String target = (user.getRole().equals("employee")) ? "/HomeEmployee" : "/GoToHomeCustomer";
 			path += target;
 
 			response.sendRedirect(path);
