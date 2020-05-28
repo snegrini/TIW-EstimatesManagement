@@ -3,58 +3,67 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Employee page</title>
+	<link rel="stylesheet" type="text/css" href="../css/homeemployee.css"/>
 </head>
 <body>
-	<h1>Employee Page</h1>
-	<h3>Welcome Mr./Mrs. <span th:text="${session.user.username}">Employee name</span></h3>
-	
+	<header>
+		<h1>Employee page</h1>
+		<h5>Welcome <span th:text="${session.user.username}">Employee name</span></h5>
+	</header>
+
+	<br>
+
 	<!-- div of priced order -->
-	<div>
-		<h4>Priced order by you:</h4>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>Order ID</th>
-					<th>Name</th>
-					<th>Price</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
-					<td th:text="${p.id}"></td>
-					<td>
-						<a th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span></a>
-					</td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
+
+	<div class="container">
+		<div class="column">
+			<h4>Priced estimates by you:</h4>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>Order ID</th>
+						<th>Product Name</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
+						<td th:text="${p.id}">5</td>
+						<td>
+							<a th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}">Dildo Gommoso</span></a>
+						</td>
+						<td>10<span>€</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- div of non-priced order -->
+		<div class="column">
+			<h4>Product not priced yet:</h4>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>Estimate ID</th>
+						<th>Product Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
+						<td th:text="${p.id}">1</td>
+						<td>
+							<a href="EstimateOrder.html"
+							   th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span>Prodotto1</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	
-	<!-- div of non-priced order -->
-	<div>
-		<h4>Orders not priced yet:</h4>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>Order ID</th>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
-					<td th:text="${p.id}">1</td>
-					<td>
-						<a href="EstimateOrder.html"
-						   th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span>Prodotto1</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<form action="">
-			
-		</form>
-	</div>
-	
+
+	<footer>
+	  <p>Made with ❤️ by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
+	</footer>
+
 </body>
 </html>
