@@ -8,7 +8,8 @@
 </head>
 <body>
 	<header>
-		<h1>Estimate Order page</h1>
+		<h1>Estimate Price page</h1>
+		<h5>Employee <span th:text="${session.user.username}">Mario</span></h5>
 	</header>
 
 	<br>
@@ -47,7 +48,7 @@
 		</div>
 		
 		
-		<form action="" class ="column column-30">
+		<form action="#" th:action="@{/CreateEstimatePrice}" method="POST" class="column column-30">
 			<label>Insert the price of the product:</label><br>
 			<input type="number" min="0" value="0"> <span>€</span>
 			<input class="submitbtn" type="submit" value="Invia Prezzo">

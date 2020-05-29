@@ -3,13 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Employee page</title>
-	<link rel="stylesheet" type="text/css" href="../css/default.css"/>
-	<link rel="stylesheet" type="text/css" href="../css/homeemployee.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/default.css" th:href="@{/css/default.css}"/>
+	<link rel="stylesheet" type="text/css" href="../css/homeemployee.css" th:href="@{/css/homeemployee.css}"/>
 </head>
 <body>
 	<header>
 		<h1>Employee page</h1>
-		<h5>Welcome <span th:text="${session.user.username}">Employee name</span></h5>
+		<h5>Welcome <span th:text="${session.user.username}">Mario</span></h5>
 	</header>
 
 	<br>
@@ -22,18 +22,20 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Order ID</th>
+						<th>Estimate ID</th>
 						<th>Product Name</th>
 						<th>Price</th>
+						<th>Link</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
-						<td th:text="${p.id}">5</td>
+					<tr th:each="e : ${pricedEstimates}" th:class="(${e.id} == ${estimateid})? 'current'">
+						<td th:text="${e.id}">5</td>
 						<td>
-							<a th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}">Dildo Gommoso</span></a>
+							<span th:text="${e.product.name}">Dildo Gommoso</span>
 						</td>
-						<td>10<span>€</span></td>
+						<td><span th:text="${e.price}">10</span> <span>&euro;</span></td>
+						<td><a href="">Details</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -50,11 +52,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
-						<td th:text="${p.id}">1</td>
+					<tr th:each="e : ${nonPricedEstimates}" th:class="(${e.id} == ${estimateid})? 'current'">
+						<td th:text="${e.id}">1</td>
 						<td>
-							<a href="EstimateOrder.html"
-							   th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}"></span>Prodotto1</a>
+							<a href="EstimatePrice.html" th:href="@{/CreateEstimatePrice(estimateid=${e.id})}">
+								<span th:text="${e.product.name}">Prodotto1</span>
+							</a>
 						</td>
 					</tr>
 				</tbody>

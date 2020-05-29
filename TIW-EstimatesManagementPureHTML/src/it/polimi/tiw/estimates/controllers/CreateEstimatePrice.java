@@ -24,7 +24,7 @@ import it.polimi.tiw.estimates.utils.ConnectionHandler;
  * Servlet implementation class CreatePriceEstimate
  */
 @WebServlet("/CreatePriceEstimate")
-public class CreatePriceEstimate extends HttpServlet {
+public class CreateEstimatePrice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private Connection connection;
@@ -33,7 +33,7 @@ public class CreatePriceEstimate extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreatePriceEstimate() {
+    public CreateEstimatePrice() {
         super();
     }
     
