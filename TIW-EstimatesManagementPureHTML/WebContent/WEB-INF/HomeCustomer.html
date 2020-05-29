@@ -33,10 +33,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="p : ${projects}" th:class="(${p.id} == ${projectid})? 'current'">
+					<tr th:each="p : ${products}" th:class="(${p.id} == ${productid})? 'current'">
 						<td th:text="${p.id}">5</td>
 						<td>
-							<a th:href="@{/GoToProjectManagement(projectid=${p.id})}"><span th:text="${p.name}">Prodotto10</span></a>
+							<a th:href="@{/GoToHomeCustomer(productid=${p.id})}"><span th:text="${p.name}">Prodotto10</span></a>
 						</td>
 						<td>10<span>€</span></td>
 					</tr>
@@ -45,7 +45,7 @@
 		</div>
 
 		<!-- div of non-priced order -->
-		<form class="column column-60">
+		<form action="CreateEstimate" method="POST" class="column column-60">
 		  <fieldset>
 		    <legend>Select a product:</legend>
 		    <div class="container">
@@ -59,7 +59,7 @@
 		          <tbody>
 		  			<tr th:each="p : ${products}">
 		  				<td>
-		  					<a href="GoToHomeCustomer"><span th:text="${p.name}">
+		  					<a th:href="@{GoToHomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
 		  				</td>
 		  			</tr>
 		  		 </tbody>
@@ -67,17 +67,14 @@
 		      </div>
 		      <div class="column column-60">
 		        <h5>Select one or more options:</h5>
-		        <ul class="checkbox">
-		          <li>
-		            <input type="checkbox" name="options" value="Option1">Option1<br>
-		          </li>
-		          <li>
-		            <input type="checkbox" name="options" value="Option2">Option2<br>
-		          </li>
-		          <li>
-		            <input type="checkbox" name="options" value="Option3">Option3<br>
-		          </li>  
-		        </ul>
+		        <input type="number" name="prdct" value="" th:value="${productid}">
+		        
+			        <ul class="checkbox" th:each="o : ${optionals}">
+			          <li>
+			            <input type="checkbox" name="option"><span th:text="${o.name}"></span><br>
+			          </li>
+			        </ul>
+			    
 		        <br>
 		        <input type="submit" value="Submit now">
 		      </div>

@@ -1,7 +1,7 @@
 package it.polimi.tiw.estimates.beans;
 
 public enum OptionalType {
-	NORMAL("normal"), SALE("sale");
+	normal("normal"), sale("sale");
 
 	private final String value;
 

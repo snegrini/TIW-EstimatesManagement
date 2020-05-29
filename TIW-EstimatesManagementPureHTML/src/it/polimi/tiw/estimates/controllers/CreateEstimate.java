@@ -67,9 +67,9 @@ public class CreateEstimate extends HttpServlet {
 		User u = null;
 		HttpSession s = request.getSession();
 		u = (User) s.getAttribute("user");
-		String productName = request.getParameter("productname");
-		String optionalName = request.getParameter("optional");
-		
+		String productName = request.getParameter("prdct");
+		String optionalName = request.getParameter("option");
+		System.out.println("prdct:"+ productName + "option:"+optionalName);
 		//TODO: Leggere gli optional facoltativi
 		int optionals[] = new int[5];
 		

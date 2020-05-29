@@ -48,7 +48,7 @@ public class ProductDAO {
 		List<Optional> optionals = new ArrayList<>();
 		
 		// Only products with at least one optional
-		String query = "SELECT o.id, o.name, o.type"
+		String query = "SELECT o.id, o.name, o.type "
 				+ "FROM optional AS o, optionaltoproduct as otp "
 				+ "WHERE o.id = otp.optid "
 				+ "AND otp.prdid = ?";

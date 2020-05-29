@@ -18,6 +18,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.estimates.beans.Optional;
 import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.ProductDAO;
@@ -60,21 +61,33 @@ public class GoToHomeCustomer extends HttpServlet {
 		User user = null;
 		HttpSession s = request.getSession();
 		user = (User) s.getAttribute("user");
+		String chosenProduct = request.getParameter("productid");  //<----
 		
 		ProductDAO pDAO = new ProductDAO(connection);
 		List<Product> products = null;
+		List<Optional> optionals = null;  //<----
+		int chosenProductId = 1;//<---
 		try {
 			products = pDAO.findProducts();
+			
+			if (chosenProduct == null) {
+				//chosenProductId = pDAO.findDefaultProduct();
+			} else {
+				chosenProductId = Integer.parseInt(chosenProduct);
+			}
+			optionals = pDAO.findOptionalsByProduct(chosenProductId);	//<---
 		} catch (SQLException e) {
 			// throw new ServletException(e);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in product's database extraction");
 		}
 		
-		
+		System.out.println("Optionals found: " + optionals.get(0).getName());
 		String path = "/WEB-INF/HomeCustomer.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("products", products);
+		ctx.setVariable("productid", chosenProductId); //<---
+		ctx.setVariable("optionals", optionals);	//<---
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
