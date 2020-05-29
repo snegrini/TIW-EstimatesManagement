@@ -3,7 +3,7 @@ package it.polimi.tiw.estimates.beans;
 public class Optional {
 	private int id;
 	private String name;
-	private String type;
+	private OptionalType type;
 	
 	public int getId() {
 		return id;
@@ -19,10 +19,10 @@ public class Optional {
 		this.name = name;
 	}
 	
-	public String getType() {
+	public OptionalType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(OptionalType type) {
 		this.type = type;
 	}
 	

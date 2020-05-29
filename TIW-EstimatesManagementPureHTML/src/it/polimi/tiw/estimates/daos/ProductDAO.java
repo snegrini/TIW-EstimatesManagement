@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.estimates.beans.Optional;
+import it.polimi.tiw.estimates.beans.OptionalType;
 import it.polimi.tiw.estimates.beans.Product;
 
 public class ProductDAO {
@@ -47,7 +48,7 @@ public class ProductDAO {
 		List<Optional> optionals = new ArrayList<>();
 		
 		// Only products with at least one optional
-		String query = "SELECT o.id, o.name"
+		String query = "SELECT o.id, o.name, o.type"
 				+ "FROM optional AS o, optionaltoproduct as otp "
 				+ "WHERE o.id = otp.optid "
 				+ "AND otp.prdid = ?";
@@ -61,6 +62,7 @@ public class ProductDAO {
 					Optional optional = new Optional();
 					optional.setId(result.getInt("id"));
 					optional.setName(result.getString("name"));
+					optional.setType(OptionalType.valueOf(result.getString("type")));
 					optionals.add(optional);
 				}
 			}
