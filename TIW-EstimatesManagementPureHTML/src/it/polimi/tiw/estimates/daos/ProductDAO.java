@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.tiw.estimates.beans.Optional;
 import it.polimi.tiw.estimates.beans.Product;
 
 public class ProductDAO {
@@ -23,17 +24,48 @@ public class ProductDAO {
 		String query = "SELECT DISTINCT p.id, p.name "
 				+ "FROM product AS p, optionaltoproduct as otp "
 				+ "WHERE p.id = otp.prdid";
+		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			try (ResultSet result = pstatement.executeQuery();) {
+			
+			try (ResultSet result = pstatement.executeQuery();) {	
+				
 				while (result.next()) {
 					Product product = new Product();
 					product.setId(result.getInt("id"));
 					product.setName(result.getString("name"));
 					products.add(product);
 				}
+				
+			}
+			
+		}
+		
+		return products;
+	}
+	
+	public List<Optional> findOptionalsByProduct(int productId) throws SQLException {
+		List<Optional> optionals = new ArrayList<>();
+		
+		// Only products with at least one optional
+		String query = "SELECT o.id, o.name"
+				+ "FROM optional AS o, optionaltoproduct as otp "
+				+ "WHERE o.id = otp.optid "
+				+ "AND otp.prdid = ?";
+				
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+			pstatement.setInt(1, productId);
+			
+			try (ResultSet result = pstatement.executeQuery();) {
+				while (result.next()) {
+					Optional optional = new Optional();
+					optional.setId(result.getInt("id"));
+					optional.setName(result.getString("name"));
+					optionals.add(optional);
+				}
 			}
 		}
-		return products;
+		return optionals;
 	}
 	
 }
