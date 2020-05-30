@@ -22,7 +22,7 @@ public class EstimateDAO {
 	}
 	
 
-	public boolean createEstimate(int productID, int[] optionals) throws SQLException  {
+	public boolean createEstimate(int productID, String[] optionalsID) throws SQLException  {
 		//TODO: THE QUERY
 		String query = "INSERT into estimate (usrid, prdid) VALUES(?, ?)";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
@@ -31,10 +31,12 @@ public class EstimateDAO {
 			pstatement.executeUpdate();
 		}
 		// LAST_INSERT_ID() will return the last insert id from the current connection
-		query = "INSERT into chosenoptional (estid, optid) VALUES(LAST_INSERT_ID(), ?)";
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, optionals[0]);
-			pstatement.executeUpdate();
+		for(int i = 0; i< optionalsID.length; i++) {
+			query = "INSERT into chosenoptional (estid, optid) VALUES(LAST_INSERT_ID(), ?)";
+			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+				pstatement.setInt(1, Integer.parseInt(optionalsID[i]));
+				pstatement.executeUpdate();
+			}
 		}
 		
 		return false;
