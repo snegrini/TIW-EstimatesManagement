@@ -65,27 +65,29 @@ public class CreateEstimate extends HttpServlet {
 		User u = null;
 		HttpSession s = request.getSession();
 		u = (User) s.getAttribute("user");
-		String productName = request.getParameter("prdct");
-		String optionalName = request.getParameter("option");
-		System.out.println("prdct:"+ productName + "option:"+optionalName);
-		//TODO: Leggere gli optional facoltativi
-		int optionals[] = new int[5];
-		
-		if (productName == null || optionalName == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing project name");
-		}
 		int userid = u.getId();
+
 		
-		EstimateDAO eDAO = new EstimateDAO(connection, userid);
-		optionals[0] = Integer.parseInt(optionalName);
+		String productName = request.getParameter("prdct");
+		String[] options = request.getParameterValues("option[]");
 		
-		try {
-			eDAO.createEstimate(Integer.parseInt(productName), optionals);
-		} catch (SQLException e) {
-		// throw new ServletException(e);
-		response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
+		if (options.length > 0) {
+			if (productName == null || options[0] == null) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing project name");
+			}
+
+			EstimateDAO eDAO = new EstimateDAO(connection, userid);
+			
+			try {
+				eDAO.createEstimate(Integer.parseInt(productName), options);
+			} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
+			}
 		}
-		// debugged on April 20, 2020
+		else {
+			//TODO: error - chose at least one option
+		}
+		
 		String ctxpath = getServletContext().getContextPath();
 		String path = ctxpath + "/GoToHomeUser";
 		response.sendRedirect(path);

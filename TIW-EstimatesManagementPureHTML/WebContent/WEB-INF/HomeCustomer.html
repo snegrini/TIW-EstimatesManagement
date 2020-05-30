@@ -67,11 +67,11 @@
 		      </div>
 		      <div class="column column-60">
 		        <h5>Select one or more options:</h5>
-		        <input type="number" name="prdct" value="" th:value="${productid}">
+		        <input type="hidden" name="prdct" value="" th:value="${productid}">
 		        
 			        <ul class="checkbox" th:each="o : ${optionals}">
 			          <li>
-			            <input type="checkbox" name="option"><span th:text="${o.name}"></span><br>
+			            <input type="checkbox" name="option[]" th:value="${o.id}"><span th:text="${o.name}"></span><br>
 			          </li>
 			        </ul>
 			    
