@@ -28,13 +28,29 @@
 						<th>Link</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody th:remove="all-but-first">
 					<tr th:each="e : ${pricedEstimates}" th:class="(${e.id} == ${estimateid})? 'current'">
 						<td th:text="${e.id}">5</td>
 						<td>
-							<span th:text="${e.product.name}">Dildo Gommoso</span>
+							<span th:each="p : ${pricedProducts}" th:text="(${e.productId} == ${p.id}) ? ${p.name}">Dildo Gommoso</span>
 						</td>
-						<td><span th:text="${e.price}">10</span> <span>&euro;</span></td>
+						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
+						<td><a href="">Details</a></td>
+					</tr>
+					<tr>
+						<td>6</td>
+						<td>
+							<span>Spazzola Rossa</span>
+						</td>
+						<td><span th:text="${e.price}">79.90</span> <span>&euro;</span></td>
+						<td><a href="">Details</a></td>
+					</tr>
+					<tr>
+						<td>8</td>
+						<td>
+							<span>Shampoo</span>
+						</td>
+						<td><span th:text="${e.price}">9.75</span> <span>&euro;</span></td>
 						<td><a href="">Details</a></td>
 					</tr>
 				</tbody>
@@ -51,13 +67,25 @@
 						<th>Product Name</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr th:each="e : ${nonPricedEstimates}" th:class="(${e.id} == ${estimateid})? 'current'">
+				<tbody th:remove="all-but-first">
+					<tr th:each="e : ${nonPricedEstimates}">
 						<td th:text="${e.id}">1</td>
-						<td>
+						<td >
 							<a href="EstimatePrice.html" th:href="@{/CreateEstimatePrice(estimateid=${e.id})}">
-								<span th:text="${e.product.name}">Prodotto1</span>
+								<span th:each="p : ${nonPricedProducts}" th:text="(${e.productId} == ${p.id}) ? ${p.name}">Prodotto1</span>
 							</a>
+						</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>
+							<a href="EstimatePrice.html"><span>Prodotto2</span></a>
+						</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>
+							<a href="EstimatePrice.html"><span>Prodotto3</span></a>
 						</td>
 					</tr>
 				</tbody>

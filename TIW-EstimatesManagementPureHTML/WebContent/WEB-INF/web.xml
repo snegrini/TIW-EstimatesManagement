@@ -36,6 +36,7 @@
  	<filter-mapping> 
     	<filter-name>EmployeeChecker</filter-name> 
     	<url-pattern>/HomeEmployee</url-pattern> 
+    	<url-pattern>/CreateEstimatePrice</url-pattern>
  	</filter-mapping> 
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

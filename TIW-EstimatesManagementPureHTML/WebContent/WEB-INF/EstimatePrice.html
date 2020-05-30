@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Estimate product page</title>
-	<link rel="stylesheet" type="text/css" href="../css/default.css"/>
-	<link rel="stylesheet" type="text/css" href="../css/estimateorder.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/default.css" th:href="@{/css/default.css}"/>
+	<link rel="stylesheet" type="text/css" href="../css/estimateorder.css" th:href="@{/css/estimateorder.css}"/>
 </head>
 <body>
 	<header>
@@ -20,37 +20,38 @@
 		</div>
 		
 		<div class="column column-45">
-			
+			 
 			<table>
 			  <tr>
 			    <th>Customer:</th>
-			    <td>Bill Gates</td>
+			    <td th:text="${customer.name} + ' ' + ${customer.surname}">Bill Gates</td>
 			  </tr>
 			  <tr>
 			    <th>Product ID:</th>
-			    <td>35</td>
+			    <td th:text="${product.id}">35</td>
 			  </tr>
 			  <tr>
 			    <th>Product name:</th>
-			    <td>Dildo Gommoso</td>
+			    <td th:text="${product.name}">Dildo Gommoso</td>
 			  </tr>
 			  <tr>
 			    <th>Optional:</th>
 				    <td>
-				    	<ul>
-							<li>Rosso Fuoco</li>
+				    	<ul th:remove="all-but-first">
+							<li th:each="o : ${optionals}" th:text="${o.name}">Rosso Fuoco</li>
 							<li>Verde Acqua</li>
 							<li>Jet Black</li>
 						</ul>
 					</td>
 			  </tr>
 			</table>
+			
 		</div>
 		
 		
 		<form action="#" th:action="@{/CreateEstimatePrice}" method="POST" class="column column-30">
 			<label>Insert the price of the product:</label><br>
-			<input type="number" min="0" value="0"> <span>€</span>
+			<input type="number" min="0" value="0"> <span>&euro;</span>
 			<input class="submitbtn" type="submit" value="Invia Prezzo">
 		</form>
 		

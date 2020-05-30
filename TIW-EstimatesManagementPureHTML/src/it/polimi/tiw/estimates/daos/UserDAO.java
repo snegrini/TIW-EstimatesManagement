@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 
 public class UserDAO {
@@ -38,6 +39,33 @@ public class UserDAO {
 				}
 			}
 		}
+	}
+
+	public User findUserById(int userId) throws SQLException {
+		User user = null;
+		
+		String query = "SELECT id, username, email, name, surname FROM user WHERE id = ?";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+			pstatement.setInt(1, userId);
+			
+			try (ResultSet result = pstatement.executeQuery();) {	
+				
+				while (result.next()) {
+					user = new User();
+					user.setId(result.getInt("id"));
+					user.setUsername(result.getString("username"));
+					user.setName(result.getString("name"));
+					user.setSurname(result.getString("surname"));
+					user.setEmail(result.getString("email"));
+				}
+				
+			}
+			
+		}
+		
+		return user;
 	}
 
 }
