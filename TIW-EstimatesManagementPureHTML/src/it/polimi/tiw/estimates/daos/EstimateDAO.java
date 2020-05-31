@@ -50,15 +50,33 @@ public class EstimateDAO {
 		return false;
 	}
 	
-	public List<Estimate> findEstimatesByClient(int employee) throws SQLException {
+	
+	/*
+	 * return a list of all of the estimates of a customer, given the id.
+	 * */
+	public List<Estimate> findEstimatesByCustomer(int customerID) throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
-		String query = 	"SELECT e.id, p.name, e.price " +
-						"FROM estimate AS e, user AS u, product AS p " +
-						"WHERE e.`usrid`= u.`id` AND e.`prdid`=p.`id` ";
+		String query = 	"SELECT DISTINCT e.id, e.prdid, e.price " + 
+						"FROM estimate AS e, user AS u " + 
+						"WHERE e.usrid = ? " + 
+						"ORDER BY e.id ASC";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, employee);
-			pstatement.executeUpdate();
+			
+			pstatement.setInt(1, customerID);
+			
+			try (ResultSet result = pstatement.executeQuery();) {
+				while (result.next()) {
+					Estimate estimate = new Estimate();
+					
+					estimate.setId(result.getInt("id"));
+					//estimate.setClientId(result.getInt("usrid"));
+					estimate.setProductId(result.getInt("prdid"));			
+					//estimate.setEmployeeId(result.getInt("empid"));
+					estimate.setPrice(result.getFloat("price"));
+					estimates.add(estimate);
+				}
+			}
 		}
 		return estimates;
 	}

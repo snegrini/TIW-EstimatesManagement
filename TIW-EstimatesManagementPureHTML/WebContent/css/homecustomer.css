@@ -61,6 +61,8 @@
 }
 .column-60{
 	text-align:center;
+	height:100%;
+	position:relative;
 }
 
 table{
@@ -88,8 +90,46 @@ td{
 	border-bottom: 1px solid #ddd;
 }
 
+fieldset{
+	border-radius:10px;
+}
+
+.current {background-color: #b6cfff;}
+
+.productimg{
+	height: 200px;
+	width: 300px;
+}
+
 .checkbox{
 	list-style:none;
 	float:left;
 	margin:0;
+}
+
+
+li{
+	display:block;
+	float:left;
+	clear:left;
+}
+
+input[type=submit]{
+	background-color:#2b50aa;
+	color: white;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size:20px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	padding:10px 20px;
+	margin-left:5px;
+	margin-top:30px;
+	border-radius:8px;
+	border: 2px solid #3a70f1;
+}
+
+input[type=submit]:hover{
+	background-color: #3a70f1;
+	color: white;
+	border: 2px solid #5b92ff;
 }

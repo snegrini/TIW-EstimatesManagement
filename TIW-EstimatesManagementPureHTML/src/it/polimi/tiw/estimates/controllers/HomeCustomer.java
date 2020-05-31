@@ -18,9 +18,11 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.estimates.beans.Estimate;
 import it.polimi.tiw.estimates.beans.Optional;
 import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
+import it.polimi.tiw.estimates.daos.EstimateDAO;
 import it.polimi.tiw.estimates.daos.OptionalDAO;
 import it.polimi.tiw.estimates.daos.ProductDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
@@ -64,8 +66,12 @@ public class HomeCustomer extends HttpServlet {
 		user = (User) s.getAttribute("user");
 		String chosenProduct = request.getParameter("productid");  //<----
 		
+		EstimateDAO eDAO = new EstimateDAO(connection,user.getId());
+		List<Estimate> estimates = null;
+		
 		ProductDAO pDAO = new ProductDAO(connection);
 		List<Product> products = null;
+		List<Product> prdctEstimate = null;
 		
 		OptionalDAO oDAO = new OptionalDAO(connection);
 		List<Optional> optionals = null;
@@ -73,6 +79,8 @@ public class HomeCustomer extends HttpServlet {
 		
 		try {
 			products = pDAO.findProducts();
+			estimates = eDAO.findEstimatesByCustomer(user.getId());
+			prdctEstimate = pDAO.findProductsByProductID(estimates);
 			
 			if (chosenProduct == null) {
 				//chosenProductId = pDAO.findDefaultProduct();
@@ -91,8 +99,10 @@ public class HomeCustomer extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("products", products);
-		ctx.setVariable("productid", chosenProductId); //<---
-		ctx.setVariable("optionals", optionals);	//<---
+		ctx.setVariable("productsOfEstimate", prdctEstimate);
+		ctx.setVariable("productid", chosenProductId);
+		ctx.setVariable("optionals", optionals);
+		ctx.setVariable("estimates", estimates);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

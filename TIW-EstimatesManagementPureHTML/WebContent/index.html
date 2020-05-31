@@ -12,7 +12,7 @@
 	</header>
 	<br>
 	
-	<div class="container" style="height:45%; background-color:yellow;"></div>
+	<div class="container"></div>
 	
 	<div class="container">
 		<div class="column column-30">
@@ -25,13 +25,14 @@
 				<legend>Sign in</legend>
 					<div class="container login">
 						<div class="column column-60">
-							<label>Username:</label><input type="text" name="username"><br> <br>
-							<label>Password:</label> <input type="password" name="password"><br>
+							<label>Username:</label><input type="text" name="username" required="true"><br> <br>
+							<label>Password:</label> <input type="password" name="password" required="true"><br>
 						</div>
 						<div class="column column-25"> <input type="submit" value="Login"></div>
 					</div>
+					<p th:text=" ${errorMsg}"></p>
 				</fieldset>
-				<p th:text=" ${errorMsg}"></p>
+				
 			</form>
 		</div>
 		

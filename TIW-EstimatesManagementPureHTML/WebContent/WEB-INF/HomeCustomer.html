@@ -20,7 +20,6 @@
 	<br>
 
 	<!-- div of priced order -->
-
 	<div class="container">
 		<div class="column column-40">
 			<h4>Your estimates:</h4>
@@ -30,21 +29,24 @@
 						<th>ID</th>
 						<th>Product</th>
 						<th>Price</th>
+						<th>Details</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="p : ${products}" th:class="(${p.id} == ${productid})? 'current'">
-						<td th:text="${p.id}">5</td>
+					<tr th:each="e : ${estimates}">
+						<td th:text="${e.id}">5</td>
 						<td>
-							<a th:href="@{/GoToHomeCustomer(productid=${p.id})}"><span th:text="${p.name}">Prodotto10</span></a>
+							<span th:each="p : ${products}" th:text="(${e.productId} == ${p.id}) ? ${p.name}">Dildo Gommoso</span>
 						</td>
-						<td>10<span>€</span></td>
+						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
+						<td><a href="">Details</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
 		<!-- div of non-priced order -->
+		<h4>Insert a new estimates:</h4>
 		<form action="CreateEstimate" method="POST" class="column column-60">
 		  <fieldset>
 		    <legend>Select a product:</legend>
@@ -57,26 +59,29 @@
 		  			</tr>
 		          </thead>
 		          <tbody>
-		  			<tr th:each="p : ${products}">
+		  			<tr th:each="p : ${products}" th:class="(${p.id} == ${productid})? 'current'">
 		  				<td>
-		  					<a th:href="@{GoToHomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
+		  					<a th:href="@{HomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
 		  				</td>
 		  			</tr>
 		  		 </tbody>
 		        </table>
 		      </div>
 		      <div class="column column-60">
+		      <img class ="productimg" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img"/>
 		        <h5>Select one or more options:</h5>
 		        <input type="hidden" name="prdct" value="" th:value="${productid}">
 		        
 			        <ul class="checkbox" th:each="o : ${optionals}">
 			          <li>
 			            <input type="checkbox" name="option[]" th:value="${o.id}"><span th:text="${o.name}"></span><br>
+			            <!-- <input type="checkbox" name="option[]" th:value="${o.id}"><span th:text="${o.name}"></span><br> -->
 			          </li>
 			        </ul>
-			    
+			        
 		        <br>
-		        <input type="submit" value="Submit now">
+		        <input type="submit" value="Insert">
+		        <p th:text=" ${errorMsg}"></p>
 		      </div>
 		    </div>    
 		  </fieldset>
@@ -84,7 +89,7 @@
 	</div>
 
 	<footer>
-	  <p>Made with ❤️ by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
+	  <p>Made with &#x1F4BB; ❤️️by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
 	</footer>
 </body>
 </html>

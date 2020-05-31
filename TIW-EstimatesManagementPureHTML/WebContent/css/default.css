@@ -51,6 +51,10 @@ body{
 	width:60%;
 }
 
+.column.column-70{
+	width:60%;
+}
+
 .column img{
 	border: none;
   display: block;
@@ -62,7 +66,7 @@ footer{
 	height:70px;
 	margin:0px;
 	bottom:0;
-	position:absolute;
+	position:relative;
 	background-color:#2b50aa;
 	color:white;
 	text-align: center;
@@ -70,5 +74,5 @@ footer{
 }
 
 footer p{
-	margin-top:28px;
+	padding-top:28px;
 }
