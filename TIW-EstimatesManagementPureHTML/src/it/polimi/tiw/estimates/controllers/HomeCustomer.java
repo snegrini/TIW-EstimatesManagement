@@ -61,46 +61,45 @@ public class HomeCustomer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		User user = null;
 		HttpSession s = request.getSession();
-		user = (User) s.getAttribute("user");
-		String chosenProduct = request.getParameter("productid");  //<----
+		User user = (User) s.getAttribute("user");
+		String chosenProductId = request.getParameter("productid");
 		
 		EstimateDAO eDAO = new EstimateDAO(connection,user.getId());
 		List<Estimate> estimates = null;
 		
 		ProductDAO pDAO = new ProductDAO(connection);
 		List<Product> products = null;
-		List<Product> prdctEstimate = null;
 		
 		OptionalDAO oDAO = new OptionalDAO(connection);
 		List<Optional> optionals = null;
-		int chosenProductId = 1;
+
+		Product chosenProduct = null;
 		
 		try {
 			products = pDAO.findProducts();
 			estimates = eDAO.findEstimatesByCustomer(user.getId());
-			prdctEstimate = pDAO.findProductsByProductID(estimates);
 			
-			if (chosenProduct == null) {
-				//chosenProductId = pDAO.findDefaultProduct();
+			if (chosenProductId == null) {
+				chosenProduct = pDAO.findDefaultProduct();
 			} else {
-				chosenProductId = Integer.parseInt(chosenProduct);
+				chosenProduct = pDAO.findProductById(Integer.parseInt(chosenProductId));
 			}
 			
-			optionals = oDAO.findAvailableOptionalsByProduct(chosenProductId);
+			optionals = oDAO.findAvailableOptionalsByProduct(chosenProduct.getId());
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Bad product number");
+			return;
 		} catch (SQLException e) {
-			// throw new ServletException(e);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in product's database extraction");
+			return;
 		}
 		
-		System.out.println("Optionals found: " + optionals.get(0).getName());
 		String path = "/WEB-INF/HomeCustomer.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("products", products);
-		ctx.setVariable("productsOfEstimate", prdctEstimate);
-		ctx.setVariable("productid", chosenProductId);
+		ctx.setVariable("selectedProduct", chosenProduct);
 		ctx.setVariable("optionals", optionals);
 		ctx.setVariable("estimates", estimates);
 		templateEngine.process(path, ctx, response.getWriter());

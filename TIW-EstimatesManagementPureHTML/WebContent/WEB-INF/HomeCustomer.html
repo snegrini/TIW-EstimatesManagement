@@ -55,11 +55,15 @@
 		        <table>
 		          <thead>
 		            <tr>
-		  				<th>Product:</th>
+		            	<th>ID</th>
+		  				<th>Product</th>
 		  			</tr>
 		          </thead>
 		          <tbody>
-		  			<tr th:each="p : ${products}" th:class="(${p.id} == ${productid})? 'current'">
+		  			<tr th:each="p : ${products}" th:class="(${p.id} == ${selectedProduct.id})? 'current'">
+		  				<td>
+		  					<span th:text="${p.id}"></span>
+		  				</td>
 		  				<td>
 		  					<a th:href="@{/HomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
 		  				</td>
@@ -68,14 +72,14 @@
 		        </table>
 		      </div>
 		      <div class="column column-60">
-		      <img class ="productimg" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img"/>
+		      <img class="productimg" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img"
+		      		th:alt="${selectedProduct.name}" th:src="@{/images/{image}(image=${selectedProduct.image})}"/>
 		        <h5>Select one or more options:</h5>
-		        <input type="hidden" name="prdct" value="" th:value="${productid}">
+		        <input type="hidden" name="prdct" value="" th:value="${selectedProduct.id}">
 		        
 			        <ul class="checkbox" th:each="o : ${optionals}">
 			          <li>
 			            <input type="checkbox" name="option[]" th:value="${o.id}"><span th:text="${o.name}"></span><br>
-			            <!-- <input type="checkbox" name="option[]" th:value="${o.id}"><span th:text="${o.name}"></span><br> -->
 			          </li>
 			        </ul>
 			        
