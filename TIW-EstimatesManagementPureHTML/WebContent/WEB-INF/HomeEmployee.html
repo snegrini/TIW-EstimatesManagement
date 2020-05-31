@@ -32,7 +32,7 @@
 					<tr th:each="e : ${pricedEstimates}" th:class="(${e.id} == ${estimateid})? 'current'">
 						<td th:text="${e.id}">5</td>
 						<td>
-							<span th:each="p : ${pricedProducts}" th:text="(${e.productId} == ${p.id}) ? ${p.name}">Dildo Gommoso</span>
+							<span th:each="p : ${pricedProducts}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Dildo Gommoso</span>
 						</td>
 						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
 						<td><a href="">Details</a></td>
@@ -72,7 +72,7 @@
 						<td th:text="${e.id}">1</td>
 						<td >
 							<a href="EstimatePrice.html" th:href="@{/CreateEstimatePrice(estimateid=${e.id})}">
-								<span th:each="p : ${nonPricedProducts}" th:text="(${e.productId} == ${p.id}) ? ${p.name}">Prodotto1</span>
+								<span th:each="p : ${nonPricedProducts}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Prodotto1</span>
 							</a>
 						</td>
 					</tr>
