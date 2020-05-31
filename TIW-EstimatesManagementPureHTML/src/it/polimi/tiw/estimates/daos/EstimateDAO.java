@@ -45,7 +45,7 @@ public class EstimateDAO {
 			pstatement.setFloat(1, price);
 			pstatement.setInt(2, userID);
 			pstatement.setInt(3, estimateID);
-			System.out.println(userID + " " + estimateID + " " + price);
+			pstatement.executeUpdate();
 		}
 		return false;
 	}
@@ -58,6 +58,7 @@ public class EstimateDAO {
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, employee);
+			pstatement.executeUpdate();
 		}
 		return estimates;
 	}

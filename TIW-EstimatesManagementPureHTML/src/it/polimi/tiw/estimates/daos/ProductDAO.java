@@ -45,32 +45,6 @@ public class ProductDAO {
 		return products;
 	}
 	
-	// TODO remove here and keep the one in OptionalDAO
-	public List<Optional> findOptionalsByProduct(int productId) throws SQLException {
-		List<Optional> optionals = new ArrayList<>();
-		
-		// Only products with at least one optional
-		String query = "SELECT o.id, o.name, o.type "
-				+ "FROM optional AS o, optionaltoproduct as otp "
-				+ "WHERE o.id = otp.optid "
-				+ "AND otp.prdid = ?";
-				
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			
-			pstatement.setInt(1, productId);
-			
-			try (ResultSet result = pstatement.executeQuery();) {
-				while (result.next()) {
-					Optional optional = new Optional();
-					optional.setId(result.getInt("id"));
-					optional.setName(result.getString("name"));
-					optional.setType(OptionalType.valueOf(result.getString("type")));
-					optionals.add(optional);
-				}
-			}
-		}
-		return optionals;
-	}
 	
 	public Product findProductById(int productId) throws SQLException {
 		Product product = null;

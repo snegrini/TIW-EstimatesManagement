@@ -33,18 +33,20 @@
       <filter-class>it.polimi.tiw.estimates.filters.CustomerChecker</filter-class> 
  	</filter>
  	<filter-mapping> 
-    	<filter-name>AuthChecker</filter-name> 
+    	<filter-name>AuthChecker</filter-name>
+    	<url-pattern>/Logout</url-pattern>
     	<url-pattern>/images/*</url-pattern>
  	</filter-mapping>
  	<filter-mapping> 
     	<filter-name>EmployeeChecker</filter-name> 
     	<url-pattern>/HomeEmployee</url-pattern> 
     	<url-pattern>/CreateEstimatePrice</url-pattern>
+    	<url-pattern>/AddEstimatePrice</url-pattern>
  	</filter-mapping>
  	<filter-mapping> 
     	<filter-name>CustomerChecker</filter-name> 
     	<url-pattern>/HomeCustomer</url-pattern>
-    	<url-pattern>/GoToHomeCustomer</url-pattern>
+    	<url-pattern>/CreateEstimate</url-pattern>
  	</filter-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

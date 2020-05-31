@@ -89,7 +89,7 @@ public class CreateEstimate extends HttpServlet {
 		}
 		
 		String ctxpath = getServletContext().getContextPath();
-		String path = ctxpath + "/GoToHomeUser";
+		String path = ctxpath + "/HomeCustomer";
 		response.sendRedirect(path);
 		doGet(request, response);
 	}

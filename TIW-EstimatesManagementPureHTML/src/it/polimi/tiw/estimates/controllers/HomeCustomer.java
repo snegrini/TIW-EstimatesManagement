@@ -21,14 +21,15 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import it.polimi.tiw.estimates.beans.Optional;
 import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
+import it.polimi.tiw.estimates.daos.OptionalDAO;
 import it.polimi.tiw.estimates.daos.ProductDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
  * Servlet implementation class HomeCustomer
  */
-@WebServlet("/GoToHomeCustomer")
-public class GoToHomeCustomer extends HttpServlet {
+@WebServlet("/HomeCustomer")
+public class HomeCustomer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private Connection connection;
@@ -37,7 +38,7 @@ public class GoToHomeCustomer extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GoToHomeCustomer() {
+    public HomeCustomer() {
         super();
     }
     
@@ -65,8 +66,11 @@ public class GoToHomeCustomer extends HttpServlet {
 		
 		ProductDAO pDAO = new ProductDAO(connection);
 		List<Product> products = null;
-		List<Optional> optionals = null;  //<----
-		int chosenProductId = 1;//<---
+		
+		OptionalDAO oDAO = new OptionalDAO(connection);
+		List<Optional> optionals = null;
+		int chosenProductId = 1;
+		
 		try {
 			products = pDAO.findProducts();
 			
@@ -75,7 +79,8 @@ public class GoToHomeCustomer extends HttpServlet {
 			} else {
 				chosenProductId = Integer.parseInt(chosenProduct);
 			}
-			optionals = pDAO.findOptionalsByProduct(chosenProductId);	//<---
+			
+			optionals = oDAO.findAvailableOptionalsByProduct(chosenProductId);
 		} catch (SQLException e) {
 			// throw new ServletException(e);
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in product's database extraction");
