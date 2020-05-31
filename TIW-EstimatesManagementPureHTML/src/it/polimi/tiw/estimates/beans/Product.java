@@ -1,6 +1,5 @@
 package it.polimi.tiw.estimates.beans;
 
-
 public class Product {
 	private int id;
 	private String name;

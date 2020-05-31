@@ -66,9 +66,16 @@ public class HomeEmployee extends HttpServlet {
 		List<Estimate> pricedEstimates = null;
 		List<Estimate> nonPricedEstimates = null;
 		
+		ProductDAO productDao = new ProductDAO(connection);
+		List<Product> pricedProducts = null;
+		List<Product> nonPricedProducts = null;
+		
 		try {
 			pricedEstimates = estimateDao.findPricedEstimatesByEmployee(user.getId());
+			pricedProducts = productDao.findPricedProductsByEmployee(user.getId());
+			
 			nonPricedEstimates = estimateDao.findNonPricedEstimates();
+			nonPricedProducts = productDao.findNonPricedProducts();
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in estimates database extraction");
 		}
@@ -79,7 +86,9 @@ public class HomeEmployee extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("pricedEstimates", pricedEstimates);
+		ctx.setVariable("pricedProducts", pricedProducts);
 		ctx.setVariable("nonPricedEstimates", nonPricedEstimates);
+		ctx.setVariable("nonPricedProducts", nonPricedProducts);
 		// TODO set default estimate to be selected
 		
 		templateEngine.process(path, ctx, response.getWriter());

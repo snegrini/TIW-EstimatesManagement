@@ -78,7 +78,7 @@ public class AddEstimatePrice extends HttpServlet {
 			}
 		}
 		
-		String path = "/WEB-INF/CreateEstimatePrice.html";
+		String path = "/WEB-INF/HomeEmployee.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		templateEngine.process(path, ctx, response.getWriter());

@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.estimates.beans.Estimate;
-import it.polimi.tiw.estimates.beans.Optional;
-import it.polimi.tiw.estimates.beans.Product;
-import it.polimi.tiw.estimates.beans.User;
 
 public class EstimateDAO {
 	private Connection connection;
@@ -69,10 +66,7 @@ public class EstimateDAO {
 	public List<Estimate> findPricedEstimatesByEmployee(int employee) throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
 		
-		String query = "SELECT e.id, e.empid, e.price, p.name, u.username "
-				+ "FROM estimate AS e, product as p, user AS u "
-				+ "WHERE e.empid = u.id AND e.prdid = p.id "
-				+ "AND empid = ? ";
+		String query = "SELECT id, usrid, prdid, empid, price FROM estimate WHERE empid = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 						
@@ -81,18 +75,12 @@ public class EstimateDAO {
 			try (ResultSet result = pstatement.executeQuery();) {
 				while (result.next()) {
 					Estimate estimate = new Estimate();
-					User client = new User();
-					Product product = new Product();
-					
-					client.setUsername(result.getString("username"));
-					
-					product.setName(result.getString("name"));
 					
 					estimate.setId(result.getInt("id"));
+					estimate.setClientId(result.getInt("usrid"));
+					estimate.setProductId(result.getInt("prdid"));			
 					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
-					estimate.setClient(client);
-					estimate.setProduct(product);
 					estimates.add(estimate);
 				}
 			}
@@ -103,28 +91,52 @@ public class EstimateDAO {
 	public List<Estimate> findNonPricedEstimates() throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
 		
-		String query = "SELECT e.id, e.usrid, e.empid, e.price, p.name "
-				+ "FROM estimate AS e, product AS p "
-				+ "WHERE e.prdid = p.id "
-				+ "AND e.empid IS NULL AND e.price IS NULL";
+		String query = "SELECT id, prdid FROM estimate WHERE empid IS NULL AND price IS NULL";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 						
 			try (ResultSet result = pstatement.executeQuery();) {
+				
 				while (result.next()) {
 					Estimate estimate = new Estimate();
-					Product product = new Product();
-					
-					product.setName(result.getString("name"));
-					
+										
 					estimate.setId(result.getInt("id"));
-					estimate.setEmployeeId(result.getInt("empid"));
-					estimate.setPrice(result.getFloat("price"));
-					estimate.setProduct(product);
+					estimate.setProductId(result.getInt("prdid"));		
 					estimates.add(estimate);
 				}
 			}
 		}
 		return estimates;
+	}
+	
+	public Estimate findEstimateById(int estimateId) throws SQLException {
+		Estimate estimate = null;
+
+		String query = "SELECT id, usrid, prdid, empid, price FROM estimate WHERE id = ?";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, estimateId);
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (result.next()) {
+					estimate = new Estimate();
+					estimate.setId(result.getInt("id"));
+					estimate.setClientId(result.getInt("usrid"));
+					estimate.setProductId(result.getInt("prdid"));
+					estimate.setEmployeeId(result.getInt("empid"));
+					estimate.setPrice(result.getFloat("price"));
+				}
+			}
+		}
+		return estimate;
+	}
+	
+	public void changeEstimatePrice(int estimateId, int employeeId, float price) throws SQLException {
+		String query = "UPDATE estimate SET empid = ?, price = ? WHERE id = ?";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, employeeId);
+			pstatement.setFloat(2, price);
+			pstatement.setInt(3, estimateId);
+			pstatement.executeUpdate();
+		}
 	}
 }

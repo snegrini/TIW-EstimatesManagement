@@ -3,6 +3,7 @@ package it.polimi.tiw.estimates.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,7 +18,13 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.estimates.beans.Estimate;
+import it.polimi.tiw.estimates.beans.Optional;
+import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
+import it.polimi.tiw.estimates.daos.EstimateDAO;
+import it.polimi.tiw.estimates.daos.OptionalDAO;
+import it.polimi.tiw.estimates.daos.ProductDAO;
 import it.polimi.tiw.estimates.daos.UserDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
@@ -36,7 +43,7 @@ public class CreateEstimatePrice extends HttpServlet {
      */
     public CreateEstimatePrice() {
         super();
-    }
+    }  
     
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
@@ -55,18 +62,48 @@ public class CreateEstimatePrice extends HttpServlet {
 		// TODO Auto-generated method stub		
 		User u = null;
 		HttpSession s = request.getSession();
-		u = (User) s.getAttribute("user");
-		String estimateid = request.getParameter("estimateid");
-				
-		if (estimateid == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing estimate id");
-			return;
+		User user = (User) s.getAttribute("user");
+		
+		String chosenEstimate = request.getParameter("estimateid");
+
+		EstimateDAO estimateDao = new EstimateDAO(connection, user.getId());
+		ProductDAO productDao = new ProductDAO(connection);
+		OptionalDAO optionalDao = new OptionalDAO(connection);
+		UserDAO userDao = new UserDAO(connection);
+		
+		Estimate estimate = null;
+		Product product = null;
+		List<Optional> optionals = null;
+		User customer = null;
+		
+		int chosenEstimateId = 0;
+		
+		try {
+			if (chosenEstimate == null) {
+				// TODO chosenEstimateId = estimateDao.findDefaultEstimate();
+			} else {
+				chosenEstimateId = Integer.parseInt(chosenEstimate);
+			}
+			
+			estimate = estimateDao.findEstimateById(chosenEstimateId);
+			product = productDao.findProductById(estimate.getProductId());
+			optionals = optionalDao.findChosenOptionalsByEstimate(estimate.getId());
+			customer = userDao.findUserById(estimate.getClientId());
+			
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failed to retrieve estimate details");
 		}
 		
-		String path = "/WEB-INF/CreateEstimatePrice.html";
+		
+		String path = "/WEB-INF/EstimatePrice.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("estid", estimateid);
+		
+		ctx.setVariable("estimate", estimate);
+		ctx.setVariable("product", product);
+		ctx.setVariable("optionals", optionals);
+		ctx.setVariable("customer", customer);
+		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
