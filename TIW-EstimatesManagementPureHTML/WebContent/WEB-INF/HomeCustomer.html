@@ -13,7 +13,7 @@
 			<h4>Welcome <span th:text="${session.user.username}">CustomerName</span></h4>
 		</div>
 		<div class="buttoncolumn">
-			<a href="/Logout">Logout</a>
+			<a th:href="@{Logout}">Logout</a>
 		</div>
 	</header>
 	
@@ -36,7 +36,7 @@
 					<tr th:each="p : ${products}" th:class="(${p.id} == ${productid})? 'current'">
 						<td th:text="${p.id}">5</td>
 						<td>
-							<a th:href="@{/GoToHomeCustomer(productid=${p.id})}"><span th:text="${p.name}">Prodotto10</span></a>
+							<a th:href="@{/HomeCustomer(productid=${p.id})}"><span th:text="${p.name}">Prodotto10</span></a>
 						</td>
 						<td>10<span>€</span></td>
 					</tr>
@@ -59,7 +59,7 @@
 		          <tbody>
 		  			<tr th:each="p : ${products}">
 		  				<td>
-		  					<a th:href="@{GoToHomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
+		  					<a th:href="@{HomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
 		  				</td>
 		  			</tr>
 		  		 </tbody>
