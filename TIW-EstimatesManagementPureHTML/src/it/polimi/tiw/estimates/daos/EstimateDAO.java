@@ -42,6 +42,30 @@ public class EstimateDAO {
 		return false;
 	}
 	
+	public boolean addEstimatePrice(int estimateID, float price) throws SQLException {
+		String query = "UPDATE estimate SET price=?, empid=? WHERE id=?";
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setFloat(1, price);
+			pstatement.setInt(2, userID);
+			pstatement.setInt(3, estimateID);
+			System.out.println(userID + " " + estimateID + " " + price);
+		}
+		return false;
+	}
+	
+	public List<Estimate> findEstimatesByClient(int employee) throws SQLException {
+		List<Estimate> estimates = new ArrayList<>();
+		String query = 	"SELECT e.id, p.name, e.price " +
+						"FROM estimate AS e, user AS u, product AS p " +
+						"WHERE e.`usrid`= u.`id` AND e.`prdid`=p.`id` ";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, employee);
+		}
+		return estimates;
+	}
+
+	
 	public List<Estimate> findPricedEstimatesByEmployee(int employee) throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
 		

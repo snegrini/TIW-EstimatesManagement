@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+<body>
+
+<form action="AddEstimatePrice" method="POST" class="column column-60">
+	<input type="hidden" name ="estimateid" th:value="${estid}">
+	<input type="number" name ="price">
+	<input type="submit" value="Submit now">
+</form>
+
+
+</body>
+</html>

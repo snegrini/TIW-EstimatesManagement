@@ -12,20 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.TemplateEngine;
 
 import it.polimi.tiw.estimates.beans.User;
-import it.polimi.tiw.estimates.daos.UserDAO;
+import it.polimi.tiw.estimates.daos.EstimateDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
- * Servlet implementation class CreatePriceEstimate
+ * Servlet implementation class AddEstimatePrice
  */
-@WebServlet("/CreateEstimatePrice")
-public class CreateEstimatePrice extends HttpServlet {
+@WebServlet("/AddEstimatePrice")
+public class AddEstimatePrice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private Connection connection;
@@ -34,8 +34,9 @@ public class CreateEstimatePrice extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateEstimatePrice() {
+    public AddEstimatePrice() {
         super();
+        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {
@@ -52,28 +53,36 @@ public class CreateEstimatePrice extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub		
-		User u = null;
-		HttpSession s = request.getSession();
-		u = (User) s.getAttribute("user");
-		String estimateid = request.getParameter("estimateid");
-				
-		if (estimateid == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing estimate id");
-			return;
-		}
-		
-		String path = "/WEB-INF/CreateEstimatePrice.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("estid", estimateid);
-		templateEngine.process(path, ctx, response.getWriter());
+		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User u = null;
+		HttpSession s = request.getSession();
+		u = (User) s.getAttribute("user");
+		int userid = u.getId();
+		
+		String estimateid = request.getParameter("estimateid");
+		String price = request.getParameter("price");
+		
+		EstimateDAO eDAO = new EstimateDAO(connection,userid);
+		if(estimateid != null && price != null) {
+			try {
+				eDAO.addEstimatePrice(Integer.parseInt(estimateid), Float.parseFloat(price));
+			} catch (NumberFormatException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		String path = "/WEB-INF/CreateEstimatePrice.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		templateEngine.process(path, ctx, response.getWriter());
+		
 		doGet(request, response);
 	}
 
