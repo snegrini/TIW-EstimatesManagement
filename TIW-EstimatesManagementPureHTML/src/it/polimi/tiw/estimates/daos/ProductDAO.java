@@ -75,7 +75,7 @@ public class ProductDAO {
 	public Product findProductById(int productId) throws SQLException {
 		Product product = null;
 		
-		String query = "SELECT p.id, p.name "
+		String query = "SELECT p.id, p.name, p.image "
 				+ "FROM product AS p "
 				+ "WHERE p.id = ?";
 		
@@ -89,6 +89,7 @@ public class ProductDAO {
 					product = new Product();
 					product.setId(result.getInt("id"));
 					product.setName(result.getString("name"));
+					product.setImage(result.getString("image"));
 				}
 				
 			}

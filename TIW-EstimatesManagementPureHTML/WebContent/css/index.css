@@ -63,6 +63,7 @@ input[type=submit]{
 	padding-bottom:5px;
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size:20px;
+	cursor: pointer;
 }
 
 input[type=submit]:hover{
