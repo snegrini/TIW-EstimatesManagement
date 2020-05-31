@@ -56,7 +56,7 @@ public class CheckLogin extends HttpServlet {
 
 		String usr = null;
 		String pwd = null;
-		
+		System.out.println("asssbutch");
 		try {
 			usr = StringEscapeUtils.escapeJava(request.getParameter("username"));
 			pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));

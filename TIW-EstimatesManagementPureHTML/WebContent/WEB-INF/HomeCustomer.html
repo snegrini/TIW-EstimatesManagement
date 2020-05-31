@@ -13,7 +13,7 @@
 			<h4>Welcome <span th:text="${session.user.username}">CustomerName</span></h4>
 		</div>
 		<div class="buttoncolumn">
-			<a href="/Logout">Logout</a>
+			<a th:href="@{Logout}">Logout</a>
 		</div>
 	</header>
 	
@@ -36,7 +36,10 @@
 					<tr th:each="e : ${estimates}">
 						<td th:text="${e.id}">5</td>
 						<td>
+
 							<span th:each="p : ${products}" th:text="(${e.productId} == ${p.id}) ? ${p.name}">Dildo Gommoso</span>
+							<a th:href="@{/HomeCustomer(productid=${p.id})}"><span th:text="${p.name}">Prodotto10</span></a>
+
 						</td>
 						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
 						<td><a href="">Details</a></td>
