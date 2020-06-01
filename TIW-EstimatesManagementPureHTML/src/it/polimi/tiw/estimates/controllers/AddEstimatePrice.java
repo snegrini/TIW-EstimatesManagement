@@ -65,21 +65,36 @@ public class AddEstimatePrice extends HttpServlet {
 		u = (User) s.getAttribute("user");
 		int userid = u.getId();
 		
-		String estimateid = request.getParameter("estimateid");
-		String price = request.getParameter("price");
+		String estimateidStr = request.getParameter("estimateid");
+		String priceStr = request.getParameter("price");
 		
-		EstimateDAO eDAO = new EstimateDAO(connection,userid);
-		if(estimateid != null && price != null) {
+		EstimateDAO eDAO = new EstimateDAO(connection, userid);
+		
+		String path;
+		
+		if (estimateidStr != null && priceStr != null) {
+			ServletContext servletContext = getServletContext();
+			final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
+			
 			try {
-				eDAO.addEstimatePrice(Integer.parseInt(estimateid), Float.parseFloat(price));
+				int estimateid = Integer.parseInt(estimateidStr);
+				float price = Float.parseFloat(priceStr);
+				
+				if (price < 0.f) {
+					webContext.setVariable("errorMsg", "Price cannot be negative!");
+					
+					// TODO fix redirect and show error
+					path = "/WEB-INF/EstimatePrice.html";
+					templateEngine.process(path, webContext, response.getWriter());
+				} else {
+					eDAO.addEstimatePrice(estimateid, price);
+					path = "/HomeEmployee";
+					response.sendRedirect(request.getContextPath() + path);
+				}
 			} catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failed to retrieve estimate details");
 			}
 		}
-		
-		String path = "/HomeEmployee";
-		response.sendRedirect(request.getContextPath() + path);
 		
 	}
 

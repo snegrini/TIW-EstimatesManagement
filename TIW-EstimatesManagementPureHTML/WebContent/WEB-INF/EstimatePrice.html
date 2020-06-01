@@ -59,6 +59,7 @@
 			<input type="hidden" name="estimateid" th:value="${estimate.id}">
 			<input type="number" name="price" min="0" value="0"> <span>&euro;</span>
 			<input class="submitbtn" type="submit" value="Invia Prezzo">
+			<p th:text="${errorMsg}"></p>
 		</form>
 		
 	</div>

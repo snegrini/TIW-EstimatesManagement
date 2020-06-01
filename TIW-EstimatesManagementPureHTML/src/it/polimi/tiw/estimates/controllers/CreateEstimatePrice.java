@@ -59,13 +59,9 @@ public class CreateEstimatePrice extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub		
-		User u = null;
 		HttpSession s = request.getSession();
 		User user = (User) s.getAttribute("user");
 		
-		String chosenEstimate = request.getParameter("estimateid");
-
 		EstimateDAO estimateDao = new EstimateDAO(connection, user.getId());
 		ProductDAO productDao = new ProductDAO(connection);
 		OptionalDAO optionalDao = new OptionalDAO(connection);
@@ -79,20 +75,19 @@ public class CreateEstimatePrice extends HttpServlet {
 		int chosenEstimateId = 0;
 		
 		try {
-			if (chosenEstimate == null) {
-				// TODO chosenEstimateId = estimateDao.findDefaultEstimate();
-			} else {
-				chosenEstimateId = Integer.parseInt(chosenEstimate);
-			}
+			chosenEstimateId = Integer.parseInt(request.getParameter("estimateid"));
 			
 			estimate = estimateDao.findEstimateById(chosenEstimateId);
 			product = productDao.findProductById(estimate.getProductId());
 			optionals = optionalDao.findChosenOptionalsByEstimate(estimate.getId());
 			customer = userDao.findUserById(estimate.getClientId());
-			
+		} catch (NumberFormatException | NullPointerException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
+			return;
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failed to retrieve estimate details");
-		}
+			return;
+		} 
 		
 		
 		String path = "/WEB-INF/EstimatePrice.html";
