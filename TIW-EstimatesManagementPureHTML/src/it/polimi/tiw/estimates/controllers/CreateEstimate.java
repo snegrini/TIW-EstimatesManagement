@@ -36,7 +36,6 @@ public class CreateEstimate extends HttpServlet {
      */
     public CreateEstimate() {
         super();
-        // TODO Auto-generated constructor stub
     }  
     
     @Override
@@ -51,14 +50,6 @@ public class CreateEstimate extends HttpServlet {
     }
     
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,9 +62,13 @@ public class CreateEstimate extends HttpServlet {
 		String productName = request.getParameter("prdct");
 		String[] options = request.getParameterValues("option[]");
 		
-		if (options.length > 0) {
-			if (productName == null || options[0] == null) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing project name");
+		if (options == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No optionals have been selected.");
+			return;
+		} else {
+			if (productName == null) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing product name");
+				return;
 			}
 
 			EstimateDAO eDAO = new EstimateDAO(connection, userid);
@@ -81,17 +76,14 @@ public class CreateEstimate extends HttpServlet {
 			try {
 				eDAO.createEstimate(Integer.parseInt(productName), options);
 			} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
+				return;
 			}
-		}
-		else {
-			//TODO: error - chose at least one option
 		}
 		
 		String ctxpath = getServletContext().getContextPath();
 		String path = ctxpath + "/HomeCustomer";
 		response.sendRedirect(path);
-		doGet(request, response);
 	}
 
 }

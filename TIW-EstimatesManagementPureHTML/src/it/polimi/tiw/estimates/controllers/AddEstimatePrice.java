@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -73,19 +74,13 @@ public class AddEstimatePrice extends HttpServlet {
 		String path;
 		
 		if (estimateidStr != null && priceStr != null) {
-			ServletContext servletContext = getServletContext();
-			final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
 			
 			try {
 				int estimateid = Integer.parseInt(estimateidStr);
 				float price = Float.parseFloat(priceStr);
 				
 				if (price < 0.f) {
-					webContext.setVariable("errorMsg", "Price cannot be negative!");
-					
-					// TODO fix redirect and show error
-					path = "/WEB-INF/EstimatePrice.html";
-					templateEngine.process(path, webContext, response.getWriter());
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Price cannot be negative!");				
 				} else {
 					eDAO.addEstimatePrice(estimateid, price);
 					path = "/HomeEmployee";
