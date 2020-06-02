@@ -5,6 +5,8 @@
 	<title>Login</title>
 	<link rel="stylesheet" type="text/css" media="all" href="css/default.css"/>
 	<link rel="stylesheet" type="text/css" media="all" href="css/index.css"/>
+	<script src="js/login.js" charset="utf-8" defer></script>
+	
 </head>
 <body>
 	<header>
@@ -26,7 +28,7 @@
 							<label>Username:</label><input type="text" name="username" required="true"><br><br>
 							<label>Password:</label><input type="password" name="password" required="true"><br>
 						</div>
-						<div class="column column-25"><input type="input" value="Login"></div>
+						<div class="column column-25"><input id="loginbutton" type="button" value="Login"></div>
 					</div>
 					<p id="errormessage"></p>
 				</fieldset>

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import it.polimi.tiw.estimates.utils.ConnectionHandler;
  * Servlet implementation class CheckLogin
  */
 @WebServlet("/CheckLogin")
+@MultipartConfig
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -52,16 +54,22 @@ public class CheckLogin extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request,response);
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String usr = null;
 		String pwd = null;
-
+		System.out.println("aa");
 		try {
 			usr = StringEscapeUtils.escapeJava(request.getParameter("username"));
 			pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		} catch (NullPointerException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing param values");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Missing param values");
+			
 			return;
 		}
 
@@ -71,33 +79,31 @@ public class CheckLogin extends HttpServlet {
 		try {
 			user = userDao.checkCredentials(usr, pwd);
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not check credentials");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Could not check credentials");
 			return;
 		}
 
 		// If the user exists, add info to the session and go to home page, otherwise
 		// show login page with error message
 
-		String path;
 		if (user == null) {
-			ServletContext servletContext = getServletContext();
-			final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
 			
 			if (usr.isEmpty() || pwd.isEmpty()) {
-				webContext.setVariable("errorMsg", "Username and password cannot be empty");
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("username and password cannot be empty");
+				
 			} else {
-				webContext.setVariable("errorMsg", "Incorrect username or password");
+				//response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println("wrong username or password");
 			}
 			
-			path = "/index.html";
-			templateEngine.process(path, webContext, response.getWriter());
 		} else {
-			path = getServletContext().getContextPath();
 			request.getSession().setAttribute("user", user);
-			String target = (user.getRole().equals("employee")) ? "/HomeEmployee" : "/HomeCustomer";
-			path += target;
-
-			response.sendRedirect(path);
+			String target = (user.getRole().equals("employee")) ? "HomeEmployee.html" : "HomeCustomer.html";
+			
+			response.getWriter().println(target);
 		}
 
 	}
