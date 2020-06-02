@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Source+Sans+Pro&display=swap');
+
+body{
+	background-color:#2b50aa;
+	color:white;
+}
+
+header{
+	margin: 0px;
+	padding: 15px;
+	background-color:#2b50aa;
+	color:white;
+	font-size: 25px;
+}
+
+h1{
+	margin:0px;
+	margin-left: 20px;
+	margin-bottom: 20px;
+	padding: 0px;
+	border:0px;
+}
+
+form {
+	border:none;
+}
+
+fieldset{
+	border: 5px solid white;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.container.login{
+	color:white;
+	background-color:#2b50aa;
+	margin-right:auto;
+	margin-left:auto;
+	margin-bottom:10px;
+}
+
+input[type=text], input[type=password]{
+	border: 2px solid white;
+	font-size:20px;
+	border-radius: 8px;
+	margin-left:30px;
+	width:80%;
+}
+
+.formdiv{
+	display:inline;
+}
+
+input[type=submit]{
+	border: 2px solid white;
+	border-radius: 8px;
+	margin:50%;
+	background-color:#2b50aa;
+	color:white;
+	padding-left:20px;
+	padding-right:20px;
+	padding-top:5px;
+	padding-bottom:5px;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size:20px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover{
+	background-color:white;
+	color:#2b50aa;
+}
+
