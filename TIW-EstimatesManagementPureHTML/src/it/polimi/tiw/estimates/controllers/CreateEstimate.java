@@ -18,7 +18,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
-import it.polimi.tiw.estimates.daos.UserDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**

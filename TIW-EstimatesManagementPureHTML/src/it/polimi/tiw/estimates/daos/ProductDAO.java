@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.tiw.estimates.beans.Estimate;
-import it.polimi.tiw.estimates.beans.Optional;
-import it.polimi.tiw.estimates.beans.OptionalType;
 import it.polimi.tiw.estimates.beans.Product;
 
 public class ProductDAO {
@@ -37,12 +34,9 @@ public class ProductDAO {
 					product.setName(result.getString("name"));
 					product.setImage(result.getString("image"));
 					products.add(product);
-				}
-				
-			}
-			
-		}
-		
+				}		
+			}		
+		}		
 		return products;
 	}
 	
@@ -54,23 +48,18 @@ public class ProductDAO {
 				+ "FROM product AS p "
 				+ "WHERE p.id = ?";
 		
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {		
 			pstatement.setInt(1, productId);
 			
 			try (ResultSet result = pstatement.executeQuery();) {	
-				
 				while (result.next()) {
 					product = new Product();
 					product.setId(result.getInt("id"));
 					product.setName(result.getString("name"));
 					product.setImage(result.getString("image"));
-				}
-				
+				}		
 			}
-			
 		}
-		
 		return product;
 	}
 	
