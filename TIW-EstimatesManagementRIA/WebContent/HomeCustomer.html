@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Customer page</title>
+	<link rel="stylesheet" type="text/css" href="../css/default.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/homecustomer.css"/>
+</head>
+<body>
+	<header class="headerrow">
+		<div class="titlecolumn">
+			<h1>Customer Page</h1>
+			<h4>Welcome ????</h4>
+		</div>
+		<div class="buttoncolumn">
+			<a>Logout</a>
+		</div>
+	</header>
+	
+	<br>
+
+	<!-- div of priced order -->
+	<div class="container">
+		<div class="column column-40">
+			<h4>Your estimates:</h4>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Product</th>
+						<th>Price</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- div of non-priced order -->
+		<h4>Insert a new estimates:</h4>
+		<form action="CreateEstimate" method="POST" class="column column-60">
+		  <fieldset>
+		    <legend>Select a product:</legend>
+		    <div class="container">
+		      <div class="column column-40">
+		        <table>
+		          <thead>
+		            <tr>
+		            	<th>ID</th>
+		  				<th>Product</th>
+		  			</tr>
+		          </thead>
+		          <tbody>
+		  			<tr>
+		  				<td></td>
+		  				<td></td>
+		  			</tr>
+		  		 </tbody>
+		        </table>
+		      </div>
+		      <div class="column column-60">
+		      <img class="productimg" alt="Product Img"/>
+		        <h5>Select one or more options:</h5>
+		        <input type="hidden" name="prdct" value="">
+		        
+			        <ul class="checkbox">
+			          <li>
+			            <input type="checkbox" name="option[]"><br>
+			          </li>
+			        </ul>
+			        
+		        <br>
+		        <input type="submit" value="Insert">
+		        <p id="errormessage"></p>
+		      </div>
+		    </div>    
+		  </fieldset>
+		</form>
+	</div>
+
+	<footer>
+	  <p>Made with &#x1F4BB; ❤️️by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
+	</footer>
+</body>
+</html>
