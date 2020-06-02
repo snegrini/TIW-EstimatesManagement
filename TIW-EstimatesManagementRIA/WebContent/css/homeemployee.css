@@ -67,3 +67,26 @@ td{
 th,td{
 	border-bottom: 1px solid #ddd;
 }
+
+.vertical-table thead {
+	float: left;   
+}
+
+.vertical-table thead th {
+	display: block;   
+	background-color:#2b50aa;
+	color:white;
+	text-align:center;
+	border: 1px solid white;
+	padding: 5px;
+}
+
+.vertical-table tbody {
+	float: left;   
+}
+
+.vertical-table tbody td {
+	display: block;
+	padding: 5.5px;
+}
+

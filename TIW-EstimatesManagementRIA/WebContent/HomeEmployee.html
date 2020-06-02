@@ -3,38 +3,39 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Employee page</title>
-	<link rel="stylesheet" type="text/css" href="../css/default.css"/>
-	<link rel="stylesheet" type="text/css" href="../css/homeemployee.css"/>
+	<link rel="stylesheet" type="text/css" href="css/default.css"/>
+	<link rel="stylesheet" type="text/css" href="css/homeemployee.css"/>
+	<script src="utils.js" charset="utf-8" defer></script>
+	<script src="home_employee.js" charset="utf-8" defer></script>
 </head>
 <body>
-	<header>
-		<h1>Employee page</h1>
-		<h5>Welcome ????</h5>
+	<header class="headerrow">
+		<div class="titlecolumn">
+			<h1>Employee Page</h1>
+			<h4>Welcome <span id="id_username"></span></h4>
+		</div>
+		<div class="buttoncolumn">
+			<a href="Logout">Logout</a>
+		</div>
 	</header>
 
 	<br>
 
-	<!-- div of priced order -->
-
 	<div class="container">
+		
+		<!-- div of priced order -->
 		<div class="column column-50">
 			<h4>Priced estimates by you:</h4>
-			<table>
+			<table id="id_pricedestimatetable">
 				<thead>
 					<tr>
 						<th>Estimate ID</th>
 						<th>Product Name</th>
 						<th>Price</th>
-						<th>Link</th>
+						<th>Details</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
+				<tbody id="id_pricedestimatetablebody">
 				</tbody>
 			</table>
 		</div>
@@ -42,21 +43,49 @@
 		<!-- div of non-priced order -->
 		<div class="column column-50">
 			<h4>Product not priced yet:</h4>
-			<table>
+			<table id="id_nonpricedestimatetable">
 				<thead>
 					<tr>
 						<th>Estimate ID</th>
 						<th>Product Name</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td></td>
-						<td></td>
-					</tr>
+				<tbody id="id_nonpricedestimatetablebody">
 				</tbody>
 			</table>
+			 
+			<br>
+			<br>
+			
+			<table id="id_npedetailstable" class="vertical-table">
+				<thead>
+					<tr>
+						<th>Customer:</th>
+						<th>Product ID:</th>
+						<th>Product name:</th>
+						<th>Optional:</th>
+					</tr>
+				</thead>
+				<tbody id="id_npedetailstablebody">
+					<tr>
+						<td>Pippo1</td>
+						<td>Pippo2</td>
+						<td>Pippo3</td>
+						<td>Pippo4</td>
+					</tr>				
+				</tbody>
+			</table>
+
+			<form action="#" id="id_npedetailsform" class="column column-30">
+				<label>Insert the price of the product:</label><br>
+				<input type="hidden" name="estimateid" th:value="${estimate.id}">
+				<input type="number" name="price" min="0" value="0"> <span>&euro;</span>
+				<input class="submitbtn" type="button" value="Invia Prezzo">
+				<p id="errormessage"></p>
+			</form>
+
 		</div>
+
 	</div>
 
 	<footer>
