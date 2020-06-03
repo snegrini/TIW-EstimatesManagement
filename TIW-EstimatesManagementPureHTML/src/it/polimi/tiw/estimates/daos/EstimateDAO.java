@@ -56,8 +56,8 @@ public class EstimateDAO {
 	 * */
 	public List<Estimate> findEstimatesByCustomer(int customerID) throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
-		String query = 	"SELECT DISTINCT e.id, e.prdid, e.price " + 
-						"FROM estimate AS e, user AS u " + 
+		String query = 	"SELECT e.id, e.prdid, e.price " + 
+						"FROM estimate AS e " + 
 						"WHERE e.usrid = ? " + 
 						"ORDER BY e.id ASC";
 		
@@ -70,9 +70,7 @@ public class EstimateDAO {
 					Estimate estimate = new Estimate();
 					
 					estimate.setId(result.getInt("id"));
-					//estimate.setClientId(result.getInt("usrid"));
 					estimate.setProductId(result.getInt("prdid"));			
-					//estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
 					estimates.add(estimate);
 				}
