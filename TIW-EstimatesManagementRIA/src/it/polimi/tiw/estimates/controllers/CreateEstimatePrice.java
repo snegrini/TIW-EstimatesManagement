@@ -13,11 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import it.polimi.tiw.estimates.beans.Estimate;
 import it.polimi.tiw.estimates.beans.Optional;
 import it.polimi.tiw.estimates.beans.Product;
@@ -36,7 +31,6 @@ public class CreateEstimatePrice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private Connection connection;
-	private TemplateEngine templateEngine;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -48,11 +42,6 @@ public class CreateEstimatePrice extends HttpServlet {
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
         ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
     }
 
 	/**
@@ -92,14 +81,7 @@ public class CreateEstimatePrice extends HttpServlet {
 		
 		String path = "/WEB-INF/EstimatePrice.html";
 		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
-		ctx.setVariable("estimate", estimate);
-		ctx.setVariable("product", product);
-		ctx.setVariable("optionals", optionals);
-		ctx.setVariable("customer", customer);
-		
-		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**

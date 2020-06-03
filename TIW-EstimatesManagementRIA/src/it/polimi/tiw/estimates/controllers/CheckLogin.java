@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.UserDAO;
@@ -30,7 +27,6 @@ public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private Connection connection;
-	private TemplateEngine templateEngine;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,11 +39,6 @@ public class CheckLogin extends HttpServlet {
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
         ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
     }
 
 	/**

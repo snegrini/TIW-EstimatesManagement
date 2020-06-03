@@ -3,6 +3,7 @@ package it.polimi.tiw.estimates.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -13,30 +14,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import it.polimi.tiw.estimates.utils.ConnectionHandler;
 import it.polimi.tiw.estimates.beans.Estimate;
 import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
-import it.polimi.tiw.estimates.daos.ProductDAO;
-import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
- * Servlet implementation class HomeCustomer
+ * Servlet implementation class GetMyEstimatesData
  */
-@WebServlet("/HomeEmployee")
-public class HomeEmployee extends HttpServlet {
+@WebServlet("/GetMyEstimatesData")
+public class GetMyEstimatesData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private Connection connection;
+	private Connection connection = null;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HomeEmployee() {
+    public GetMyEstimatesData() {
         super();
+        // TODO Auto-generated constructor stub
     }
     
-    @Override
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
         ServletContext servletContext = getServletContext();
@@ -45,40 +49,36 @@ public class HomeEmployee extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession s = request.getSession();
-		User user = (User) s.getAttribute("user");
-		
-		EstimateDAO estimateDao = new EstimateDAO(connection, user.getId());
-		List<Estimate> pricedEstimates = null;
-		List<Estimate> nonPricedEstimates = null;
-		
-		ProductDAO productDao = new ProductDAO(connection);
-		List<Product> pricedProducts = null;
-		List<Product> nonPricedProducts = null;
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		EstimateDAO eDAO = new EstimateDAO(connection , user.getId());
+		List<Estimate> estimates = new ArrayList<Estimate>();
 		
 		try {
-			pricedEstimates = estimateDao.findPricedEstimatesByEmployee(user.getId());
-			pricedProducts = productDao.findPricedProductsByEmployee(user.getId());
+			estimates = eDAO.findEstimatesByCustomer(user.getId());
 			
-			nonPricedEstimates = estimateDao.findNonPricedEstimates();
-			nonPricedProducts = productDao.findNonPricedProducts();
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in estimates database extraction");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Not possible to recover estimates");
+			return;
 		}
+
+		Gson gson = new GsonBuilder()
+				   .setDateFormat("yyyy MMM dd").create();
+		String json = gson.toJson(estimates);
 		
 		
-		String path = "/WEB-INF/HomeEmployee.html";
-		ServletContext servletContext = getServletContext();
-		
-	}
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
