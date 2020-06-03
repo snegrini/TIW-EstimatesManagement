@@ -12,7 +12,9 @@
             var message = req.responseText;
             switch (req.status) {
               case 200:
-                window.location.href = message;
+                var jsonMsg = JSON.parse(message);
+                sessionStorage.setItem("username", jsonMsg.username);
+                window.location.href = jsonMsg.location;          
                 break;
               case 400: // bad request
                 document.getElementById("errormessage").textContent = message;

@@ -39,13 +39,13 @@
  	</filter-mapping>
  	<filter-mapping> 
     	<filter-name>EmployeeChecker</filter-name> 
-    	<url-pattern>/HomeEmployee</url-pattern> 
+    	<url-pattern>/HomeEmployee.html</url-pattern> 
     	<url-pattern>/CreateEstimatePrice</url-pattern>
     	<url-pattern>/AddEstimatePrice</url-pattern>
  	</filter-mapping>
  	<filter-mapping> 
     	<filter-name>CustomerChecker</filter-name> 
-    	<url-pattern>/HomeCustomer</url-pattern>
+    	<url-pattern>/HomeCustomer.html</url-pattern>
     	<url-pattern>/CreateEstimate</url-pattern>
  	</filter-mapping>
   <welcome-file-list>

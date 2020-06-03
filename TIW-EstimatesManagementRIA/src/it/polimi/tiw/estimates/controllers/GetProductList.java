@@ -23,9 +23,9 @@ import it.polimi.tiw.estimates.utils.ConnectionHandler;
 /**
  * Servlet implementation class GetProductsList
  */
-@WebServlet("/GetProductsList")
+@WebServlet("/GetProductList")
 @MultipartConfig
-public class GetProductsList extends HttpServlet {
+public class GetProductList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 
@@ -33,9 +33,8 @@ public class GetProductsList extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetProductsList() {
+    public GetProductList() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {
@@ -46,7 +45,6 @@ public class GetProductsList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		ProductDAO pDAO = new ProductDAO(connection);
 		List<Product> products = new ArrayList<Product>();
 		
@@ -58,7 +56,6 @@ public class GetProductsList extends HttpServlet {
 			return;
 		}
 		
-
 		Gson gson = new GsonBuilder()
 				   .setDateFormat("yyyy MMM dd").create();
 		String json = gson.toJson(products);

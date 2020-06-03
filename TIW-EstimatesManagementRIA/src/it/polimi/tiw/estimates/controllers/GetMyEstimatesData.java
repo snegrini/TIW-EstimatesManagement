@@ -56,8 +56,7 @@ public class GetMyEstimatesData extends HttpServlet {
 		List<Estimate> estimates = new ArrayList<Estimate>();
 		
 		try {
-			estimates = eDAO.findEstimatesByCustomer(user.getId());
-			
+			estimates = eDAO.findEstimatesByCustomer(user.getId());		
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover estimates");
@@ -68,16 +67,15 @@ public class GetMyEstimatesData extends HttpServlet {
 				   .setDateFormat("yyyy MMM dd").create();
 		String json = gson.toJson(estimates);
 		
-		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);	}
+		response.getWriter().write(json);	
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

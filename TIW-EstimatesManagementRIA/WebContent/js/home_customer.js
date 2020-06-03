@@ -5,14 +5,12 @@
       pageOrchestrator = new PageOrchestrator(); // main controller
 
     window.addEventListener("load", () => {
-      /*if (sessionStorage.getItem("username") == null) {
-        //window.location.href = "index.html";
+      if (sessionStorage.getItem("username") == null) {
+        window.location.href = "index.html";
       } else {
         pageOrchestrator.start(); // initialize the components
         pageOrchestrator.refresh();
-      }*/ // display initial content
-    	pageOrchestrator.start(); // initialize the components
-        pageOrchestrator.refresh();
+      } // display initial content
 	}, false);
 	
 	// Constructors of view components
@@ -31,7 +29,7 @@
 
 	    this.reset = function() {
 	      this.listcontainer.style.visibility = "hidden";
-	    }
+	    };
 
 	    this.show = function(next) {
 	      var self = this;
@@ -53,52 +51,126 @@
 	          }
 	        }
 		  );
-		  this.update = function(arrayEstimates) {
-			var elem, i, row, idestimatecell, productnamecell, pricecell,detailcell, anchor;
-			this.listcontainerbody.innerHTML = ""; // empty the table body
-			// build updated list
-			var self = this;
-			arrayEstimates.forEach(function(estimate) { // self visible here, not this
-			  row = document.createElement("tr");
-			  idestimatecell = document.createElement("td");
-			  idestimatecell.textContent = estimate.id;
-			  row.appendChild(idestimatecell);
-
-			  productnamecell = document.createElement("td");
-			  productnamecell.textContent = estimate.productId;
-			  row.appendChild(productnamecell);
-			  
-			  pricecell = document.createElement("td");
-			  pricecell.textContent = estimate.price;
-			  row.appendChild(pricecell);
-
-			  detailcell = document.createElement("td");
-			  anchor = document.createElement("a");
-			  detailcell.appendChild(anchor);
-			  detailText = document.createTextNode("Detail");
-			  anchor.appendChild(detailText);
-			  //anchor.estimateid = estimate.id; // make list item clickable
-			  anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
-			  anchor.addEventListener("click", (e) => {
-				// dependency via module parameter
-				estimateDetails.show(e.target.getAttribute("estimateid")); // the list must know the details container
-			  }, false);
-			  anchor.href = "#";
-			  row.appendChild(detailcell);
-			  self.listcontainerbody.appendChild(row);
-			});
-			this.listcontainer.style.visibility = "visible";
-  
-		  }
-  
-		  this.autoclick = function(estimateId) {
-			var e = new Event("click");
-			var selector = "a[estimateid='" + estimateId + "']";
-			var anchorToClick =
-			  (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-			if (anchorToClick) anchorToClick.dispatchEvent(e);
-		  }
 		};
+
+        this.update = function(arrayEstimates) {
+            var row, idestimatecell, productnamecell, pricecell,detailcell, anchor;
+            this.listcontainerbody.innerHTML = ""; // empty the table body
+            // build updated list
+            var self = this;
+            arrayEstimates.forEach(function(estimate) { // self visible here, not this
+                row = document.createElement("tr");
+                idestimatecell = document.createElement("td");
+                idestimatecell.textContent = estimate.id;
+                row.appendChild(idestimatecell);
+
+                productnamecell = document.createElement("td");
+                productnamecell.textContent = estimate.product.name;
+                row.appendChild(productnamecell);
+                
+                pricecell = document.createElement("td");
+                pricecell.textContent = estimate.price;
+                row.appendChild(pricecell);
+
+                detailcell = document.createElement("td");
+                anchor = document.createElement("a");
+                detailcell.appendChild(anchor);
+                detailText = document.createTextNode("Show");
+                anchor.appendChild(detailText);
+                //anchor.estimateid = estimate.id; // make list item clickable
+                anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
+                anchor.addEventListener("click", (e) => {
+                // dependency via module parameter
+                estimateDetails.show(e.target.getAttribute("estimateid")); // the list must know the details container
+                }, false);
+                anchor.href = "#";
+                row.appendChild(detailcell);
+                self.listcontainerbody.appendChild(row);
+            });
+            this.listcontainer.style.visibility = "visible";
+        };
+  
+        this.autoclick = function(estimateId) {
+            var e = new Event("click");
+            var selector = "a[estimateid='" + estimateId + "']";
+            var anchorToClick =
+                (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+            if (anchorToClick) anchorToClick.dispatchEvent(e);
+        };
+	}
+
+	function ProductList(_alert, _listcontainer, _listcontainerbody) {
+	    this.alert = _alert;
+	    this.listcontainer = _listcontainer;
+	    this.listcontainerbody = _listcontainerbody;
+
+	    this.reset = function() {
+	      this.listcontainer.style.visibility = "hidden";
+	    };
+
+	    this.show = function(next) {
+            var self = this;
+            makeCall("GET", "GetProductList", null,
+                function(req) {
+                    if (req.readyState == 4) {
+                        var message = req.responseText;
+                        if (req.status == 200) {
+                            var productsToShow = JSON.parse(req.responseText);
+                            if (productsToShow.length == 0) {
+                                self.alert.textContent = "No products available!";
+                                return;
+                            }
+                            self.update(productsToShow); // self visible by closure
+                            if (next) {
+                                next(); // show the default element of the list if present
+                            } 
+                        }
+                    } else {
+                        self.alert.textContent = message;
+                    }
+                }
+            );
+		};
+
+        this.update = function(arrayProducts) {
+            var row, idproductcell, productnamecell;
+            this.listcontainerbody.innerHTML = ""; // empty the table body
+            // build updated list
+            var self = this;
+
+            arrayProducts.forEach(function(product) { // self visible here, not this
+                row = document.createElement("tr");
+                idproductcell = document.createElement("td");
+                idproductcell.textContent = product.id;
+                row.appendChild(idproductcell);
+
+                productnamecell = document.createElement("td");
+                productnamecell.textContent = product.name;
+                /*anchor.appendChild(product.name);
+                anchor.setAttribute('productid', product.id); // set a custom HTML attribute
+                anchor.addEventListener("click", (e) => {
+                // dependency via module parameter
+                
+                // TODO declare product details (IMAGE + OPTIONALS) on top of the current document
+                // Rename the next line with productDetails
+                // Fix the same thing also on CustomerEstimateList           
+                estimateDetails.show(e.target.getAttribute("productid")); // the list must know the details container
+                }, false);
+                anchor.href = "#";*/
+                row.appendChild(productnamecell);
+
+                self.listcontainerbody.appendChild(row);
+            });
+            this.listcontainer.style.visibility = "visible";
+        };
+
+        this.autoclick = function(estimateId) {
+            var e = new Event("click");
+            var selector = "a[estimateid='" + estimateId + "']";
+            var anchorToClick =
+                (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+            if (anchorToClick) anchorToClick.dispatchEvent(e);
+        };
 	}
 
 	function EstimateDetails(options) {
@@ -228,40 +300,48 @@
 	    var alertContainer = document.getElementById("id_alert");
 		
 		this.start = function() {
-	      personalMessage = new PersonalMessage(sessionStorage.getItem('username'),
-	        									document.getElementById("id_username"));
-	      personalMessage.show();
+        personalMessage = new PersonalMessage(sessionStorage.getItem('username'),
+                                            document.getElementById("id_username"));
+        personalMessage.show();
 
-	      customerEstimatesList = new CustomerEstimatesList(
-	        alertContainer,
-	        document.getElementById("id_estimatetable"),
-	        document.getElementById("id_estimatetablebody"));
-	      
-	      customerEstimatesList.show();
+	    customerEstimatesList = new CustomerEstimatesList(
+            alertContainer,
+            document.getElementById("id_estimatetable"),
+            document.getElementById("id_estimatetablebody")
+        );
+        customerEstimatesList.show();
 
-	      missionDetails = new MissionDetails({ // many parameters, wrap them in an
-	        // object
-	        
-	      });
-	      missionDetails.registerEvents(this);
+        productList = new ProductList(
+            alertContainer,
+            document.getElementById("id_producttable"),
+            document.getElementById("id_producttablebody")
+        );
+        productList.show();
 
-	      wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
-	      wizard.registerEvents(this);
+        /*
+        missionDetails = new MissionDetails({ // many parameters, wrap them in an
+        // object
+        
+        });
+        missionDetails.registerEvents(this);*/
 
-	      document.querySelector("a[href='Logout']").addEventListener('click', () => {
-	        window.sessionStorage.removeItem('username');
-	      })
-	    };
+        wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
+        wizard.registerEvents(this);
+
+        document.querySelector("a[href='Logout']").addEventListener('click', () => {
+            window.sessionStorage.removeItem('username');
+        })
+    };
 
 
-	    this.refresh = function(currentMission) {
-	      alertContainer.textContent = "";
-	      customerEstimatesList.reset();
-	      missionDetails.reset();
-	      customerEstimatesList.show(function() {
-	        customerEstimatesList.autoclick(currentMission);
-	      }); // closure preserves visibility of this
-	      wizard.reset();
-	    };
-	  }
-	})();
+    this.refresh = function(currentMission) {
+        alertContainer.textContent = "";
+        customerEstimatesList.reset();
+        missionDetails.reset();
+        customerEstimatesList.show(function() {
+        customerEstimatesList.autoclick(currentMission);
+        }); // closure preserves visibility of this
+        wizard.reset();
+    };
+    }
+})();

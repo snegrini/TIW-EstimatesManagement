@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.estimates.beans.Estimate;
+import it.polimi.tiw.estimates.beans.Product;
 
 public class EstimateDAO {
 	private Connection connection;
@@ -29,7 +30,7 @@ public class EstimateDAO {
 		}
 		
 		// LAST_INSERT_ID() will return the last insert id from the current connection
-		for (int i = 0; i< optionalsID.length; i++) {
+		for (int i = 0; i < optionalsID.length; i++) {
 			query = "INSERT into chosenoptional (estid, optid) VALUES(LAST_INSERT_ID(), ?)";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 				pstatement.setInt(1, Integer.parseInt(optionalsID[i]));
@@ -54,14 +55,14 @@ public class EstimateDAO {
 	
 	/**
 	 * Returns a list of all of the estimates of a customer, given the id.
-	 * 
 	 */
 	public List<Estimate> findEstimatesByCustomer(int customerID) throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
-		String query = 	"SELECT DISTINCT e.id, e.price " + 
-						"FROM estimate AS e, user AS u " + 
-						"WHERE e.usrid = ? " + 
-						"ORDER BY e.id ASC";
+		String query = 	"SELECT e.id, e.price, p.name "
+				+ "FROM estimate AS e, product AS p "
+				+ "WHERE e.prdid = p.id "
+				+ "AND e.usrid = ? "
+				+ "ORDER BY e.id ASC";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			
@@ -71,9 +72,13 @@ public class EstimateDAO {
 				while (result.next()) {
 					Estimate estimate = new Estimate();
 					
+					Product product = new Product();
+					product.setName(result.getString("name"));
+					
 					estimate.setId(result.getInt("id"));
-					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
+					estimate.setProduct(product);
+
 					estimates.add(estimate);
 				}
 			}

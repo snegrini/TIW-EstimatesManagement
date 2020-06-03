@@ -3,6 +3,8 @@ package it.polimi.tiw.estimates.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.text.StringEscapeUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.UserDAO;
@@ -52,7 +58,7 @@ public class CheckLogin extends HttpServlet {
 
 		String usr = null;
 		String pwd = null;
-		System.out.println("aa");
+
 		try {
 			usr = StringEscapeUtils.escapeJava(request.getParameter("username"));
 			pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));
@@ -81,19 +87,27 @@ public class CheckLogin extends HttpServlet {
 			
 			if (usr.isEmpty() || pwd.isEmpty()) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.getWriter().println("username and password cannot be empty");
+				response.getWriter().println("Username and password cannot be empty");
 				
 			} else {
-				//response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				response.getWriter().println("wrong username or password");
+				response.getWriter().println("Wrong username or password");
 			}
 			
 		} else {
 			request.getSession().setAttribute("user", user);
-			String target = (user.getRole().equals("employee")) ? "HomeEmployee.html" : "HomeCustomer.html";
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
 			
-			response.getWriter().println(target);
+			String target = (user.getRole().equals("employee")) ? "HomeEmployee.html" : "HomeCustomer.html";
+			Map<String, String> params = Map.of("location", target, "username", usr);
+
+			Gson gson = new GsonBuilder()
+					   .setDateFormat("yyyy MMM dd").create();
+			String json = gson.toJson(params);
+			
+			response.getWriter().write(json);
 		}
 
 	}
