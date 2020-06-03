@@ -18,79 +18,74 @@
 			<a href="Logout">Logout</a>
 		</div>
 	</header>
-
 	<br>
 
-	<div class="container">
-		
-		<!-- div of priced order -->
-		<div class="column column-50">
-			<h4>Priced estimates by you:</h4>
-			<table id="id_pricedestimatetable">
-				<thead>
-					<tr>
-						<th>Estimate ID</th>
-						<th>Product Name</th>
-						<th>Price</th>
-						<th>Details</th>
-					</tr>
-				</thead>
-				<tbody id="id_pricedestimatetablebody">
-				</tbody>
-			</table>
-		</div>
+	<div class="container">		
+			<!-- div of priced order -->
+			<div class="column column-50">
+				<h4>Priced estimates by you:</h4>
+				<table id="id_pricedestimatetable">
+					<thead>
+						<tr>
+							<th>Estimate ID</th>
+							<th>Product Name</th>
+							<th>Price</th>
+							<th>Details</th>
+						</tr>
+					</thead>
+					<tbody id="id_pricedestimatetablebody">
+					</tbody>
+				</table>
+			</div>
 
-		<!-- div of non-priced order -->
-		<div class="column column-50">
-			<h4>Product not priced yet:</h4>
-			<table id="id_nonpricedestimatetable">
-				<thead>
-					<tr>
-						<th>Estimate ID</th>
-						<th>Product Name</th>
-					</tr>
-				</thead>
-				<tbody id="id_nonpricedestimatetablebody">
-				</tbody>
-			</table>
-			 
-			<br>
-			<br>
-			
-			<table id="id_npedetailstable" class="vertical-table">
-				<thead>
-					<tr>
-						<th>Customer:</th>
-						<th>Product ID:</th>
-						<th>Product name:</th>
-						<th>Optional:</th>
-					</tr>
-				</thead>
-				<tbody id="id_npedetailstablebody">
-					<tr>
-						<td>Pippo1</td>
-						<td>Pippo2</td>
-						<td>Pippo3</td>
-						<td>Pippo4</td>
-					</tr>				
-				</tbody>
-			</table>
+			<!-- div of non-priced order -->
+			<div class="column column-50">
+				<h4>Product not priced yet:</h4>
+				<table id="id_nonpricedestimatetable">
+					<thead>
+						<tr>
+							<th>Estimate ID</th>
+							<th>Product Name</th>
+						</tr>
+					</thead>
+					<tbody id="id_nonpricedestimatetablebody">
+					</tbody>
+				</table>
+				
+				<br>
+				<br>
+				
+				<table id="id_npedetailstable" class="vertical-table">
+					<thead>
+						<tr>
+							<th>Customer:</th>
+							<th>Product ID:</th>
+							<th>Product name:</th>
+							<th>Optional:</th>
+						</tr>
+					</thead>
+					<tbody id="id_npedetailstablebody">
+						<tr>
+							<td>Pippo1</td>
+							<td>Pippo2</td>
+							<td>Pippo3</td>
+							<td>Pippo4</td>
+						</tr>				
+					</tbody>
+				</table>
 
-			<form action="#" id="id_npedetailsform" class="column column-30">
-				<label>Insert the price of the product:</label><br>
-				<input type="hidden" name="estimateid">
-				<input type="number" name="price" min="0" value="0"> <span>&euro;</span>
-				<input class="submitbtn" type="button" value="Invia Prezzo">
-				<p id="errormessage"></p>
-			</form>
+				<form action="#" id="id_npedetailsform" class="column column-30">
+					<label>Insert the price of the product:</label><br>
+					<input type="hidden" name="estimateid">
+					<input type="number" name="price" min="0" value="0"> <span>&euro;</span>
+					<input class="submitbtn" type="button" value="Invia Prezzo">
+					<p id="errormessage"></p>
+				</form>
 
-		</div>
-
-	</div>
-
-	<footer>
-	  <p>Made with ❤️ by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
-	</footer>
-
+			</div>
+		</div>		
+		<footer>
+			<p>Made with &hearts; ️by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
+		</footer>
 </body>
 </html>

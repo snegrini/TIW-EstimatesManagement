@@ -2,12 +2,20 @@
 	box-sizing:border-box;
 }
 
+html, body{ 
+	min-height: 100vh;
+	margin:0;
+	padding: 0%;
+	overflow: auto;
+  }
+
 body{
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 20px;
 	margin: 0px;
 	padding: 0px;
-	
+	min-height: 100%;	/**/	
+	;
 }
 
 .container{
@@ -15,44 +23,60 @@ body{
 	clear:both;
 	display:table;
 	width:100%;
+	position: relative;	/**/
+	min-height: 100%;	/**/	
+	/*min-width: 100vw;	*/
 }
+
+#content-wrap {
+	padding-bottom: 3rem;    /* Footer height */
+  }
 
 .column{
 	float:left;
 	padding:10px;
+	height: 100%;
 }
 
 
 .column.column-25{
 	width:25%;
+	height: 100%;
 }
 
 .column.column-30{
 	width:30%;
+	height: 100%;
 }
 
 .column.column-33{
 	width:33.33%;
+	height: 100%;
 }
 
 .column.column-40{
 	width:40%;
+	height: 100%;
 }
 
 .column.column-45{
 	width:45%;
+	height: 100%;
 }
 
 .column.column-50{
 	width:50%;
+	height: 100%;
 }
 
 .column.column-60{
 	width:60%;
+	height: 100%;
 }
 
 .column.column-70{
-	width:60%;
+	width:70%;
+	height: 100%;
 }
 
 .column img{
@@ -63,10 +87,13 @@ body{
 
 footer{
 	width:100%;
-	height:70px;
+	height: 100%;
+	/*height:70px;*/
+	height: 4.5rem;
 	margin:0px;
 	bottom:0;
-	position:relative;
+	position: absolute;
+	/*position:relative;*/
 	background-color:#2b50aa;
 	color:white;
 	text-align: center;
@@ -75,4 +102,5 @@ footer{
 
 footer p{
 	padding-top:28px;
+	margin: 0px;
 }
