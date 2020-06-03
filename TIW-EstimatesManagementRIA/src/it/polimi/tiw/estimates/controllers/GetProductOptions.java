@@ -12,35 +12,35 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import it.polimi.tiw.estimates.beans.Optional;
+import it.polimi.tiw.estimates.daos.OptionalDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
-import it.polimi.tiw.estimates.beans.Estimate;
-import it.polimi.tiw.estimates.beans.User;
-import it.polimi.tiw.estimates.daos.EstimateDAO;
 
 /**
- * Servlet implementation class GetMyEstimatesData
+ * Servlet implementation class GetProductOptions
  */
-@WebServlet("/GetMyEstimatesData")
+@WebServlet("/GetProductOptions")
 @MultipartConfig
-public class GetMyEstimatesData extends HttpServlet {
+public class GetProductOptions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
+
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetMyEstimatesData() {
+    public GetProductOptions() {
         super();
         // TODO Auto-generated constructor stub
     }
-    
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
@@ -49,29 +49,29 @@ public class GetMyEstimatesData extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		EstimateDAO eDAO = new EstimateDAO(connection , user.getId());
-		List<Estimate> estimates = new ArrayList<Estimate>();
+		// TODO Auto-generated method stub
+		String productId = request.getParameter("productid");
+		OptionalDAO oDAO = new OptionalDAO(connection);
+		List<Optional> optionals = new ArrayList<Optional>();
 		
 		try {
-			estimates = eDAO.findEstimatesByCustomer(user.getId());
-			
+			optionals = oDAO.findAvailableOptionalsByProduct(Integer.parseInt(productId));
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to recover estimates");
+			response.getWriter().println("Not possible to recover product optionals");
 			return;
 		}
+		
 
 		Gson gson = new GsonBuilder()
 				   .setDateFormat("yyyy MMM dd").create();
-		String json = gson.toJson(estimates);
+		String json = gson.toJson(optionals);
 		
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);	}
+		response.getWriter().write(json);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

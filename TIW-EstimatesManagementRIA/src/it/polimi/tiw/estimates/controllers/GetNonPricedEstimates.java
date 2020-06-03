@@ -14,33 +14,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import it.polimi.tiw.estimates.utils.ConnectionHandler;
 import it.polimi.tiw.estimates.beans.Estimate;
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
+import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
- * Servlet implementation class GetMyEstimatesData
+ * Servlet implementation class GetNonPricedEstimates
  */
-@WebServlet("/GetMyEstimatesData")
+@WebServlet("/GetNonPricedEstimates")
 @MultipartConfig
-public class GetMyEstimatesData extends HttpServlet {
+public class GetNonPricedEstimates extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetMyEstimatesData() {
+    public GetNonPricedEstimates() {
         super();
         // TODO Auto-generated constructor stub
     }
-    
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
@@ -49,30 +50,26 @@ public class GetMyEstimatesData extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		EstimateDAO eDAO = new EstimateDAO(connection , user.getId());
 		List<Estimate> estimates = new ArrayList<Estimate>();
 		
 		try {
-			estimates = eDAO.findEstimatesByCustomer(user.getId());
-			
+			eDAO.findNonPricedEstimates();
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to recover estimates");
-			return;
+			response.getWriter().println("Not possible to recover non priced estimates");
 		}
-
+		
 		Gson gson = new GsonBuilder()
 				   .setDateFormat("yyyy MMM dd").create();
 		String json = gson.toJson(estimates);
 		
-		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);	}
-
+		response.getWriter().write(json);
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
