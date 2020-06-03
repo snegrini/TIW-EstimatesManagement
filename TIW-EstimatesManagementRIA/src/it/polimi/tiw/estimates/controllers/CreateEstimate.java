@@ -18,7 +18,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
-import it.polimi.tiw.estimates.daos.UserDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
@@ -52,6 +51,7 @@ public class CreateEstimate extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User u = null;
 		HttpSession s = request.getSession();

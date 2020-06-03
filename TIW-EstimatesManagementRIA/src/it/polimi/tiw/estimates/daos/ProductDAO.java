@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.tiw.estimates.beans.Estimate;
-import it.polimi.tiw.estimates.beans.Optional;
-import it.polimi.tiw.estimates.beans.OptionalType;
 import it.polimi.tiw.estimates.beans.Product;
 
 public class ProductDAO {
