@@ -57,7 +57,7 @@ public class ProductDAO {
 			
 			try (ResultSet result = pstatement.executeQuery();) {	
 				
-				while (result.next()) {
+				if (result.next()) {
 					product = new Product();
 					product.setId(result.getInt("id"));
 					product.setName(result.getString("name"));
@@ -127,7 +127,7 @@ public class ProductDAO {
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			
 			try (ResultSet result = pstatement.executeQuery();) {	
-				while (result.next()) {
+				if (result.next()) {
 					product = new Product();
 					product.setId(result.getInt("id"));
 					product.setName(result.getString("name"));
@@ -135,6 +135,32 @@ public class ProductDAO {
 				}	
 			}	
 		}	
+		return product;
+	}
+
+	public Product findProductByEstimate(int estimateId) throws SQLException {
+		Product product = null;
+		
+		String query = "SELECT p.id, p.name, p.image "
+				+ "FROM product AS p, estimate AS e "
+				+ "WHERE p.id = e.prdid "
+				+ "AND e.id = ?";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+			pstatement.setInt(1, estimateId);
+			
+			try (ResultSet result = pstatement.executeQuery();) {	
+				
+				if (result.next()) {
+					product = new Product();
+					product.setId(result.getInt("id"));
+					product.setName(result.getString("name"));
+					product.setImage(result.getString("image"));
+				}	
+			}
+		}
+		
 		return product;
 	}
 }

@@ -20,15 +20,16 @@ public class EstimateDAO {
 	
 
 	public boolean createEstimate(int productID, String[] optionalsID) throws SQLException  {
-		//TODO: THE QUERY
 		String query = "INSERT into estimate (usrid, prdid) VALUES(?, ?)";
+		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, userID);
 			pstatement.setInt(2, productID);
 			pstatement.executeUpdate();
 		}
+		
 		// LAST_INSERT_ID() will return the last insert id from the current connection
-		for(int i = 0; i< optionalsID.length; i++) {
+		for (int i = 0; i< optionalsID.length; i++) {
 			query = "INSERT into chosenoptional (estid, optid) VALUES(LAST_INSERT_ID(), ?)";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 				pstatement.setInt(1, Integer.parseInt(optionalsID[i]));
@@ -51,12 +52,13 @@ public class EstimateDAO {
 	}
 	
 	
-	/*
-	 * return a list of all of the estimates of a customer, given the id.
-	 * */
+	/**
+	 * Returns a list of all of the estimates of a customer, given the id.
+	 * 
+	 */
 	public List<Estimate> findEstimatesByCustomer(int customerID) throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
-		String query = 	"SELECT DISTINCT e.id, e.prdid, e.price " + 
+		String query = 	"SELECT DISTINCT e.id, e.price " + 
 						"FROM estimate AS e, user AS u " + 
 						"WHERE e.usrid = ? " + 
 						"ORDER BY e.id ASC";
@@ -70,9 +72,7 @@ public class EstimateDAO {
 					Estimate estimate = new Estimate();
 					
 					estimate.setId(result.getInt("id"));
-					//estimate.setClientId(result.getInt("usrid"));
-					estimate.setProductId(result.getInt("prdid"));			
-					//estimate.setEmployeeId(result.getInt("empid"));
+					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
 					estimates.add(estimate);
 				}
@@ -96,8 +96,6 @@ public class EstimateDAO {
 					Estimate estimate = new Estimate();
 					
 					estimate.setId(result.getInt("id"));
-					estimate.setClientId(result.getInt("usrid"));
-					estimate.setProductId(result.getInt("prdid"));			
 					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
 					estimates.add(estimate);
@@ -110,7 +108,7 @@ public class EstimateDAO {
 	public List<Estimate> findNonPricedEstimates() throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
 		
-		String query = "SELECT id, prdid FROM estimate WHERE empid IS NULL AND price IS NULL";
+		String query = "SELECT id FROM estimate WHERE empid IS NULL AND price IS NULL";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 						
@@ -120,7 +118,6 @@ public class EstimateDAO {
 					Estimate estimate = new Estimate();
 										
 					estimate.setId(result.getInt("id"));
-					estimate.setProductId(result.getInt("prdid"));		
 					estimates.add(estimate);
 				}
 			}
@@ -131,15 +128,13 @@ public class EstimateDAO {
 	public Estimate findEstimateById(int estimateId) throws SQLException {
 		Estimate estimate = null;
 
-		String query = "SELECT id, usrid, prdid, empid, price FROM estimate WHERE id = ?";
+		String query = "SELECT id, empid, price FROM estimate WHERE id = ?";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, estimateId);
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (result.next()) {
 					estimate = new Estimate();
 					estimate.setId(result.getInt("id"));
-					estimate.setClientId(result.getInt("usrid"));
-					estimate.setProductId(result.getInt("prdid"));
 					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
 				}

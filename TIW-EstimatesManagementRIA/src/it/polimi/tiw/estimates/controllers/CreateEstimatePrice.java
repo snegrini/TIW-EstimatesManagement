@@ -41,7 +41,6 @@ public class CreateEstimatePrice extends HttpServlet {
     
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
-        ServletContext servletContext = getServletContext();
     }
 
 	/**
@@ -67,9 +66,9 @@ public class CreateEstimatePrice extends HttpServlet {
 			chosenEstimateId = Integer.parseInt(request.getParameter("estimateid"));
 			
 			estimate = estimateDao.findEstimateById(chosenEstimateId);
-			product = productDao.findProductById(estimate.getProductId());
+			product = productDao.findProductByEstimate(estimate.getId());
 			optionals = optionalDao.findChosenOptionalsByEstimate(estimate.getId());
-			customer = userDao.findUserById(estimate.getClientId());
+			customer = userDao.findCustomerByEstimate(estimate.getId());
 		} catch (NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
 			return;

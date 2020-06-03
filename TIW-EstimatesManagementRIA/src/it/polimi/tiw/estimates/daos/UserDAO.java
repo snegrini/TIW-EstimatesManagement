@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 
 public class UserDAO {
@@ -48,10 +49,9 @@ public class UserDAO {
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			
 			pstatement.setInt(1, userId);
-			
 			try (ResultSet result = pstatement.executeQuery();) {	
 				
-				while (result.next()) {
+				if (result.next()) {
 					user = new User();
 					user.setId(result.getInt("id"));
 					user.setUsername(result.getString("username"));
@@ -59,11 +59,36 @@ public class UserDAO {
 					user.setSurname(result.getString("surname"));
 					user.setEmail(result.getString("email"));
 				}
-				
-			}
-			
+			}			
 		}
 		
+		return user;
+	}
+	
+	public User findCustomerByEstimate(int estimateId) throws SQLException {
+		User user = null;
+		
+		String query = "SELECT u.id, u.username, u.email, u.name, u.surname "
+				+ "FROM user AS u, estimate AS e "
+				+ "WHERE u.id = e.usrid "
+				+ "AND e.id = ?";
+				
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+			pstatement.setInt(1, estimateId);
+			
+			try (ResultSet result = pstatement.executeQuery();) {
+				
+				if (result.next()) {
+					user = new User();
+					user.setId(result.getInt("id"));
+					user.setUsername(result.getString("username"));
+					user.setName(result.getString("name"));
+					user.setSurname(result.getString("surname"));
+					user.setEmail(result.getString("email"));
+				}	
+			}
+		}
 		return user;
 	}
 
