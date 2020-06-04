@@ -52,7 +52,7 @@ public class ProductDAO {
 			pstatement.setInt(1, productId);
 			
 			try (ResultSet result = pstatement.executeQuery();) {	
-				while (result.next()) {
+				if (result.next()) {
 					product = new Product();
 					product.setId(result.getInt("id"));
 					product.setName(result.getString("name"));
@@ -119,7 +119,7 @@ public class ProductDAO {
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			
 			try (ResultSet result = pstatement.executeQuery();) {	
-				while (result.next()) {
+				if (result.next()) {
 					product = new Product();
 					product.setId(result.getInt("id"));
 					product.setName(result.getString("name"));

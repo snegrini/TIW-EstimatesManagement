@@ -63,7 +63,7 @@ public class HomeEmployee extends HttpServlet {
 		HttpSession s = request.getSession();
 		User user = (User) s.getAttribute("user");
 		
-		EstimateDAO estimateDao = new EstimateDAO(connection, user.getId());
+		EstimateDAO estimateDao = new EstimateDAO(connection);
 		List<Estimate> pricedEstimates = null;
 		List<Estimate> nonPricedEstimates = null;
 		

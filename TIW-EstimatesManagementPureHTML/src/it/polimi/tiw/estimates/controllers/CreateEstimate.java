@@ -71,10 +71,10 @@ public class CreateEstimate extends HttpServlet {
 				return;
 			}
 
-			EstimateDAO eDAO = new EstimateDAO(connection, userid);
+			EstimateDAO eDAO = new EstimateDAO(connection);
 			
 			try {
-				eDAO.createEstimate(Integer.parseInt(productName), options);
+				eDAO.createEstimate(userid, Integer.parseInt(productName), options);
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
 				return;
