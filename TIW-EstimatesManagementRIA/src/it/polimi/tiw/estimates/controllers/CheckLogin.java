@@ -3,7 +3,6 @@ package it.polimi.tiw.estimates.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -17,7 +16,6 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.UserDAO;
@@ -110,6 +108,15 @@ public class CheckLogin extends HttpServlet {
 			response.getWriter().write(json);
 		}
 
+	}
+	
+	@Override
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

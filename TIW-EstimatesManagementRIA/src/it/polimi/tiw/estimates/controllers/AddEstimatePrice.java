@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
@@ -85,6 +84,15 @@ public class AddEstimatePrice extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	@Override
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -14,15 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import it.polimi.tiw.estimates.utils.ConnectionHandler;
 import it.polimi.tiw.estimates.beans.Estimate;
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
+import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
  * Servlet implementation class GetMyEstimatesData
@@ -41,13 +39,15 @@ public class GetMyEstimatesData extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     
-    public void init() throws ServletException {
+    @Override
+	public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
@@ -75,8 +75,17 @@ public class GetMyEstimatesData extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 
+	@Override
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
