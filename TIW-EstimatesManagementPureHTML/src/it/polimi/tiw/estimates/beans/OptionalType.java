@@ -1,15 +1,15 @@
 package it.polimi.tiw.estimates.beans;
 
 public enum OptionalType {
-	normal("normal"), sale("sale");
+	NORMAL("NORMAL"), SALE("SALE");
 
-	private final String value;
+	private final String text;
 
-	OptionalType(String value) {
-		this.value = value;
+	OptionalType(String text) {
+		this.text = text;
 	}
 
-	public String getValue() {
-		return value;
+	public String getText() {
+		return text;
 	}
 }

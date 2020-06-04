@@ -43,9 +43,16 @@
 			    <th>Optional:</th>
 				    <td>
 				    	<ul th:remove="all-but-first">
-							<li th:each="o : ${optionals}" th:text="${o.name}">Rosso Fuoco</li>
-							<li>Verde Acqua</li>
-							<li>Jet Black</li>
+							<li th:each="o : ${optionals}">
+								<span th:text="${o.name}">Rosso Fuoco</span>
+								<span class="sale" th:if="${o.type == (@it.polimi.tiw.estimates.beans.OptionalType@SALE)}" th:class="sale">SALE!</span>
+							</li>
+							<li>
+								<span>Verde Foglia</span>
+							</li>
+							<li>
+								<span>Jet Black</span>
+							</li>
 						</ul>
 					</td>
 			  </tr>

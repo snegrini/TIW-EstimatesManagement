@@ -77,9 +77,20 @@
 		        <h5>Select one or more options:</h5>
 		        <input type="hidden" name="prdct" value="" th:value="${selectedProduct.id}">
 		        
-			        <ul class="checkbox" th:each="o : ${optionals}">
+			        <ul th:remove="all-but-first" class="checkbox">
+			          <li th:each="o : ${optionals}">
+			            <input type="checkbox" name="option[]" value="id1" th:value="${o.id}">
+		            	<span th:text="${o.name}">Optional 1</span>
+		            	<span class="sale" th:if="${o.type == (@it.polimi.tiw.estimates.beans.OptionalType@SALE)}" th:class="sale">SALE!</span>
+			          </li>
 			          <li>
-			            <input type="checkbox" name="option[]" th:value="${o.id}"><span th:text="${o.name}"></span><br>
+			            <input type="checkbox" name="option[]" th:value="id2">
+		            	<span>Optional 2</span>
+			          </li>
+			          <li>
+			            <input type="checkbox" name="option[]" th:value="id3">
+		            	<span>Optional 3</span>
+		            	<span class="sale">SALE!</span>
 			          </li>
 			        </ul>
 			        
