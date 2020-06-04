@@ -145,8 +145,11 @@
                 row.appendChild(idproductcell);
 
                 productnamecell = document.createElement("td");
-                productnamecell.textContent = product.name;
-                /*anchor.appendChild(product.name);
+                anchor = document.createElement("a");
+                productnamecell.appendChild(anchor);
+                //productnamecell.textContent = product.name;
+                productText = document.createTextNode(product.name);
+                anchor.appendChild(productText);
                 anchor.setAttribute('productid', product.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 // dependency via module parameter
@@ -156,7 +159,7 @@
                 // Fix the same thing also on CustomerEstimateList           
                 estimateDetails.show(e.target.getAttribute("productid")); // the list must know the details container
                 }, false);
-                anchor.href = "#";*/
+                anchor.href = "#";
                 row.appendChild(productnamecell);
 
                 self.listcontainerbody.appendChild(row);
@@ -164,9 +167,9 @@
             this.listcontainer.style.visibility = "visible";
         };
 
-        this.autoclick = function(estimateId) {
+        this.autoclick = function(productId) {
             var e = new Event("click");
-            var selector = "a[estimateid='" + estimateId + "']";
+            var selector = "a[productid='" + productId + "']";
             var anchorToClick =
                 (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) anchorToClick.dispatchEvent(e);
@@ -294,54 +297,54 @@
 	      this.accomodation.textContent = m.expenses.accomodation;
 	      this.travel.textContent = m.expenses.transportation;
 	    }
-	  }	//end MissionDetail
+	}	//end MissionDetail
 
     function PageOrchestrator() {
 	    var alertContainer = document.getElementById("id_alert");
 		
 		this.start = function() {
-        personalMessage = new PersonalMessage(sessionStorage.getItem('username'),
-                                            document.getElementById("id_username"));
-        personalMessage.show();
+			personalMessage = new PersonalMessage(sessionStorage.getItem('username'),
+												document.getElementById("id_username"));
+			personalMessage.show();
 
-	    customerEstimatesList = new CustomerEstimatesList(
-            alertContainer,
-            document.getElementById("id_estimatetable"),
-            document.getElementById("id_estimatetablebody")
-        );
-        customerEstimatesList.show();
+			customerEstimatesList = new CustomerEstimatesList(
+				alertContainer,
+				document.getElementById("id_estimatetable"),
+				document.getElementById("id_estimatetablebody")
+			);
+			customerEstimatesList.show();
 
-        productList = new ProductList(
-            alertContainer,
-            document.getElementById("id_producttable"),
-            document.getElementById("id_producttablebody")
-        );
-        productList.show();
+			productList = new ProductList(
+				alertContainer,
+				document.getElementById("id_producttable"),
+				document.getElementById("id_producttablebody")
+			);
+			productList.show();
 
-        /*
-        missionDetails = new MissionDetails({ // many parameters, wrap them in an
-        // object
-        
-        });
-        missionDetails.registerEvents(this);*/
+			/*
+			missionDetails = new MissionDetails({ // many parameters, wrap them in an
+			// object
+			
+			});
+			missionDetails.registerEvents(this);*/
 
-        wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
-        wizard.registerEvents(this);
+			wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
+			wizard.registerEvents(this);
 
-        document.querySelector("a[href='Logout']").addEventListener('click', () => {
-            window.sessionStorage.removeItem('username');
-        })
-    };
+			document.querySelector("a[href='Logout']").addEventListener('click', () => {
+				window.sessionStorage.removeItem('username');
+			})
+    	};
 
 
-    this.refresh = function(currentMission) {
-        alertContainer.textContent = "";
-        customerEstimatesList.reset();
-        missionDetails.reset();
-        customerEstimatesList.show(function() {
-        customerEstimatesList.autoclick(currentMission);
-        }); // closure preserves visibility of this
-        wizard.reset();
-    };
+		this.refresh = function(currentMission) {
+			alertContainer.textContent = "";
+			customerEstimatesList.reset();
+			missionDetails.reset();
+			customerEstimatesList.show(function() {
+			customerEstimatesList.autoclick(currentMission);
+			}); // closure preserves visibility of this
+			wizard.reset();
+		};
     }
 })();
