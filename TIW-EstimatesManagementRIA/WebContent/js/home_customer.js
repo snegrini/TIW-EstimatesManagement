@@ -99,10 +99,11 @@
         };
 	}
 
-	function ProductList(_alert, _listcontainer, _listcontainerbody) {
+	function ProductList(_alert, _listcontainer, _listcontainerbody, _imagecontainer) {
 	    this.alert = _alert;
 	    this.listcontainer = _listcontainer;
-	    this.listcontainerbody = _listcontainerbody;
+		this.listcontainerbody = _listcontainerbody;
+		this.image= _imagecontainer;
 
 	    this.reset = function() {
 	      this.listcontainer.style.visibility = "hidden";
@@ -133,10 +134,12 @@
 		};
 
         this.update = function(arrayProducts) {
-            var row, idproductcell, productnamecell;
+            var row, idproductcell, productnamecell, productimage;
             this.listcontainerbody.innerHTML = ""; // empty the table body
             // build updated list
-            var self = this;
+			var self = this;
+
+			//document.getElementById("id_insert_product_img").src = "images/".concat(arrayProducts[0].image);
 
             arrayProducts.forEach(function(product) { // self visible here, not this
                 row = document.createElement("tr");
@@ -153,7 +156,7 @@
                 anchor.setAttribute('productid', product.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 // dependency via module parameter
-                
+				document.getElementById("id_insert_product_img").src = "images/".concat(product.image);
                 // TODO declare product details (IMAGE + OPTIONALS) on top of the current document
                 // Rename the next line with productDetails
                 // Fix the same thing also on CustomerEstimateList           
@@ -162,7 +165,7 @@
                 anchor.href = "#";
                 row.appendChild(productnamecell);
 
-                self.listcontainerbody.appendChild(row);
+				self.listcontainerbody.appendChild(row);
             });
             this.listcontainer.style.visibility = "visible";
         };
@@ -171,7 +174,8 @@
             var e = new Event("click");
             var selector = "a[productid='" + productId + "']";
             var anchorToClick =
-                (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+			console.log(this.listcontainerbody.querySelectorAll("a")[0]);
             if (anchorToClick) anchorToClick.dispatchEvent(e);
         };
 	} //end ProductList()
@@ -332,12 +336,12 @@
 			});
 		}
 
-		this.show = function(productid) {
+		/*this.show = function(productid) {
 			var self = this;
 			makeCall("GET", "Get?productid=" + productid, null,	//TODO 
 				//TODO show of img & optionals
 			);
-		};
+		};*/
 
 		this.reset = function() {
 			//TODO
@@ -366,7 +370,8 @@
 			productList = new ProductList(
 				alertContainer,
 				document.getElementById("id_producttable"),
-				document.getElementById("id_producttablebody")
+				document.getElementById("id_producttablebody"),
+				document.getElementById("id_insert_product_img")
 			);
 			productList.show();
 
@@ -397,13 +402,18 @@
     	};
 
 
-		this.refresh = function(currentMission) {
+		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
 			customerEstimatesList.reset();
+			productList.reset();
 			missionDetails.reset();
 			customerEstimatesList.show(function() {
-			customerEstimatesList.autoclick(currentMission);
+				customerEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
+
+			productList.show(function() {
+				productList.autoclick(currentProduct);
+			});
 			wizard.reset();
 		};
     }
