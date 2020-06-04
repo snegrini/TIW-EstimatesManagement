@@ -157,7 +157,7 @@
                 // TODO declare product details (IMAGE + OPTIONALS) on top of the current document
                 // Rename the next line with productDetails
                 // Fix the same thing also on CustomerEstimateList           
-                estimateDetails.show(e.target.getAttribute("productid")); // the list must know the details container
+                productDetails.show(e.target.getAttribute("productid")); // the list must know the details container
                 }, false);
                 anchor.href = "#";
                 row.appendChild(productnamecell);
@@ -174,7 +174,7 @@
                 (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) anchorToClick.dispatchEvent(e);
         };
-	}
+	} //end ProductList()
 
 	function EstimateDetails(options) {
 	    this.alert = options['alert'];
@@ -248,25 +248,7 @@
 	              self.update(mission); // self is the object on which the function
 	              // is applied
 	              self.detailcontainer.style.visibility = "visible";
-	              switch (mission.status) {
-	                case "OPEN":
-	                  self.expensecontainer.style.visibility = "hidden";
-	                  self.expenseform.style.visibility = "visible";
-	                  self.expenseform.missionid.value = mission.id;
-	                  self.closeform.style.visibility = "hidden";
-	                  break;
-	                case "REPORTED":
-	                  self.expensecontainer.style.visibility = "visible";
-	                  self.expenseform.style.visibility = "hidden";
-	                  self.closeform.missionid.value = mission.id;
-	                  self.closeform.style.visibility = "visible";
-	                  break;
-	                case "CLOSED":
-	                  self.expensecontainer.style.visibility = "visible";
-	                  self.expenseform.style.visibility = "hidden";
-	                  self.closeform.style.visibility = "hidden";
-	                  break;
-	              }
+	              
 	            } else {
 	              self.alert.textContent = message;
 
@@ -278,10 +260,7 @@
 
 
 	    this.reset = function() {
-	      this.detailcontainer.style.visibility = "hidden";
-	      this.expensecontainer.style.visibility = "hidden";
-	      this.expenseform.style.visibility = "hidden";
-	      this.closeform.style.visibility = "hidden";
+	      
 	    }
 
 	    this.update = function(m) {
@@ -289,15 +268,85 @@
 	      this.productid.textContent = m.productid;
 	      this.productname.textContent = m.status;
 	      this.optional.textContent = m.description;
-	      this.country.textContent = m.country;
-	      this.province.textContent = m.province;
-	      this.city.textContent = m.city;
-	      this.fund.textContent = m.fund;
-	      this.food.textContent = m.expenses.food;
-	      this.accomodation.textContent = m.expenses.accomodation;
-	      this.travel.textContent = m.expenses.transportation;
 	    }
-	}	//end MissionDetail
+	}	//end EstimateDetail()
+
+	function ProductDetails(options){
+
+		this.alert = options['alert'];	//ci serve per identificare errore di input
+	    this.detailcontainer = options['detailcontainer'];
+	    this.expensecontainer = options['expensecontainer'];
+	    this.expenseform = options['expenseform'];
+	    this.closeform = options['closeform'];
+	    this.date = options['date'];
+	    this.destination = options['destination'];
+	    this.status = options['status'];
+	    this.description = options['description'];
+	    this.country = options['country'];
+	    this.province = options['province'];
+	    this.city = options['city'];
+	    this.fund = options['fund'];
+	    this.food = options['food'];
+	    this.accomodation = options['accomodation'];
+	    this.travel = options['transportation'];
+
+		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
+			this.expenseform.querySelector("input[type='button']").addEventListener('click', (e) => {
+				var form = e.target.closest("form");
+				if (form.checkValidity()) {
+					var self = this,
+					missionToReport = form.querySelector("input[type = 'hidden']").value;
+					makeCall("POST", 'CreateExpensesReport', form,
+						function(req) {
+							if (req.readyState == 4) {
+								var message = req.responseText;
+								if (req.status == 200) {
+									orchestrator.refresh(missionToReport);
+								} else {
+									self.alert.textContent = message;
+								}
+							}
+						}
+					);
+				} else {
+					form.reportValidity();
+				}
+			});
+
+			this.closeform.querySelector("input[type='button']").addEventListener('click', (event) => {
+				var self = this,
+				form = event.target.closest("form"),
+				missionToClose = form.querySelector("input[type = 'hidden']").value;
+				makeCall("POST", 'CloseMission', form,
+					function(req) {
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							if (req.status == 200) {
+								orchestrator.refresh(missionToClose);
+							} else {
+								self.alert.textContent = message;
+							}
+						}
+					}
+				);
+			});
+		}
+
+		this.show = function(productid) {
+			var self = this;
+			makeCall("GET", "Get?productid=" + productid, null,	//TODO 
+				//TODO show of img & optionals
+			);
+		};
+
+		this.reset = function() {
+			//TODO
+		  }
+
+		this.update = function(m) {
+			//TODO 
+		  }
+	}//end ProductDetails()
 
     function PageOrchestrator() {
 	    var alertContainer = document.getElementById("id_alert");
@@ -327,6 +376,17 @@
 			
 			});
 			missionDetails.registerEvents(this);*/
+
+			/*
+			productDetails = new ProductDetails({ // many parameters, wrap them in an
+			// object
+				alert: alertContainer,
+				image: document.getElementById("id_insert_product_img"),
+				optionalList: document.getElementById("id_optionallist"),
+				detailcontainer: document.getElementById("id_detailcontainer")
+			
+			});
+			productDetails.registerEvents(this);*/
 
 			wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
 			wizard.registerEvents(this);
