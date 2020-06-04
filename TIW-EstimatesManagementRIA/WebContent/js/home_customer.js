@@ -393,12 +393,12 @@
 			});
 			productDetails.registerEvents(this);*/
 
-			wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
+			/*wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
 			wizard.registerEvents(this);
-
+			*/
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
-			})
+			});
     	};
 
 
@@ -406,7 +406,6 @@
 			alertContainer.textContent = "";
 			customerEstimatesList.reset();
 			productList.reset();
-			missionDetails.reset();
 			customerEstimatesList.show(function() {
 				customerEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
@@ -414,7 +413,7 @@
 			productList.show(function() {
 				productList.autoclick(currentProduct);
 			});
-			wizard.reset();
+			//wizard.reset();
 		};
     }
 })();
