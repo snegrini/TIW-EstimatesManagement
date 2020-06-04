@@ -69,7 +69,7 @@ public class AddEstimatePrice extends HttpServlet {
 		String estimateidStr = request.getParameter("estimateid");
 		String priceStr = request.getParameter("price");
 		
-		EstimateDAO eDAO = new EstimateDAO(connection, userid);
+		EstimateDAO eDAO = new EstimateDAO(connection);
 		
 		String path;
 		
@@ -82,7 +82,7 @@ public class AddEstimatePrice extends HttpServlet {
 				if (price < 0.f) {
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Price cannot be negative!");				
 				} else {
-					eDAO.addEstimatePrice(estimateid, price);
+					eDAO.addEstimatePrice(userid, estimateid, price);
 					path = "/HomeEmployee";
 					response.sendRedirect(request.getContextPath() + path);
 				}

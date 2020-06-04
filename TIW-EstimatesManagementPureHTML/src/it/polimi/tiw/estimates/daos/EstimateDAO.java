@@ -11,27 +11,26 @@ import it.polimi.tiw.estimates.beans.Estimate;
 
 public class EstimateDAO {
 	private Connection connection;
-	private int userID;
 
-	public EstimateDAO(Connection connection, int userID) {
+	public EstimateDAO(Connection connection) {
 		this.connection = connection;
-		this.userID = userID;
 	}
 	
 
-	public boolean createEstimate(int productID, String[] optionalsID) throws SQLException  {
-		//TODO: THE QUERY
+	public boolean createEstimate(int customerId, int productId, String[] optionalsId) throws SQLException  {
 		String query = "INSERT into estimate (usrid, prdid) VALUES(?, ?)";
+		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, userID);
-			pstatement.setInt(2, productID);
+			pstatement.setInt(1, customerId);
+			pstatement.setInt(2, productId);
 			pstatement.executeUpdate();
 		}
+		
 		// LAST_INSERT_ID() will return the last insert id from the current connection
-		for(int i = 0; i< optionalsID.length; i++) {
+		for(int i = 0; i< optionalsId.length; i++) {
 			query = "INSERT into chosenoptional (estid, optid) VALUES(LAST_INSERT_ID(), ?)";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-				pstatement.setInt(1, Integer.parseInt(optionalsID[i]));
+				pstatement.setInt(1, Integer.parseInt(optionalsId[i]));
 				pstatement.executeUpdate();
 			}
 		}
@@ -39,11 +38,11 @@ public class EstimateDAO {
 		return false;
 	}
 	
-	public boolean addEstimatePrice(int estimateID, float price) throws SQLException {
+	public boolean addEstimatePrice(int employeeId, int estimateID, float price) throws SQLException {
 		String query = "UPDATE estimate SET price=?, empid=? WHERE id=?";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setFloat(1, price);
-			pstatement.setInt(2, userID);
+			pstatement.setInt(2, employeeId);
 			pstatement.setInt(3, estimateID);
 			pstatement.executeUpdate();
 		}

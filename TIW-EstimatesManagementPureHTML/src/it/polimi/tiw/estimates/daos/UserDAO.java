@@ -51,7 +51,7 @@ public class UserDAO {
 			
 			try (ResultSet result = pstatement.executeQuery();) {	
 				
-				while (result.next()) {
+				if (result.next()) {
 					user = new User();
 					user.setId(result.getInt("id"));
 					user.setUsername(result.getString("username"));

@@ -66,7 +66,7 @@ public class HomeCustomer extends HttpServlet {
 		User user = (User) s.getAttribute("user");
 		String chosenProductId = request.getParameter("productid");
 		
-		EstimateDAO eDAO = new EstimateDAO(connection,user.getId());
+		EstimateDAO eDAO = new EstimateDAO(connection);
 		List<Estimate> estimates = null;
 		
 		ProductDAO pDAO = new ProductDAO(connection);
