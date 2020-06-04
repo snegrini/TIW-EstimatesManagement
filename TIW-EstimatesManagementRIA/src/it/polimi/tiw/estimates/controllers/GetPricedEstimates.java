@@ -52,7 +52,7 @@ public class GetPricedEstimates extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		EstimateDAO eDAO = new EstimateDAO(connection , user.getId());
+		EstimateDAO eDAO = new EstimateDAO(connection);
 		List<Estimate> estimates = new ArrayList<Estimate>();
 		
 		try {
@@ -76,7 +76,6 @@ public class GetPricedEstimates extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	

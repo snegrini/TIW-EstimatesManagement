@@ -38,12 +38,12 @@ public class EstimateDAO {
 		return false;
 	}
 	
-	public boolean addEstimatePrice(int employeeId, int estimateID, float price) throws SQLException {
+	public boolean addEstimatePrice(int employeeId, int estimateId, float price) throws SQLException {
 		String query = "UPDATE estimate SET price=?, empid=? WHERE id=?";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setFloat(1, price);
 			pstatement.setInt(2, employeeId);
-			pstatement.setInt(3, estimateID);
+			pstatement.setInt(3, estimateId);
 			pstatement.executeUpdate();
 		}
 		return false;
@@ -53,7 +53,7 @@ public class EstimateDAO {
 	/*
 	 * return a list of all of the estimates of a customer, given the id.
 	 * */
-	public List<Estimate> findEstimatesByCustomer(int customerID) throws SQLException {
+	public List<Estimate> findEstimatesByCustomer(int customerId) throws SQLException {
 		List<Estimate> estimates = new ArrayList<>();
 		String query = 	"SELECT e.id, e.prdid, e.price " + 
 						"FROM estimate AS e " + 
@@ -62,7 +62,7 @@ public class EstimateDAO {
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			
-			pstatement.setInt(1, customerID);
+			pstatement.setInt(1, customerId);
 			
 			try (ResultSet result = pstatement.executeQuery();) {
 				while (result.next()) {

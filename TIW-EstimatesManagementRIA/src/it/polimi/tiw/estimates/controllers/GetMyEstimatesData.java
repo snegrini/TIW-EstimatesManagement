@@ -52,7 +52,7 @@ public class GetMyEstimatesData extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		EstimateDAO eDAO = new EstimateDAO(connection , user.getId());
+		EstimateDAO eDAO = new EstimateDAO(connection);
 		List<Estimate> estimates = new ArrayList<Estimate>();
 		
 		try {

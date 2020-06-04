@@ -64,10 +64,10 @@ public class AddEstimate extends HttpServlet {
 				return;
 			}
 
-			EstimateDAO eDAO = new EstimateDAO(connection, userid);
+			EstimateDAO eDAO = new EstimateDAO(connection);
 			
 			try {
-				eDAO.createEstimate(Integer.parseInt(productName), options);
+				eDAO.createEstimate(userid, Integer.parseInt(productName), options);
 				String path = "/GetMyEstimatesData"; // dopo aver aggiunto l'estimate, reindirizza a GetPricedEstimates che ritorna la nuova tabella (VA TESTATO!!)
 				response.sendRedirect(request.getContextPath() + path);
 				
