@@ -52,6 +52,7 @@ public class CheckLogin extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String usr = null;
@@ -99,7 +100,15 @@ public class CheckLogin extends HttpServlet {
 
 			response.sendRedirect(path);
 		}
-
+	}
+	
+	@Override
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
