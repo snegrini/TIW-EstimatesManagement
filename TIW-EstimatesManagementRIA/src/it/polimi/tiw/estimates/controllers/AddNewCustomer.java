@@ -28,6 +28,7 @@ public class AddNewCustomer extends HttpServlet {
      */
     public AddNewCustomer() {
         super();
+        // TODO Auto-generated constructor stub
     }
     
 	public void init() throws ServletException {
@@ -35,45 +36,47 @@ public class AddNewCustomer extends HttpServlet {
      }
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
 		
-		System.out.println(username);
-		System.out.println(email);
-		System.out.println(password);
-		System.out.println(name);
-		System.out.println(surname);
-		
 		UserDAO uDAO = new UserDAO(connection);
 		
 		if (username != null && email != null && password != null && name != null && surname != null) {
 			
 			try {
-				if (uDAO.addUser(username, email, password, name, surname)) {
+				if(uDAO.addUser(username, email, password, name, surname)) {
 					response.setStatus(HttpServletResponse.SC_OK);
 					response.getWriter().println("Customer successfully registered!");
 				}
 				else {
 					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-					response.getWriter().println("Username or email already exists!");
+					response.getWriter().println("Username or email arledy exists!");
 				}
 
 			} catch (NumberFormatException | SQLException e) {
 				response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-				response.getWriter().println("Failed to save user info!");
+				response.getWriter().println("Failed to insert new user");
 			}
 		}
 		else {
+			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("You must fill all the fields!");
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

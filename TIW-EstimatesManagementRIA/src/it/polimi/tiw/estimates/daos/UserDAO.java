@@ -99,11 +99,14 @@ public class UserDAO {
 			
 			pstatement.setString(1, username);
 			pstatement.setString(2, email);
-
-			try (ResultSet result = pstatement.executeQuery();) {	
-				return result.getInt("total") != 0;
+			
+			try (ResultSet result = pstatement.executeQuery();) {
+				if(result.next()) {
+					return result.getInt("total") != 0;
+				}
 			}			
 		}
+		return true;
 	}
 	
 	public boolean addUser(String username, String email, String password, String name, String surname ) throws SQLException {
