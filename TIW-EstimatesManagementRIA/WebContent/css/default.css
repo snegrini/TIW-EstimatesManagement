@@ -93,6 +93,7 @@ body{
 	padding: 0 2px;
 	text-align: center;
 	vertical-align: middle;
+	margin-left: 5px;
 }
 
 footer{
@@ -102,7 +103,7 @@ footer{
 	height: 4.5rem;
 	margin:0px;
 	bottom:0;
-	position: absolute;
+	position: fixed;
 	/*position:relative;*/
 	background-color:#2b50aa;
 	color:white;
