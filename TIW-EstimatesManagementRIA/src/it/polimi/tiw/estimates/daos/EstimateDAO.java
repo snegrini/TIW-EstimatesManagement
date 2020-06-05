@@ -9,6 +9,7 @@ import java.util.List;
 
 import it.polimi.tiw.estimates.beans.Estimate;
 import it.polimi.tiw.estimates.beans.Product;
+import it.polimi.tiw.estimates.beans.User;
 
 public class EstimateDAO {
 	private Connection connection;
@@ -97,10 +98,13 @@ public class EstimateDAO {
 			try (ResultSet result = pstatement.executeQuery();) {
 				while (result.next()) {
 					Estimate estimate = new Estimate();
+					User user = new User();
+					user.setId(result.getInt("empid"));
 					
 					estimate.setId(result.getInt("id"));
-					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
+					estimate.setEmployee(user);
+					
 					estimates.add(estimate);
 				}
 			}
@@ -131,14 +135,14 @@ public class EstimateDAO {
 	public Estimate findEstimateById(int estimateId) throws SQLException {
 		Estimate estimate = null;
 
-		String query = "SELECT id, empid, price FROM estimate WHERE id = ?";
+		String query = "SELECT id, price FROM estimate WHERE id = ?";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, estimateId);
 			try (ResultSet result = pstatement.executeQuery();) {
 				if (result.next()) {
 					estimate = new Estimate();
+					
 					estimate.setId(result.getInt("id"));
-					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
 				}
 			}
@@ -156,4 +160,27 @@ public class EstimateDAO {
 			pstatement.executeUpdate();
 		}
 	}
+
+
+	public Estimate findEstimateByIdAndCustomer(int estimateId, int customerId) throws SQLException {
+		Estimate estimate = null;
+
+		String query = "SELECT id, price FROM estimate WHERE id = ? AND usrid = ?";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, estimateId);
+			pstatement.setInt(2, customerId);
+			
+			try (ResultSet result = pstatement.executeQuery();) {
+				if (result.next()) {
+					estimate = new Estimate();
+					
+					estimate.setId(result.getInt("id"));
+					estimate.setPrice(result.getFloat("price"));
+				}
+			}
+		}
+		return estimate;
+	}
+
 }

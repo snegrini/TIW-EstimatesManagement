@@ -31,7 +31,6 @@ public class AddEstimatePrice extends HttpServlet {
      */
     public AddEstimatePrice() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     @Override

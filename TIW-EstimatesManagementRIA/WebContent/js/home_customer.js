@@ -201,25 +201,54 @@
 	    this.productname = options['productname'];
 	    this.optionals = options['optionals'];
 	    this.image = options['image'];
-	    var self = this;
-	    
+		
+		var self = this;
 	    
 	    this.show = function(estimate) {
-	    	
-	    	this.update(estimate)
+	    	makeCall("GET", "GetEstimateDetails?estimateid=" + estimate.id, null, function(req) {
+				if (req.readyState == 4) {
+					var message = req.responseText;
+
+					if (req.status == 200) {
+						var estimateWithDetails = JSON.parse(req.responseText);
+						self.update(estimateWithDetails);
+					} else {
+						self.alert.textContent = message;
+					}
+				}
+			});
 	    };
 
-
 	    this.reset = function() {
-	      
-	    }
+			// TODO
+	    };
 
-	    this.update = function(message) {
-	    	self.productid.textContent = message.product.id;
-	    	self.productname.textContent = message.product.name;
-	    	self.price.textContent = message.price;
-	    }
-	}	//end EstimateDetail()
+	    this.update = function(estimate) {
+			
+			// TODO check if employee is null
+			self.employee.textContent = estimate.employee.name + " " + estimate.employee.surname;
+			// <--
+			
+			self.productid.textContent = estimate.product.id;
+	    	self.productname.textContent = estimate.product.name;
+			self.price.textContent = estimate.price;
+			
+			estimate.product.optionals.forEach(function(opt) {
+				var li = document.createElement("li");
+				var textSpan = document.createElement("span");
+				textSpan.textContent = opt.name;
+				li.appendChild(textSpan);
+				
+				if (opt.type == "SALE"){
+					var saleSpan = document.createElement("span");
+					saleSpan.setAttribute("class","sale");
+					saleSpan.textContent = "SALE!";
+					li.appendChild(saleSpan);
+				}
+				self.optionals.appendChild(li);
+			});
+	    };
+	} // end EstimateDetails()
 
 	
 	function ProductDetails(options){

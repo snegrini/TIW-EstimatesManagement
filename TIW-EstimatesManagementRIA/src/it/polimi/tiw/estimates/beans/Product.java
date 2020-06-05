@@ -36,9 +36,8 @@ public class Product {
 		return optionals;
 	}
 	
-	public void setOptionals(List<Optional> o) {
-		this.optionals = o;
+	public void setOptionals(List<Optional> optionals) {
+		this.optionals = optionals;
 	}
-	
-	
+
 }

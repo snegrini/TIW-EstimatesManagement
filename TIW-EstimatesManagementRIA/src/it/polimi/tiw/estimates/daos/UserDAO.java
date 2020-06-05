@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 
 public class UserDAO {
@@ -86,6 +85,32 @@ public class UserDAO {
 					user.setName(result.getString("name"));
 					user.setSurname(result.getString("surname"));
 					user.setEmail(result.getString("email"));
+				}	
+			}
+		}
+		return user;
+	}
+	
+
+	public User findEmployeeByEstimate(int estimateId) throws SQLException {
+		User user = null;
+		
+		String query = "SELECT u.id, u.name, u.surname "
+				+ "FROM user AS u, estimate AS e "
+				+ "WHERE u.id = e.empid "
+				+ "AND e.id = ?";
+				
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+			pstatement.setInt(1, estimateId);
+			
+			try (ResultSet result = pstatement.executeQuery();) {
+				
+				if (result.next()) {
+					user = new User();
+					user.setId(result.getInt("id"));
+					user.setName(result.getString("name"));
+					user.setSurname(result.getString("surname"));
 				}	
 			}
 		}

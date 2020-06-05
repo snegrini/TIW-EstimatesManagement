@@ -36,7 +36,6 @@ public class GetMyEstimatesData extends HttpServlet {
      */
     public GetMyEstimatesData() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     @Override
