@@ -56,11 +56,13 @@ public class AddEstimate extends HttpServlet {
 		String[] options = request.getParameterValues("option[]");
 		
 		if (options == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No optionals have been selected.");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("No optionals have been selected.");
 			return;
 		} else {
-			if (productName == null) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing product name");
+			if (productName == null || productName.isEmpty()) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("Missing product name");
 				return;
 			}
 
@@ -72,7 +74,8 @@ public class AddEstimate extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + path);
 				
 			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
+				response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+				response.getWriter().println("Failure of price quotation creation in database");
 				return;
 			}
 		}

@@ -99,11 +99,10 @@
         };
 	}
 
-	function ProductList(_alert, _listcontainer, _listcontainerbody, _imagecontainer) {
+	function ProductList(_alert, _listcontainer, _listcontainerbody) {
 	    this.alert = _alert;
 	    this.listcontainer = _listcontainer;
 		this.listcontainerbody = _listcontainerbody;
-		this.image= _imagecontainer;
 		
 	    this.reset = function() {
 		  this.listcontainer.style.visibility = "hidden";
@@ -135,11 +134,10 @@
 		};
 
         this.update = function(arrayProducts) {
-            var row, idproductcell, productnamecell, productimage;
+            var row, idproductcell, productnamecell;
             this.listcontainerbody.innerHTML = ""; // empty the table body
             // build updated list
 			var self = this;
-			//productDetails.show(arrayProducts[0].id);
 			
 			arrayProducts.forEach(function(product) { // self visible here, not this
 				
@@ -163,7 +161,7 @@
 					//	e.target.parentNode.parentNode.style.backgroundColor = "red";
 					// TODO declare product details (IMAGE + OPTIONALS) on top of the current document
 					// Fix the same thing also on CustomerEstimateList
-					productDetails.show(e.target.getAttribute("productid")); // the list must know the details container
+					productDetails.show(product); // the list must know the details container
 					
 					 var children = Array.from(self.listcontainerbody.children);
 					 children.forEach(function(child) {
@@ -309,7 +307,8 @@
 								var message = req.responseText;
 								if (req.status == 200) {
 									orchestrator.refresh(productToReport);
-								} else {
+								}
+								else {
 									self.alert.textContent = message;
 								}
 							}
@@ -323,43 +322,38 @@
 			
 		}
 
-		this.show = function(productid) {
-			var self = this;
-			makeCall("GET", "GetProductDetails?productid=" + productid, null,	//TODO 
-				//TODO show of img & optionals
-				function(req) {
-					if (req.readyState == 4) {
-					  var message = req.responseText;
-					  if (req.status == 200) {
-						var product = JSON.parse(req.responseText);
-						self.update(product); // self is the object on which the function
-						
-						// is applied
-						//self.detailcontainer.style.visibility = "visible";
-					  } else {
-						self.alert.textContent = message;
-	  
-					  }
-					}
-				  }
-
-			);
+		this.show = function(product) {
+			this.update(product);
 		};
 
 		this.reset = function() {
-			//TODO
+		      
+		}
 
-		  }
-
-		this.update = function(m) {
-			//TODO
-			this.image.src = "images/".concat(m.image);
-			//document.getElementById("id_insert_product_img").src = "images/".concat(m.image);
-			//row.style.backgroundColor = "red";
-			/*this.alert = ;
-			this.image. = ;
-			this.optionalList =;
-			this.detailcontainer = ;*/ 		//<===============
+		this.update = function(product) {
+			this.optionalList.innerHTML = ""; //empty the optional list
+			this.image.src = "images/".concat(product.image);
+			var self = this;
+			product.optionals.forEach(function(optional) {
+			
+				var li = document.createElement("li");
+				var input = document.createElement("input");
+				input.setAttribute("type","checkbox");
+				input.setAttribute("value",optional.id);
+				input.setAttribute("name","option[]");
+				var textSpan = document.createElement("span");
+				textSpan.textContent = optional.name;
+				li.appendChild(input);
+				li.appendChild(textSpan);
+				
+				if(optional.type == "SALE"){
+					var saleSpan = document.createElement("span");
+					saleSpan.setAttribute("class","sale");
+					saleSpan.textContent = "SALE!";
+					li.appendChild(saleSpan);
+				}
+				self.optionalList.appendChild(li);
+			});
 		}
 	}//end ProductDetails()
 
@@ -384,10 +378,8 @@
 			productList = new ProductList(
 				alertContainer,
 				document.getElementById("id_producttable"),
-				document.getElementById("id_producttablebody"),
-				document.getElementById("id_insert_product_img")
+				document.getElementById("id_producttablebody")
 			);
-			productList.show();
 			
 			productDetails = new ProductDetails({ // many parameters, wrap them in an
 			// object

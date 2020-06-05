@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.polimi.tiw.estimates.beans.Product;
+import it.polimi.tiw.estimates.daos.OptionalDAO;
 import it.polimi.tiw.estimates.daos.ProductDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
@@ -48,10 +49,16 @@ public class GetProductList extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProductDAO pDAO = new ProductDAO(connection);
+		OptionalDAO oDAO = new OptionalDAO(connection);
 		List<Product> products = new ArrayList<Product>();
 		
 		try {
 			products = pDAO.findProducts();
+			
+			for(Product product : products) {
+				product.setOptionals(oDAO.findAvailableOptionalsByProduct(product.getId()));
+			}
+						
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover products list");
