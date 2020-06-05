@@ -39,7 +39,9 @@ fieldset{
 	margin-bottom:10px;
 }
 
-input[type=text], input[type=password]{
+input[type=text], 
+input[type=password], 
+input[type=email] {
 	border: 2px solid white;
 	font-size:20px;
 	border-radius: 8px;
@@ -47,11 +49,11 @@ input[type=text], input[type=password]{
 	width:80%;
 }
 
-.formdiv{
+.formdiv {
 	display:inline;
 }
 
-input[type=submit]{
+input[type=button] {
 	border: 2px solid white;
 	border-radius: 8px;
 	margin:50%;
@@ -66,7 +68,7 @@ input[type=submit]{
 	cursor: pointer;
 }
 
-input[type=submit]:hover{
+input[type=button]:hover {
 	background-color:white;
 	color:#2b50aa;
 }

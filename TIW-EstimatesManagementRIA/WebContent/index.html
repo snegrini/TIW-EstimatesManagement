@@ -22,7 +22,7 @@
 		<div class="column column-30"></div>
 		
 		<div class="column column-40">
-			<form class="formdiv" action="#">
+			<form id="loginform" class="formdiv" action="#">
 				<fieldset>
 				<legend>Sign in</legend>
 					<div class="container login">
@@ -30,12 +30,48 @@
 							<label>Username:</label><input type="text" name="username" required><br><br>
 							<label>Password:</label><input type="password" name="password" required><br>
 						</div>
-						<div class="column column-25"><input id="loginbutton" type="button" value="Login"></div>
+						<div class="column column-25">
+							<input id="loginbutton" type="button" value="Login">
+						</div>
 					</div>
 					<p id="errormessage"></p>
 				</fieldset>
-				
+
+				<p>No account? <a href="#" id="signupanchor">Create one!</a></p>
 			</form>
+			
+			<form id="signupform" class="formdiv" action="#">
+				<fieldset>
+				<legend>Sign up</legend>
+					<div class="container login">
+						<div class="column column-60">
+							<label>Username:</label>
+							<input type="text" id="username" name="username" required><br><br>
+							
+							<label>Name:</label>
+							<input type="text" id="name" name="name" required><br><br>
+							
+							<label>Surname:</label>
+							<input type="text" id="surname" name="surname" required><br><br>
+							
+							<label>Email:</label>
+							<input type="email" id="email" name="email" required><br><br>
+							
+							<label>Password:</label>
+							<input type="password" id="password" name="password" required><br><br>
+							
+							<label>Confirm Password:</label>
+							<!-- No attribute name set to avoid sending double password to the server -->
+							<input type="password" id="confirm_password" required><br>
+						</div>
+						<div class="column column-25">
+							<input id="signupbutton" type="button" value="Sign up">
+						</div>
+					</div>
+					<p id="errormessagesignup"></p>
+				</fieldset>
+			</form>
+
 		</div>
 		
 		<div class="column column-30"></div>

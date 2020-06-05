@@ -16,3 +16,12 @@ function makeCall(method, url, formElement, cback, reset = true) {
 		formElement.reset();
 	}
 }
+
+/**
+ * Checks the validity of the given email address
+ */
+function validateEmail(mail) {
+	var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	
+	return regex.test(mail);
+}
