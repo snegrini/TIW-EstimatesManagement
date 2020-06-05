@@ -1,9 +1,12 @@
 package it.polimi.tiw.estimates.beans;
 
+import java.util.List;
+
 public class Product {
 	private int id;
 	private String name;
 	private String image;
+	private List<Optional> optionals;
 	
 	public int getId() {
 		return id;
@@ -28,5 +31,14 @@ public class Product {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	
+	public List<Optional> getOptionals() {
+		return optionals;
+	}
+	
+	public void setOptionals(List<Optional> o) {
+		this.optionals = o;
+	}
+	
 	
 }

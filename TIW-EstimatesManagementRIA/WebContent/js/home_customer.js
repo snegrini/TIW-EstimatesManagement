@@ -81,7 +81,7 @@
                 anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 // dependency via module parameter
-                estimateDetails.show(e.target.getAttribute("estimateid")); // the list must know the details container
+                	estimateDetails.show(e.target.getAttribute("estimateid")); // the list must know the details container
                 }, false);
                 anchor.href = "#";
                 row.appendChild(detailcell);
@@ -140,8 +140,11 @@
 			var self = this;
 
 			//document.getElementById("id_insert_product_img").src = "images/".concat(arrayProducts[0].image);
+			//productDetails.show(arrayProducts[0].id);
 
-            arrayProducts.forEach(function(product) { // self visible here, not this
+			
+			arrayProducts.forEach(function(product) { // self visible here, not this
+				
                 row = document.createElement("tr");
                 idproductcell = document.createElement("td");
                 idproductcell.textContent = product.id;
@@ -155,19 +158,25 @@
                 anchor.appendChild(productText);
                 anchor.setAttribute('productid', product.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
-                // dependency via module parameter
-				document.getElementById("id_insert_product_img").src = "images/".concat(product.image);
-                // TODO declare product details (IMAGE + OPTIONALS) on top of the current document
-                // Rename the next line with productDetails
-                // Fix the same thing also on CustomerEstimateList           
-                productDetails.show(e.target.getAttribute("productid")); // the list must know the details container
-                }, false);
+					// dependency via module parameter
+					
+					//document.getElementById("id_insert_product_img").src = "images/".concat(product.image);
+					//row.style.backgroundColor = "red";
+					
+					// TODO declare product details (IMAGE + OPTIONALS) on top of the current document
+					// Rename the next line with productDetails
+					// Fix the same thing also on CustomerEstimateList           
+					productDetails.show(e.target.getAttribute("productid")); // the list must know the details container
+					//pageOrchestrator.refresh(product);
+				}, false);
                 anchor.href = "#";
                 row.appendChild(productnamecell);
 
 				self.listcontainerbody.appendChild(row);
+				
             });
-            this.listcontainer.style.visibility = "visible";
+			this.listcontainer.style.visibility = "visible";
+			//this.autoclick(arrayProducts[0].id);
         };
 
         this.autoclick = function(productId) {
@@ -175,9 +184,12 @@
             var selector = "a[productid='" + productId + "']";
             var anchorToClick =
 				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-			console.log(this.listcontainerbody.querySelectorAll("a")[0]);
-            if (anchorToClick) anchorToClick.dispatchEvent(e);
-        };
+            if (anchorToClick) {
+				var rowOn = anchorToClick.parentNode.parentNode;
+				rowOn.style.backgroundColor = "yellow";
+				anchorToClick.dispatchEvent(e);
+			};
+		}
 	} //end ProductList()
 
 	function EstimateDetails(options) {
@@ -278,21 +290,9 @@
 	function ProductDetails(options){
 
 		this.alert = options['alert'];	//ci serve per identificare errore di input
+		this.image = options['image'];
+		this.optionalList
 	    this.detailcontainer = options['detailcontainer'];
-	    this.expensecontainer = options['expensecontainer'];
-	    this.expenseform = options['expenseform'];
-	    this.closeform = options['closeform'];
-	    this.date = options['date'];
-	    this.destination = options['destination'];
-	    this.status = options['status'];
-	    this.description = options['description'];
-	    this.country = options['country'];
-	    this.province = options['province'];
-	    this.city = options['city'];
-	    this.fund = options['fund'];
-	    this.food = options['food'];
-	    this.accomodation = options['accomodation'];
-	    this.travel = options['transportation'];
 
 		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
 			this.expenseform.querySelector("input[type='button']").addEventListener('click', (e) => {
@@ -300,7 +300,7 @@
 				if (form.checkValidity()) {
 					var self = this,
 					missionToReport = form.querySelector("input[type = 'hidden']").value;
-					makeCall("POST", 'CreateExpensesReport', form,
+					makeCall("POST", 'AddEstimate', form,
 						function(req) {
 							if (req.readyState == 4) {
 								var message = req.responseText;
@@ -317,39 +317,46 @@
 				}
 			});
 
-			this.closeform.querySelector("input[type='button']").addEventListener('click', (event) => {
-				var self = this,
-				form = event.target.closest("form"),
-				missionToClose = form.querySelector("input[type = 'hidden']").value;
-				makeCall("POST", 'CloseMission', form,
-					function(req) {
-						if (req.readyState == 4) {
-							var message = req.responseText;
-							if (req.status == 200) {
-								orchestrator.refresh(missionToClose);
-							} else {
-								self.alert.textContent = message;
-							}
-						}
-					}
-				);
-			});
+			
 		}
 
-		/*this.show = function(productid) {
+		this.show = function(productid) {
 			var self = this;
-			makeCall("GET", "Get?productid=" + productid, null,	//TODO 
+			makeCall("GET", "GetProductDetails?productid=" + productid, null,	//TODO 
 				//TODO show of img & optionals
+				function(req) {
+					if (req.readyState == 4) {
+					  var message = req.responseText;
+					  if (req.status == 200) {
+						var product = JSON.parse(req.responseText);
+						self.update(product); // self is the object on which the function
+						
+						// is applied
+						//self.detailcontainer.style.visibility = "visible";
+					  } else {
+						self.alert.textContent = message;
+	  
+					  }
+					}
+				  }
+
 			);
-		};*/
+		};
 
 		this.reset = function() {
 			//TODO
 		  }
 
 		this.update = function(m) {
-			//TODO 
-		  }
+			//TODO
+			this.image.src = "images/".concat(m.image);
+			//document.getElementById("id_insert_product_img").src = "images/".concat(m.image);
+			//row.style.backgroundColor = "red";
+			/*this.alert = ;
+			this.image. = ;
+			this.optionalList =;
+			this.detailcontainer = ;*/ 		//<===============
+		}
 	}//end ProductDetails()
 
     function PageOrchestrator() {
@@ -382,7 +389,7 @@
 			});
 			missionDetails.registerEvents(this);*/
 
-			/*
+			
 			productDetails = new ProductDetails({ // many parameters, wrap them in an
 			// object
 				alert: alertContainer,
@@ -391,7 +398,7 @@
 				detailcontainer: document.getElementById("id_detailcontainer")
 			
 			});
-			productDetails.registerEvents(this);*/
+			productDetails.registerEvents(this);
 
 			/*wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
 			wizard.registerEvents(this);
@@ -411,7 +418,7 @@
 			}); // closure preserves visibility of this
 
 			productList.show(function() {
-				productList.autoclick(currentProduct);
+				productList.autoclick(currentProduct.id);
 			});
 			//wizard.reset();
 		};
