@@ -38,7 +38,37 @@
 				<tbody id="id_estimatetablebody">
 				</tbody>
 			</table>
-		</div>
+			
+			<div class="container">
+				<div class="column column-25">
+					<img id="id_productimage">
+				</div>
+				<div class="column column-45">
+					<table>
+					  <tr>
+					    <th>Employee:</th>
+					    <td id="id_details_employeename"></td>
+					  </tr>
+					  <tr>
+					    <th>Product ID:</th>
+					    <td id="id_details_productid"></td>
+					  </tr>
+					  <tr>
+					    <th>Price:</th>
+					    <td id="id_details_price"></td>
+					  </tr>
+					  <tr>
+					    <th>Product name:</th>
+					    <td id="id_details_productname"></td>
+					  </tr>
+					  <tr>
+					    <th>Optional:</th>
+						<ul id="id_details_optionals"></ul>
+					  </tr>
+					</table>
+				</div>
+		  	</div>
+	</div>
 
 		<!-- div creation of a new estimate -->
 		<h4>Insert a new estimates:</h4>
@@ -61,7 +91,7 @@
 		      <div class="column column-60">
 		      <img id="id_insert_product_img" class="productimg" alt="Product Img"/>
 		        <h5>Select one or more options:</h5>
-		        <input type="hidden" name="prdct" value="">
+		        <input type="hidden" name="prdct" id="prdct">
 		        
 			        <ul id="id_optionallist" class="checkbox">
 			          <!--<li>
