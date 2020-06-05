@@ -28,4 +28,3 @@ hs_err_pid*
 # VSCode plugins and settings
 .vscode/
 node_modules/
-package_lock.json
