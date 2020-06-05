@@ -81,7 +81,7 @@
                 anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 // dependency via module parameter
-                	estimateDetails.show(e.target.getAttribute("estimateid")); // the list must know the details container
+                //estimateDetails.show(e.target.getAttribute("estimateid")); // the list must know the details container
                 }, false);
                 anchor.href = "#";
                 row.appendChild(detailcell);
@@ -104,10 +104,10 @@
 	    this.listcontainer = _listcontainer;
 		this.listcontainerbody = _listcontainerbody;
 		this.image= _imagecontainer;
-
+		
 	    this.reset = function() {
-		  //this.listcontainer.style.visibility = "hidden";
-		  //this.listcontainerbody.children.style.backgroundColor = "white";
+		  this.listcontainer.style.visibility = "hidden";
+		  
 	    };
 
 	    this.show = function(next) {
@@ -162,9 +162,15 @@
 					//self.reset();
 					//	e.target.parentNode.parentNode.style.backgroundColor = "red";
 					// TODO declare product details (IMAGE + OPTIONALS) on top of the current document
-					// Fix the same thing also on CustomerEstimateList           
+					// Fix the same thing also on CustomerEstimateList
 					productDetails.show(e.target.getAttribute("productid")); // the list must know the details container
-					//pageOrchestrator.refresh(product);
+					
+					 var children = Array.from(self.listcontainerbody.children);
+					 children.forEach(function(child) {
+						 child.style.backgroundColor = "white";
+					 });
+					
+					e.target.closest("tr").style.backgroundColor = "yellow";
 				}, false);
                 anchor.href = "#";
                 row.appendChild(productnamecell);
@@ -173,7 +179,6 @@
 				
             });
 			this.listcontainer.style.visibility = "visible";
-			//this.autoclick(arrayProducts[0].id);
         };
 
         this.autoclick = function(productId) {
@@ -182,8 +187,8 @@
             var anchorToClick =
 				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) {
-				//var rowOn = anchorToClick.parentNode.parentNode;
-				//rowOn.style.backgroundColor = "yellow";
+				var rowOn = anchorToClick.parentNode.parentNode;
+				rowOn.style.backgroundColor = "yellow";
 				anchorToClick.dispatchEvent(e);
 			};
 		}
@@ -415,7 +420,8 @@
 			productList.reset();
 			productDetails.reset();
 			productList.show(function() {
-				productList.autoclick(currentProduct.id);//currentProduct.id
+				if(currentProduct == null){productList.autoclick()}
+				else productList.autoclick(currentProduct.id);//currentProduct.id
 			});
 			//wizard.reset();
 		};
