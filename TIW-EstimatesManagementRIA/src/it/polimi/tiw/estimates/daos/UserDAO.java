@@ -91,5 +91,38 @@ public class UserDAO {
 		}
 		return user;
 	}
+	
+	private boolean userExists(String username, String email) throws SQLException {
+		String query = "SELECT id, username, email, name, surname FROM user WHERE username = ? AND email = ?";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+			pstatement.setString(1, username);
+			pstatement.setString(2, email);
+
+			try (ResultSet result = pstatement.executeQuery();) {	
+				if (result == null) return false;
+			}			
+		}
+		
+		return true;
+	}
+	
+	public boolean addUser(String username, String email, String password, String name, String surname ) throws SQLException {
+		String query =	"INSERT INTO `dbgroup2`.`user` (`username`, `password`, `email`, `name`, `surname`) "+
+						" VALUES (?, ?, ?, ?, ?)";
+		
+		if(!userExists(username,email)) {
+			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+				pstatement.setString(1, username);
+				pstatement.setString(2, password);
+				pstatement.setString(3, email);
+				pstatement.setString(4, name);
+				pstatement.setString(5, surname);		
+			}
+			return true;
+		}
+		return false;
+	}
 
 }
