@@ -80,8 +80,7 @@
                 //anchor.estimateid = estimate.id; // make list item clickable
                 anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
-                // dependency via module parameter
-                //estimateDetails.show(e.target.getAttribute("estimateid")); // the list must know the details container
+                	estimateDetails.show(estimate);
                 }, false);
                 anchor.href = "#";
                 row.appendChild(detailcell);
@@ -192,86 +191,22 @@
 		}
 	} //end ProductList()
 
+	
 	function EstimateDetails(options) {
 	    this.alert = options['alert'];
-	    this.detailcontainer = options['detailcontainer'];
-	    this.expensecontainer = options['expensecontainer'];
-	    this.expenseform = options['expenseform'];
-	    this.closeform = options['closeform'];
-	    this.date = options['date'];
-	    this.destination = options['destination'];
-	    this.status = options['status'];
-	    this.description = options['description'];
-	    this.country = options['country'];
-	    this.province = options['province'];
-	    this.city = options['city'];
-	    this.fund = options['fund'];
-	    this.food = options['food'];
-	    this.accomodation = options['accomodation'];
-	    this.travel = options['transportation'];
-
-	    this.registerEvents = function(orchestrator) {
-	      this.expenseform.querySelector("input[type='button']").addEventListener('click', (e) => {
-	        var form = e.target.closest("form");
-	        if (form.checkValidity()) {
-	          var self = this,
-	            missionToReport = form.querySelector("input[type = 'hidden']").value;
-	          makeCall("POST", 'CreateExpensesReport', form,
-	            function(req) {
-	              if (req.readyState == 4) {
-	                var message = req.responseText;
-	                if (req.status == 200) {
-	                  orchestrator.refresh(missionToReport);
-	                } else {
-	                  self.alert.textContent = message;
-	                }
-	              }
-	            }
-	          );
-	        } else {
-	          form.reportValidity();
-	        }
-	      });
-
-	      this.closeform.querySelector("input[type='button']").addEventListener('click', (event) => {
-	        var self = this,
-	          form = event.target.closest("form"),
-	          missionToClose = form.querySelector("input[type = 'hidden']").value;
-	        makeCall("POST", 'CloseMission', form,
-	          function(req) {
-	            if (req.readyState == 4) {
-	              var message = req.responseText;
-	              if (req.status == 200) {
-	                orchestrator.refresh(missionToClose);
-	              } else {
-	                self.alert.textContent = message;
-	              }
-	            }
-	          }
-	        );
-	      });
-	    }
-
-
-	    this.show = function(missionid) {
-	      var self = this;
-	      makeCall("GET", "GetMissionDetailsData?missionid=" + missionid, null,
-	        function(req) {
-	          if (req.readyState == 4) {
-	            var message = req.responseText;
-	            if (req.status == 200) {
-	              var mission = JSON.parse(req.responseText);
-	              self.update(mission); // self is the object on which the function
-	              // is applied
-	              self.detailcontainer.style.visibility = "visible";
-	              
-	            } else {
-	              self.alert.textContent = message;
-
-	            }
-	          }
-	        }
-	      );
+	    this.estimatesTable = options['id_estimatetable'];
+	    this.employee = options['employee'];
+	    this.productid = options['productid'];
+	    this.price = options['price'];
+	    this.productname = options['productname'];
+	    this.optionals = options['optionals'];
+	    this.image = options['image'];
+	    var self = this;
+	    
+	    
+	    this.show = function(estimate) {
+	    	
+	    	this.update(estimate)
 	    };
 
 
@@ -279,14 +214,14 @@
 	      
 	    }
 
-	    this.update = function(m) {
-	      this.customer.textContent = m.customer;
-	      this.productid.textContent = m.productid;
-	      this.productname.textContent = m.status;
-	      this.optional.textContent = m.description;
+	    this.update = function(message) {
+	    	self.productid.textContent = message.product.id;
+	    	self.productname.textContent = message.product.name;
+	    	self.price.textContent = message.price;
 	    }
 	}	//end EstimateDetail()
 
+	
 	function ProductDetails(options){
 
 		this.alert = options['alert'];	//ci serve per identificare errore di input
@@ -332,6 +267,7 @@
 
 		this.update = function(product) {
 			this.optionalList.innerHTML = ""; //empty the optional list
+			document.getElementById("prdct").setAttribute("value",product.id);
 			this.image.src = "images/".concat(product.image);
 			var self = this;
 			product.optionals.forEach(function(optional) {
@@ -372,9 +308,17 @@
 			);
 			customerEstimatesList.show();
 
-			//estimateDetails = new EstimateDetails();
-			//estimateDetails.show();
-
+			estimateDetails = new EstimateDetails({
+				alert: alertContainer,
+				id_estimatetable: document.getElementById("id_estimatetable"),
+				employee: document.getElementById("id_details_employeename"),
+				productid: document.getElementById("id_details_productid"),
+				price: document.getElementById("id_details_price"),
+				productname: document.getElementById("id_details_productname"),
+				optionals: document.getElementById("id_details_optionals"),
+				image: document.getElementById("id_image")
+			});
+			
 			productList = new ProductList(
 				alertContainer,
 				document.getElementById("id_producttable"),
