@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import it.polimi.tiw.estimates.utils.ConnectionHandler;
  * Servlet implementation class AddNewCustomer
  */
 @WebServlet("/AddNewCustomer")
+@MultipartConfig
 public class AddNewCustomer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
@@ -59,10 +61,11 @@ public class AddNewCustomer extends HttpServlet {
 
 			} catch (NumberFormatException | SQLException e) {
 				response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-				response.getWriter().println("Failed to retrieve estimate details");
+				response.getWriter().println("Failed to insert new user");
 			}
 		}
 		else {
+			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("You must fill all the fields!");
 		}

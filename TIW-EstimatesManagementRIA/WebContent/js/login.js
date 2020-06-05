@@ -80,7 +80,7 @@
 
         // Private function via closure
         function sendData() {
-            makeCall("POST", 'AddNewCustomer', e.target.closest("form"), function(req) {
+            makeCall("POST", 'AddNewCustomer', form, function(req) {
                 if (req.readyState == XMLHttpRequest.DONE) {
                     var message = req.responseText;
                     switch (req.status) {
@@ -96,6 +96,9 @@
                             document.getElementById("errormessagesignup").textContent = message;
                             break;
                         case 500: // server error
+                            document.getElementById("errormessagesignup").textContent = message;
+                            break;
+                        case 502: // bad gateway
                             document.getElementById("errormessagesignup").textContent = message;
                             break;
                     }
