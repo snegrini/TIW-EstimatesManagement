@@ -1,16 +1,16 @@
 (function() { // avoid variables ending up in the global scope
 
     // page components
-    var estimateDetails, estimateList, wizard,
+    var customerEstimatesList,estimateDetails, productList, productDetails, wizard,
       pageOrchestrator = new PageOrchestrator(); // main controller
 
     window.addEventListener("load", () => {
-      if (sessionStorage.getItem("username") == null) {
-        window.location.href = "index.html";
-      } else {
-        pageOrchestrator.start(); // initialize the components
-        pageOrchestrator.refresh();
-      } // display initial content
+		if (sessionStorage.getItem("username") == null) {
+			window.location.href = "index.html";
+		} else {
+			pageOrchestrator.start(); // initialize the components
+			pageOrchestrator.refresh();
+		} // display initial content
 	}, false);
 	
 	// Constructors of view components
@@ -106,7 +106,8 @@
 		this.image= _imagecontainer;
 
 	    this.reset = function() {
-	      this.listcontainer.style.visibility = "hidden";
+		  //this.listcontainer.style.visibility = "hidden";
+		  //this.listcontainerbody.children.style.backgroundColor = "white";
 	    };
 
 	    this.show = function(next) {
@@ -138,10 +139,7 @@
             this.listcontainerbody.innerHTML = ""; // empty the table body
             // build updated list
 			var self = this;
-
-			//document.getElementById("id_insert_product_img").src = "images/".concat(arrayProducts[0].image);
 			//productDetails.show(arrayProducts[0].id);
-
 			
 			arrayProducts.forEach(function(product) { // self visible here, not this
 				
@@ -160,11 +158,10 @@
                 anchor.addEventListener("click", (e) => {
 					// dependency via module parameter
 					
-					//document.getElementById("id_insert_product_img").src = "images/".concat(product.image);
 					//row.style.backgroundColor = "red";
-					
+					//self.reset();
+					//	e.target.parentNode.parentNode.style.backgroundColor = "red";
 					// TODO declare product details (IMAGE + OPTIONALS) on top of the current document
-					// Rename the next line with productDetails
 					// Fix the same thing also on CustomerEstimateList           
 					productDetails.show(e.target.getAttribute("productid")); // the list must know the details container
 					//pageOrchestrator.refresh(product);
@@ -185,8 +182,8 @@
             var anchorToClick =
 				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) {
-				var rowOn = anchorToClick.parentNode.parentNode;
-				rowOn.style.backgroundColor = "yellow";
+				//var rowOn = anchorToClick.parentNode.parentNode;
+				//rowOn.style.backgroundColor = "yellow";
 				anchorToClick.dispatchEvent(e);
 			};
 		}
@@ -291,21 +288,22 @@
 
 		this.alert = options['alert'];	//ci serve per identificare errore di input
 		this.image = options['image'];
-		this.optionalList
-	    this.detailcontainer = options['detailcontainer'];
+		this.optionalList = options['optionalList'];
+		this.addestimateform = options['addestimateform'];
+	    //this.detailcontainer = options['detailcontainer'];
 
 		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
-			this.expenseform.querySelector("input[type='button']").addEventListener('click', (e) => {
+			this.addestimateform.querySelector("input[type='button']").addEventListener('click', (e) => {
 				var form = e.target.closest("form");
 				if (form.checkValidity()) {
 					var self = this,
-					missionToReport = form.querySelector("input[type = 'hidden']").value;
+					productToReport = form.querySelector("input[type = 'hidden']").value;
 					makeCall("POST", 'AddEstimate', form,
 						function(req) {
 							if (req.readyState == 4) {
 								var message = req.responseText;
 								if (req.status == 200) {
-									orchestrator.refresh(missionToReport);
+									orchestrator.refresh(productToReport);
 								} else {
 									self.alert.textContent = message;
 								}
@@ -345,6 +343,7 @@
 
 		this.reset = function() {
 			//TODO
+
 		  }
 
 		this.update = function(m) {
@@ -374,6 +373,9 @@
 			);
 			customerEstimatesList.show();
 
+			//estimateDetails = new EstimateDetails();
+			//estimateDetails.show();
+
 			productList = new ProductList(
 				alertContainer,
 				document.getElementById("id_producttable"),
@@ -381,22 +383,15 @@
 				document.getElementById("id_insert_product_img")
 			);
 			productList.show();
-
-			/*
-			missionDetails = new MissionDetails({ // many parameters, wrap them in an
-			// object
-			
-			});
-			missionDetails.registerEvents(this);*/
-
 			
 			productDetails = new ProductDetails({ // many parameters, wrap them in an
 			// object
 				alert: alertContainer,
 				image: document.getElementById("id_insert_product_img"),
 				optionalList: document.getElementById("id_optionallist"),
-				detailcontainer: document.getElementById("id_detailcontainer")
-			
+				addestimateform: document.getElementById("id_addestimateform")
+
+				//detailcontainer: document.getElementById("id_detailcontainer")
 			});
 			productDetails.registerEvents(this);
 
@@ -412,13 +407,15 @@
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
 			customerEstimatesList.reset();
-			productList.reset();
+			//estimateDetails.reset();
 			customerEstimatesList.show(function() {
 				customerEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
 
+			productList.reset();
+			productDetails.reset();
 			productList.show(function() {
-				productList.autoclick(currentProduct.id);
+				productList.autoclick(currentProduct.id);//currentProduct.id
 			});
 			//wizard.reset();
 		};
