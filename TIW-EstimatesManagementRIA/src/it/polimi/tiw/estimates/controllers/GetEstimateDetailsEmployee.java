@@ -29,16 +29,16 @@ import it.polimi.tiw.estimates.utils.ConnectionHandler;
 /**
  * Servlet implementation class GetProductDetails
  */
-@WebServlet("/GetEstimateDetails")
+@WebServlet("/GetEstimateDetailsEmployee")
 @MultipartConfig
-public class GetEstimateDetails extends HttpServlet {
+public class GetEstimateDetailsEmployee extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetEstimateDetails() {
+    public GetEstimateDetailsEmployee() {
         super();
     }
 
@@ -74,18 +74,19 @@ public class GetEstimateDetails extends HttpServlet {
 		
 		try { //TODO: check if user is authorized
 			estimate = eDAO.findEstimateById(Integer.parseInt(estimateId));
-			customer = uDAO.findCustomerByEstimate(estimate.getId());
+			employee = uDAO.findEmployeeByEstimate(estimate.getId());
 			
-			if(customer.getId() != user.getId()) {
+			if(employee.getId() != user.getId()) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().println("User not allowed");
                 return;
 			}
+			
 
 			product = pDAO.findProductByEstimate(estimate.getId());
 			optionals = oDAO.findChosenOptionalsByEstimate(estimate.getId());
-			employee = uDAO.findEmployeeByEstimate(estimate.getId());
-			
+			customer = uDAO.findCustomerByEstimate(estimate.getId());
+
 			product.setOptionals(optionals);
 			estimate.setProduct(product);
 			estimate.setEmployee(employee);

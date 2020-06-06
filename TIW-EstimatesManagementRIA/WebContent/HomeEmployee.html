@@ -5,8 +5,8 @@
 	<title>Employee page</title>
 	<link rel="stylesheet" type="text/css" href="css/default.css"/>
 	<link rel="stylesheet" type="text/css" href="css/homeemployee.css"/>
-	<script src="utils.js" charset="utf-8" defer></script>
-	<script src="home_employee.js" charset="utf-8" defer></script>
+	<script src="js/utils.js" charset="utf-8" defer></script>
+	<script src="js/home_employee.js" charset="utf-8" defer></script>
 </head>
 <body>
 	<header class="headerrow">
@@ -24,6 +24,7 @@
 			<!-- div of priced order -->
 			<div class="column column-50">
 				<h4>Priced estimates by you:</h4>
+				<div id="id_alert" class="alertmessage"></div>	
 				<table id="id_pricedestimatetable">
 					<thead>
 						<tr>
@@ -36,7 +37,38 @@
 					<tbody id="id_pricedestimatetablebody">
 					</tbody>
 				</table>
+				
+				<div class="column column-45">
+					<table>
+					  <tr>
+					    <th>Employee:</th>
+					    <td id="id_details_employeename"></td>
+					  </tr>
+					  <tr>
+					    <th>Product ID:</th>
+					    <td id="id_details_productid"></td>
+					  </tr>
+					  <tr>
+					    <th>Price:</th>
+					    <td id="id_details_price"></td>
+					  </tr>
+					  <tr>
+					    <th>Product name:</th>
+					    <td id="id_details_productname"></td>
+					  </tr>
+					  <tr>
+					    <th>Optional:</th>
+						    <td>
+								<ul id="id_details_optionals">	
+								</ul>
+							</td>
+					  </tr>
+					</table>
+				</div>
 			</div>
+			
+
+			
 
 			<!-- div of non-priced order -->
 			<div class="column column-50">
