@@ -231,9 +231,15 @@
 
 	    this.update = function(estimate) {
 			
-			// TODO check if employee is null
-			self.employee.textContent = estimate.employee.name + " " + estimate.employee.surname;
-			// <--
+	    	this.optionals.innerHTML = ""; //empty the optional list
+			//check if employee is null
+	    	if(estimate.employee != null){
+	    		self.employee.textContent = estimate.employee.name + " " + estimate.employee.surname;
+	    	}
+	    	else{
+	    		self.employee.textContent = "----";
+	    	}
+			
 			
 			self.productid.textContent = estimate.product.id;
 	    	self.productname.textContent = estimate.product.name;
@@ -366,8 +372,6 @@
 				image: document.getElementById("id_insert_product_img"),
 				optionalList: document.getElementById("id_optionallist"),
 				addestimateform: document.getElementById("id_addestimateform")
-
-				//detailcontainer: document.getElementById("id_detailcontainer")
 			});
 			productDetails.registerEvents(this);
 
@@ -383,7 +387,7 @@
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
 			customerEstimatesList.reset();
-			//estimateDetails.reset();
+			estimateDetails.reset();
 			customerEstimatesList.show(function() {
 				customerEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
