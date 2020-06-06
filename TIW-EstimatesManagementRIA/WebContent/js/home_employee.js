@@ -54,7 +54,7 @@
 		};
 
         this.update = function(arrayEstimates) {
-            var row, idestimatecell, productnamecell, pricecell,detailcell, anchor;
+            var row, idestimatecell, estimatecellname, pricecell,detailcell, anchor;
             this.listcontainerbody.innerHTML = ""; // empty the table body
             // build updated list
             var self = this;
@@ -64,9 +64,9 @@
                 idestimatecell.textContent = estimate.id;
                 row.appendChild(idestimatecell);
 
-                productnamecell = document.createElement("td");
-                productnamecell.textContent = estimate.product.name;
-                row.appendChild(productnamecell);
+                estimatecellname = document.createElement("td");
+                estimatecellname.textContent = estimate.product.name;
+                row.appendChild(estimatecellname);
                 
                 pricecell = document.createElement("td");
                 pricecell.textContent = estimate.price;
@@ -116,14 +116,14 @@
 
 	    this.show = function(next) {
             var self = this;
-            makeCall("GET", "GetProductList", null,
+            makeCall("GET", "GetNonPricedEstimates", null,
                 function(req) {
                     if (req.readyState == 4) {
                         var message = req.responseText;
                         if (req.status == 200) {
                             var productsToShow = JSON.parse(req.responseText);
                             if (productsToShow.length == 0) {
-                                self.alert.textContent = "No products available!";
+                                self.alert.textContent = "there is no estimate to price!";
                                 return;
                             }
                             self.update(productsToShow); // self visible by closure
@@ -138,35 +138,28 @@
             );
 		};
 
-        this.update = function(arrayProducts) {
-            var row, idproductcell, productnamecell;
+        this.update = function(estimateList) {
+            var row, idestimatecell, estimatecellname;
             this.listcontainerbody.innerHTML = ""; // empty the table body
             // build updated list
 			var self = this;
 			
-			arrayProducts.forEach(function(product) { // self visible here, not this
+			estimateList.forEach(function(estimate) { // self visible here, not this
 				
                 row = document.createElement("tr");
-                idproductcell = document.createElement("td");
-                idproductcell.textContent = product.id;
-                row.appendChild(idproductcell);
+                idestimatecell = document.createElement("td");
+                idestimatecell.textContent = estimate.id;
+                row.appendChild(idestimatecell);
 
-                productnamecell = document.createElement("td");
+                estimatecellname = document.createElement("td");
                 anchor = document.createElement("a");
-                productnamecell.appendChild(anchor);
-                //productnamecell.textContent = product.name;
-                productText = document.createTextNode(product.name);
+                estimatecellname.appendChild(anchor);
+                //estimatecellname.textContent = product.name;
+                productText = document.createTextNode(estimate.product.name);
                 anchor.appendChild(productText);
-                anchor.setAttribute('productid', product.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
-					// dependency via module parameter
-					
-					//row.style.backgroundColor = "red";
-					//self.reset();
-					//	e.target.parentNode.parentNode.style.backgroundColor = "red";
-					// TODO declare product details (IMAGE + OPTIONALS) on top of the current document
-					// Fix the same thing also on CustomerEstimateList
-					productDetails.show(product); // the list must know the details container
+                	/*
+					productDetails.show(product);
 					
 					 var children = Array.from(self.listcontainerbody.children);
 					 children.forEach(function(child) {
@@ -174,9 +167,10 @@
 					 });
 					
 					e.target.closest("tr").style.backgroundColor = "#b6cfff";
+					*/
 				}, false);
                 anchor.href = "#";
-                row.appendChild(productnamecell);
+                row.appendChild(estimatecellname);
 
 				self.listcontainerbody.appendChild(row);
 				
@@ -211,7 +205,7 @@
 		var self = this;
 	    
 	    this.show = function(estimate) {
-	    	makeCall("GET", "GetEstimateDetails?estimateid=" + estimate.id, null, function(req) {
+	    	makeCall("GET", "GetEstimateDetailsEmployee?estimateid=" + estimate.id, null, function(req) {
 				if (req.readyState == 4) {
 					var message = req.responseText;
 
@@ -265,7 +259,7 @@
 		this.image = options['image'];
 		this.optionalList = options['optionalList'];
 		this.addestimateform = options['addestimateform'];
-
+		/*
 		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
 			this.addestimateform.querySelector("input[type='button']").addEventListener('click', (e) => {
 				var form = e.target.closest("form");
@@ -292,7 +286,7 @@
 
 			
 		}
-
+		*/
 		this.show = function(product) {
 			this.update(product);
 		};
@@ -357,8 +351,8 @@
 			
 			productList = new ProductList(
 				alertContainer,
-				document.getElementById("id_producttable"),
-				document.getElementById("id_producttablebody")
+				document.getElementById("id_nonpricedestimatetable"),
+				document.getElementById("id_nonpricedestimatetablebody")
 			);
 			
 			productDetails = new ProductDetails({ // many parameters, wrap them in an
@@ -370,7 +364,7 @@
 
 				//detailcontainer: document.getElementById("id_detailcontainer")
 			});
-			productDetails.registerEvents(this);
+			//productDetails.registerEvents(this);
 
 			/*wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
 			wizard.registerEvents(this);
