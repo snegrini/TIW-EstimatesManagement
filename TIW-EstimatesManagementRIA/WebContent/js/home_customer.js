@@ -100,7 +100,11 @@
             var selector = "a[estimateid='" + estimateId + "']";
             var anchorToClick =
                 (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-            if (anchorToClick) anchorToClick.dispatchEvent(e);
+            if (anchorToClick) {
+            	var rowOn = anchorToClick.parentNode.parentNode;
+				rowOn.style.backgroundColor = "#b6cfff";
+            	anchorToClick.dispatchEvent(e);
+            }
         };
 	}
 
@@ -235,15 +239,17 @@
 			//check if employee is null
 	    	if(estimate.employee != null){
 	    		self.employee.textContent = estimate.employee.name + " " + estimate.employee.surname;
+	    		self.price.textContent = estimate.price;
 	    	}
 	    	else{
 	    		self.employee.textContent = "----";
+	    		self.price.textContent = "Not priced yet";
 	    	}
 			
 			
 			self.productid.textContent = estimate.product.id;
 	    	self.productname.textContent = estimate.product.name;
-			self.price.textContent = estimate.price;
+			//self.price.textContent = estimate.price;
 			self.image.setAttribute("src","images/".concat(estimate.product.image));
 			
 			estimate.product.optionals.forEach(function(opt) {

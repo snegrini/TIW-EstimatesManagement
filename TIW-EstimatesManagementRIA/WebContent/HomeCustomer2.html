@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="script" scr="script.js">
+    <script src="js/utils.js" charset="utf-8" defer></script>
+	<script src="js/home_customer.js" charset="utf-8" defer></script>
+    <title>Index</title>
+</head>
+<body>
+    <header class="header">
+        <hgroup class="width:100%;">
+            <h1>Customer Page</h1>
+            <h3>Welcome <span id="id_username"></span>!</h3>
+            <a href="Logout">Logout</a>
+        </hgroup>
+    </header>
+
+    <div class="container">
+        <section class="myestimates">
+            <h4>Your estimates:</h4>
+            <div id="id_alert"></div>
+            <table id="id_estimatetable" class="tableSection">
+                <thead>
+                    <tr>
+                        <th><span class="text">ID</span></th>
+                        <th><span class="text">Product</span></th>
+                        <th><span class="text">Price</span></th>
+                        <th><span class="text">Details</span></th>
+                    </tr>
+                </thead>
+                <tbody id="id_estimatetablebody">
+                    <tr>
+                        <td>1</td>
+                        <td>Pizza</td>
+                        <td>6</td>
+                        <td><a href="#">Show</a></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+
+            <div id="div_estimate_details">
+
+                <table id="id_details_table">
+                    <tr>
+                      <th>Employee:</th>
+                      <td id="id_details_employeename"></td>
+                    </tr>
+                    <tr>
+                      <th>Product ID:</th>
+                      <td id="id_details_productid"></td>
+                    </tr>
+                    <tr>
+                      <th>Price:</th>
+                      <td id="id_details_price"></td>
+                    </tr>
+                    <tr>
+                      <th>Product name:</th>
+                      <td id="id_details_productname"></td>
+                    </tr>
+                    <tr>
+					    <th>Optional:</th>
+						    <td>
+								<ul id="id_details_optionals">	
+								</ul>
+							</td>
+					  </tr>
+                  </table>
+
+                  <figure id="id_image_details_pholder">
+                    <img id="id_productimage">
+                </figure>
+
+            </div>
+        </section>
+
+        <section class="insertestimate">
+            <h4>Insert an order:</h4>
+            <table id="id_producttable" class="tableSection">
+                <thead>
+                    <tr>
+                        <th><span class="text">ID</span></th>
+                        <th><span class="text">Product</span></th>
+                    </tr>
+                </thead>
+                <tbody id="id_producttablebody">
+                   <!-- <tr>
+                        <td>1</td>
+                        <td>Pizza</td>                       
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Pasta</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Carne</td>                        
+                    </tr> -->
+                </tbody>
+            </table>
+
+            <form action="#" id="id_addestimateform">
+                <legend><h4>Product details:</h4></legend>
+                <div id="form_container">
+                    <figure id="id_image_pholder">
+                        <img id="id_insert_product_img" >
+                    </figure>
+                    <div id="id_optional_list_container">
+                        <p>Select one or more options:</p>
+                        <input type="hidden" name="prdct" id="prdct">
+                        <ul id="id_optionallist">
+                            <!--<li><input type="checkbox" value="Option1" id="id_optional">Option 1</li><br>
+                            <li><input type="checkbox" value="Option2">Option 2</li><br>
+                            <li><input type="checkbox" value="Option3">Option 3</li><br>
+                            <li><input type="checkbox" value="Option4">Option 4</li><br>
+                            <li><input type="checkbox" value="Option1" id="id_optional">Option 1</li><br>
+                            <li><input type="checkbox" value="Option2">Option 2</li><br>
+                            <li><input type="checkbox" value="Option3">Option 3</li><br>
+                            <li><input type="checkbox" value="Option4">Option 4</li><br>-->
+                        </ul>
+                        <input type="button" value="Insert" name="Insert">
+                        <p id="errormessage"></p>
+                    </div>
+                </div>
+                
+            </form>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>Created with &hearts; by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
+    </footer>
+</body>
+</html>
