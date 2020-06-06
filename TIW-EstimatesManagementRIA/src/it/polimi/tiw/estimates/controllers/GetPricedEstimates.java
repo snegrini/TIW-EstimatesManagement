@@ -18,8 +18,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.polimi.tiw.estimates.beans.Estimate;
+import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
+import it.polimi.tiw.estimates.daos.ProductDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
@@ -53,10 +55,14 @@ public class GetPricedEstimates extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		EstimateDAO eDAO = new EstimateDAO(connection);
+		ProductDAO pDAO = new ProductDAO(connection);
 		List<Estimate> estimates = new ArrayList<Estimate>();
 		
 		try {
-			eDAO.findPricedEstimatesByEmployee(user.getId());
+			estimates = eDAO.findPricedEstimatesByEmployee(user.getId());
+			for(Estimate estimate : estimates) {
+				estimate.setProduct(pDAO.findProductByEstimate(estimate.getId()));
+			}
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover priced estimates");

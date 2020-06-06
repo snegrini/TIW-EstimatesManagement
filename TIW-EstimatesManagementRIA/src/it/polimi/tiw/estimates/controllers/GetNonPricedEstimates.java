@@ -58,7 +58,7 @@ public class GetNonPricedEstimates extends HttpServlet {
 		List<Estimate> estimates = new ArrayList<Estimate>();
 		
 		try {
-			eDAO.findNonPricedEstimates();
+			estimates = eDAO.findNonPricedEstimates();
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Not possible to recover non priced estimates");
