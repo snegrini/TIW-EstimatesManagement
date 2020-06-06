@@ -4,7 +4,7 @@ public class Estimate {
 	private int id;
 	private float price;
 	private Product product;
-	private User client;
+	private User customer;
 	private User employee;
 
 	
@@ -31,12 +31,12 @@ public class Estimate {
 		this.product = product;
 	}
 	
-	public User getClient() {
-		return client;
+	public User getCustomer() {
+		return customer;
 	}
 	
-	public void setClient(User client) {
-		this.client = client;
+	public void setCustomer(User customer) {
+		this.customer = customer;
 	}
 	
 	public User getEmployee() {

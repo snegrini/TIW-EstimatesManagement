@@ -236,7 +236,6 @@
 	    this.update = function(estimate) {
 			
 	    	this.optionals.innerHTML = ""; //empty the optional list
-			//check if employee is null
 	    	if(estimate.employee != null){
 	    		self.employee.textContent = estimate.employee.name + " " + estimate.employee.surname;
 	    		self.price.textContent = estimate.price;

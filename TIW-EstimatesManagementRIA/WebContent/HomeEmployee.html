@@ -40,13 +40,13 @@
 				
 				<div class="container">
 					<div class="column column-25">
-						<img id="id_productimage" style="width:100%; height: 200px;">
+						<img id="id_productimage" class="thumbnail">
 					</div>
 				<div class="column column-45">
 					<table>
 					  <tr>
-					    <th>Employee:</th>
-					    <td id="id_details_employeename"></td>
+					    <th>Customer:</th>
+					    <td id="id_details_customername"></td>
 					  </tr>
 					  <tr>
 					    <th>Product ID:</th>
@@ -90,7 +90,9 @@
 				
 				<br>
 				<br>
-				
+				<div class="column column-25">
+					<img id="id_npedetailsimage" class="thumbnail" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img">
+				</div>
 				<table id="id_npedetailstable" class="vertical-table">
 					<thead>
 						<tr>
@@ -102,17 +104,17 @@
 					</thead>
 					<tbody id="id_npedetailstablebody">
 						<tr>
-							<td>Pippo1</td>
-							<td>Pippo2</td>
-							<td>Pippo3</td>
-							<td>Pippo4</td>
+							<td id="id_customername">Pippo1</td>
+							<td id="id_productid">Pippo2</td>
+							<td id="id_productname">Pippo3</td>
+							<td id="id_optional">Pippo4</td>
 						</tr>				
 					</tbody>
 				</table>
 
 				<form action="#" id="id_npedetailsform" class="column column-30">
 					<label>Insert the price of the product:</label><br>
-					<input type="hidden" name="estimateid">
+					<input type="hidden" name="estimateid" id="prdct">
 					<input type="number" name="price" min="0" value="0"> <span>&euro;</span>
 					<input class="submitbtn" type="button" value="Invia Prezzo">
 					<p id="errormessage"></p>

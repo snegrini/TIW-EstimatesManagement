@@ -55,7 +55,7 @@ public class GetEstimateDetailsEmployee extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		System.out.println();
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		
@@ -72,23 +72,26 @@ public class GetEstimateDetailsEmployee extends HttpServlet {
 		User employee = null;
 		User customer = null;
 		
-		try { //TODO: check if user is authorized
+		try {
 			estimate = eDAO.findEstimateById(Integer.parseInt(estimateId));
 			employee = uDAO.findEmployeeByEstimate(estimate.getId());
 			
-			if(employee.getId() != user.getId()) {
+			//An employee null means estimate isn't priced yet.
+			//If it exists, he must be the only one accessing this estimate details
+			if(employee != null && employee.getId() != user.getId()) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().println("User not allowed");
                 return;
 			}
 			
-
+			
 			product = pDAO.findProductByEstimate(estimate.getId());
 			optionals = oDAO.findChosenOptionalsByEstimate(estimate.getId());
 			customer = uDAO.findCustomerByEstimate(estimate.getId());
-
+			
 			product.setOptionals(optionals);
 			estimate.setProduct(product);
+			estimate.setCustomer(customer);
 			estimate.setEmployee(employee);
 			
 		} catch(NumberFormatException e) {
