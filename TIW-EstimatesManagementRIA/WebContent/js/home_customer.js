@@ -81,6 +81,12 @@
                 anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 	estimateDetails.show(estimate);
+                	
+                	var children = Array.from(self.listcontainerbody.children);
+					 children.forEach(function(child) {
+						 child.style.backgroundColor = "white";
+					 });
+                	e.target.closest("tr").style.backgroundColor = "#b6cfff";
                 }, false);
                 anchor.href = "#";
                 row.appendChild(detailcell);
@@ -167,7 +173,7 @@
 						 child.style.backgroundColor = "white";
 					 });
 					
-					e.target.closest("tr").style.backgroundColor = "yellow";
+					e.target.closest("tr").style.backgroundColor = "#b6cfff";
 				}, false);
                 anchor.href = "#";
                 row.appendChild(productnamecell);
@@ -185,7 +191,7 @@
 				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) {
 				var rowOn = anchorToClick.parentNode.parentNode;
-				rowOn.style.backgroundColor = "yellow";
+				rowOn.style.backgroundColor = "#b6cfff";
 				anchorToClick.dispatchEvent(e);
 			};
 		}
@@ -232,6 +238,7 @@
 			self.productid.textContent = estimate.product.id;
 	    	self.productname.textContent = estimate.product.name;
 			self.price.textContent = estimate.price;
+			self.image.setAttribute("src","images/".concat(estimate.product.image));
 			
 			estimate.product.optionals.forEach(function(opt) {
 				var li = document.createElement("li");
@@ -257,7 +264,6 @@
 		this.image = options['image'];
 		this.optionalList = options['optionalList'];
 		this.addestimateform = options['addestimateform'];
-	    //this.detailcontainer = options['detailcontainer'];
 
 		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
 			this.addestimateform.querySelector("input[type='button']").addEventListener('click', (e) => {
@@ -345,7 +351,7 @@
 				price: document.getElementById("id_details_price"),
 				productname: document.getElementById("id_details_productname"),
 				optionals: document.getElementById("id_details_optionals"),
-				image: document.getElementById("id_image")
+				image: document.getElementById("id_productimage")
 			});
 			
 			productList = new ProductList(
