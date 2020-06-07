@@ -229,7 +229,7 @@
 	    this.update = function(estimate) {
 			
 	    	if(estimate != null){
-	        	this.detailscontanier.style.visibility = "visible";
+	        	this.detailscontainer.style.visibility = "visible";
 	    	}
 	    	
         	self.optionals.innerHTML = "";
@@ -408,7 +408,7 @@
     	
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
-			alertContainerNpe.textContent = "";
+			alertContainer.textContent = "";
 			pricedEstimatesList.reset();	
 			nonPricedEstimatesList.reset();
 			nonPricedEstimateDetails.reset();
