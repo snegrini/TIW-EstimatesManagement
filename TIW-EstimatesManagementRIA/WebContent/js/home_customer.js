@@ -57,6 +57,7 @@
 
         this.update = function(arrayEstimates) {
             var row, idestimatecell, productnamecell, pricecell, detailcell, detailText, anchor;
+            this.alert.innerHTML = "";
             this.listcontainerbody.innerHTML = ""; // Empty the table body
             var self = this;
 
@@ -71,9 +72,6 @@
                 productnamecell.textContent = estimate.product.name;
                 row.appendChild(productnamecell);
 
-                pricecell = document.createElement("td");
-                pricecell.textContent = estimate.price;
-                row.appendChild(pricecell);
 
                 detailcell = document.createElement("td");
                 anchor = document.createElement("a");
@@ -303,6 +301,7 @@
         };
 
         this.update = function(product) {
+            this.alert.innerHTML = "";
             this.optionalList.innerHTML = ""; // Empty the optional list
 
             document.getElementById("prdct").setAttribute("value", product.id);
@@ -336,6 +335,7 @@
 
     function PageOrchestrator() {
         var alertContainer = document.getElementById("id_alert");
+        var errorMessage = document.getElementById("id_errormessage");
 
         this.start = function() {
             personalMessage = new PersonalMessage(
@@ -362,13 +362,13 @@
             });
 
             productList = new ProductList(
-                alertContainer,
+                errorMessage,
                 document.getElementById("id_producttable"),
                 document.getElementById("id_producttablebody")
             );
 
             productDetails = new ProductDetails({ // many parameters, wrap them in an object
-                alert: alertContainer,
+                alert: errorMessage,
                 image: document.getElementById("id_insert_product_img"),
                 optionalList: document.getElementById("id_optionallist"),
                 addestimateform: document.getElementById("id_addestimateform")
@@ -383,6 +383,7 @@
 
         this.refresh = function(currentEstimate, currentProduct) {
             alertContainer.textContent = "";
+            errorMessage.textContent = "";
             customerEstimatesList.reset();
             estimateDetails.reset();
             productList.reset();
