@@ -264,6 +264,14 @@
 
 		var self = this;
 		
+        this.reset = function() {
+        	this.customername.textContent = "";
+        	this.productid.textContent = "";
+        	this.productname.textContent = "";
+        	this.optionals.innerHTML = "";
+        	this.image.style.visibility = "hidden";
+        };
+		
 		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
 			this.priceestimateform.querySelector("input[type='button']").addEventListener('click', (e) => {
 				var form = e.target.closest("form");
@@ -304,15 +312,11 @@
 			});
 		};
 
-		this.reset = function() {
-		      
-		};
-
 		this.update = function(estimate) {
 			document.getElementById("prdct").setAttribute("value",estimate.id);
 			
         	this.optionals.innerHTML = "";
-        	
+        	this.image.style.visibility = "visible";
 			this.image.setAttribute("src","images/".concat(estimate.product.image));
 			this.customername.textContent = estimate.customer.name + " " + estimate.customer.surname;
 			this.productid.textContent = estimate.product.id;
