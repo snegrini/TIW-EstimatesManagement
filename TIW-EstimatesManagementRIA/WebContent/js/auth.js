@@ -27,13 +27,13 @@
                                 window.location.href = jsonMsg.location;          
                                 break;
                             case 400: // bad request
-                                document.getElementById("errormessage").textContent = message;
+                                document.getElementById("alertmessage").textContent = message;
                                 break;
                             case 401: // unauthorized
-                                document.getElementById("errormessage").textContent = message;
+                                document.getElementById("alertmessage").textContent = message;
                                 break;
                             case 500: // server error
-                                document.getElementById("errormessage").textContent = message;
+                                document.getElementById("alertmessage").textContent = message;
                                 break;
                         }
                     }
@@ -69,11 +69,11 @@
                 if (password.value === confirmPassword.value) {
                     return true;
                 } else {
-                    document.getElementById("errormessagesignup").textContent = "Passwords do not match!";
+                    document.getElementById("alertmessagesignup").textContent = "Passwords do not match!";
                     return false;
                 }
             } else {
-                document.getElementById("errormessagesignup").textContent = "Invalid email address!";
+                document.getElementById("alertmessagesignup").textContent = "Invalid email address!";
                 return false;
             }
         };
@@ -85,21 +85,21 @@
                     var message = req.responseText;
                     switch (req.status) {
                         case 200:
-                            var jsonMsg = JSON.parse(message);
-                            sessionStorage.setItem("username", jsonMsg.username);
-                            window.location.href = jsonMsg.location;          
+                            loginform.style.display = "inline";
+                            signupform.style.display = "none";
+                            document.getElementById("alertmessage").textContent = message;      
                             break;
                         case 400: // bad request
-                            document.getElementById("errormessagesignup").textContent = message;
+                            document.getElementById("alertmessagesignup").textContent = message;
                             break;
                         case 401: // unauthorized
-                            document.getElementById("errormessagesignup").textContent = message;
+                            document.getElementById("alertmessagesignup").textContent = message;
                             break;
                         case 500: // server error
-                            document.getElementById("errormessagesignup").textContent = message;
+                            document.getElementById("alertmessagesignup").textContent = message;
                             break;
                         case 502: // bad gateway
-                            document.getElementById("errormessagesignup").textContent = message;
+                            document.getElementById("alertmessagesignup").textContent = message;
                             break;
                     }
                 }

@@ -32,12 +32,12 @@ public class AddNewCustomer extends HttpServlet {
     
 	public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
-     }
+	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -49,13 +49,13 @@ public class AddNewCustomer extends HttpServlet {
 		if (username != null && email != null && password != null && name != null && surname != null) {
 			
 			try {
-				if(uDAO.addUser(username, email, password, name, surname)) {
+				if (uDAO.addUser(username, email, password, name, surname)) {
 					response.setStatus(HttpServletResponse.SC_OK);
 					response.getWriter().println("Customer successfully registered!");
 				}
 				else {
 					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-					response.getWriter().println("Username or email arledy exists!");
+					response.getWriter().println("Username or email already exists!");
 				}
 
 			} catch (NumberFormatException | SQLException e) {
@@ -64,18 +64,9 @@ public class AddNewCustomer extends HttpServlet {
 			}
 		}
 		else {
-			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("You must fill all the fields!");
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
