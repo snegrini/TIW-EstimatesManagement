@@ -76,7 +76,7 @@ footer {
 	height:70px;
 	margin:0px;
 	bottom:0;
-	position: static;
+	position: fixed;
 	background-color:#2b50aa;
 	color:white;
 	text-align: center;
@@ -84,5 +84,5 @@ footer {
 }
 
 footer p {
-	padding-top:28px;
+	padding-top:23px;
 }
