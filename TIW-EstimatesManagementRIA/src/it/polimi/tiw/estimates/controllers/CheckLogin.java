@@ -100,7 +100,7 @@ public class CheckLogin extends HttpServlet {
 			
 			String target = (user.getRole().equals("employee")) ? "HomeEmployee.html" : "HomeCustomer.html";
 			Map<String, String> params = Map.of("location", target, "username", usr);
-
+			
 			Gson gson = new GsonBuilder()
 					   .setDateFormat("yyyy MMM dd").create();
 			String json = gson.toJson(params);

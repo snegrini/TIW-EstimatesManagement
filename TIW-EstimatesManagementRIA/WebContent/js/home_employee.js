@@ -258,7 +258,33 @@
 		this.productname = options['productname'];
 		this.optionals = options['optional'];
 		this.image = options['image'];
+		this.priceestimateform = options['priceestimateform'];
 		var self = this;
+		
+		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
+			this.priceestimateform.querySelector("input[type='button']").addEventListener('click', (e) => {
+				var form = e.target.closest("form");
+				if (form.checkValidity()) {
+					var self = this,
+					productToReport = form.querySelector("input[type = 'hidden']").value;
+					makeCall("POST", 'AddEstimatePrice', form,
+						function(req) {
+							if (req.readyState == 4) {
+								var message = req.responseText;
+								if (req.status == 200) {
+									orchestrator.refresh(productToReport);
+								}
+								else {
+									self.alert.textContent = message;
+								}
+							}
+						}
+					);
+				} else {
+					form.reportValidity();
+				}
+			});
+		}
 		
 		this.show = function(estimate) {
 			makeCall("GET", "GetEstimateDetailsEmployee?estimateid=" + estimate.id, null, function(req) {
@@ -347,11 +373,12 @@
 				productid: document.getElementById("id_productid"),
 				productname: document.getElementById("id_productname"),
 				optional: document.getElementById("id_optional"),
-				image: document.getElementById("id_npedetailsimage")
+				image: document.getElementById("id_npedetailsimage"),
+				priceestimateform : document.getElementById("id_npedetailsform")
 
 				//detailcontainer: document.getElementById("id_detailcontainer")
 			});
-			//productDetails.registerEvents(this);
+			estimateToPriceDetails.registerEvents(this);
 
 			/*wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
 			wizard.registerEvents(this);
