@@ -40,7 +40,7 @@
 					var message = req.responseText;
 					
 					if (req.status == 200) {
-						var estimatesToShow = JSON.parse(req.responseText);
+						var estimatesToShow = JSON.parse(message);
 						if (estimatesToShow.length == 0) {
 						self.alert.textContent = "No estimate has been inserted yet!";
 						return;
@@ -81,7 +81,7 @@
 				detailText = document.createTextNode("Show");
 				
                 anchor.appendChild(detailText);
-				anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
+				anchor.setAttribute('data-estimateid', estimate.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 	estimateDetails.show(estimate);
                 	
@@ -100,7 +100,7 @@
   
         this.autoclick = function(estimateId) {
             var e = new Event("click");
-            var selector = "a[estimateid='" + estimateId + "']";
+            var selector = "a[data-estimateid='" + estimateId + "']";
             var anchorToClick =
                 (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) anchorToClick.dispatchEvent(e);
@@ -123,7 +123,7 @@
                     if (req.readyState == 4) {
                         var message = req.responseText;
                         if (req.status == 200) {
-                            var productsToShow = JSON.parse(req.responseText);
+                            var productsToShow = JSON.parse(message);
                             if (productsToShow.length == 0) {
                                 self.alert.textContent = "There is no estimate to price!";
                                 return;
@@ -183,7 +183,7 @@
 
         this.autoclick = function(productId) {
             var e = new Event("click");
-            var selector = "a[productid='" + productId + "']";
+            var selector = "a[data-productid='" + productId + "']";
             var anchorToClick =
 				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) {
@@ -313,11 +313,11 @@
 		};
 
 		this.update = function(estimate) {
-			document.getElementById("prdct").setAttribute("value",estimate.id);
+			document.getElementById("prdct").setAttribute("value", estimate.id);
 			
         	this.optionals.innerHTML = "";
         	this.image.style.visibility = "visible";
-			this.image.setAttribute("src","images/".concat(estimate.product.image));
+			this.image.setAttribute("src", "images/".concat(estimate.product.image));
 			this.customername.textContent = estimate.customer.name + " " + estimate.customer.surname;
 			this.productid.textContent = estimate.product.id;
 			this.productname.textContent = estimate.product.name;
@@ -331,7 +331,7 @@
 				
 				if (opt.type == "SALE"){
 					var saleSpan = document.createElement("span");
-					saleSpan.setAttribute("class","sale");
+					saleSpan.setAttribute("class", "sale");
 					saleSpan.textContent = "SALE!";
 					li.appendChild(saleSpan);
 				}
