@@ -272,9 +272,10 @@
 
         this.registerEvents = function(orchestrator) {	// On click the customer adds a new estimate to be priced into the DB
             this.addestimateform.querySelector("input[type='button']").addEventListener('click', (e) => {
-                var form = e.target.closest("form");
+            	var nCheckedOptionals=document.querySelectorAll('input[type="checkbox"]:checked').length;	//calculate the number of checked checkboxes
+            	var form = e.target.closest("form");
 
-                if (form.checkValidity()) {
+                if (form.checkValidity() && nCheckedOptionals>0) {
                     var self = this,
                     productToReport = form.querySelector("input[type = 'hidden']").value;
                     makeCall("POST", 'AddEstimate', form, function(req) {
@@ -290,6 +291,7 @@
                     });
                 } else {
                     form.reportValidity();
+                    this.alert.textContent = "At least one optional has to be selected! "; //puts the error message inside the error placeholder
                 }
             });
         };
