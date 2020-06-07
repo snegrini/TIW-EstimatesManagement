@@ -127,7 +127,7 @@
                             var productsToShow = JSON.parse(message);
                             if (productsToShow.length == 0) {
                                 self.alert.textContent = "There is no estimate to price!";
-                                this.listcontainer.style.visibility = "hidden";
+                                self.listcontainer.style.visibility = "hidden";
                                 return;
                             }
                             self.update(productsToShow); // self visible by closure
@@ -203,6 +203,7 @@
 	    this.productname = options.productname;
 	    this.optionals = options.optionals;
 	    this.image = options.image;
+	    this.detailscontainer = options.detailscontainer;
 		
 		var self = this;
 	    
@@ -222,11 +223,15 @@
 	    };
 
 	    this.reset = function() {
-			// TODO
+        	this.detailscontainer.style.visibility = "hidden";
 	    };
 
 	    this.update = function(estimate) {
 			
+	    	if(estimate != null){
+	        	this.detailscontanier.style.visibility = "visible";
+	    	}
+	    	
         	self.optionals.innerHTML = "";
 	    	self.customer.textContent = estimate.customer.name + " " + estimate.customer.surname;
 			self.productid.textContent = estimate.product.id;
@@ -352,6 +357,7 @@
 
     function PageOrchestrator() {
 	    var alertContainer = document.getElementById("id_alert");
+	    var alertContainerNpe = document.getElementById("id_alert_npe");
 		
 		this.start = function() {
 			personalMessage = new PersonalMessage(sessionStorage.getItem('username'),
@@ -372,17 +378,18 @@
 				price: document.getElementById("id_details_price"),
 				productname: document.getElementById("id_details_productname"),
 				optionals: document.getElementById("id_details_optionals"),
-				image: document.getElementById("id_productimage")
+				image: document.getElementById("id_productimage"),
+				detailscontainer: document.getElementById("id_details_container")
 			});
 			
 			nonPricedEstimatesList = new NonPricedEstimatesList(
-				alertContainer,
+				alertContainerNpe,
 				document.getElementById("id_nonpricedestimatetable"),
 				document.getElementById("id_nonpricedestimatetablebody")
 			);
 			
 			nonPricedEstimateDetails = new NonPricedEstimateDetails({ // many parameters, wrap them in an object
-				alert: alertContainer,
+				alert: alertContainerNpe,
 				customername: document.getElementById("id_customername"),
 				productid: document.getElementById("id_productid"),
 				productname: document.getElementById("id_productname"),
@@ -401,11 +408,12 @@
     	
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
+			alertContainerNpe.textContent = "";
 			pricedEstimatesList.reset();	
 			nonPricedEstimatesList.reset();
 			nonPricedEstimateDetails.reset();
+			estimateDetails.reset();
 
-			//estimateDetails.reset();
 			pricedEstimatesList.show(function() {
 				pricedEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
