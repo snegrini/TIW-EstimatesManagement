@@ -1,8 +1,9 @@
-(function() { // avoid variables ending up in the global scope
+/* jshint esversion: 6 */
 
-    // page components
-    var customerEstimatesList,estimateDetails, estimatesToPrice, estimateToPriceDetails, wizard,
-      pageOrchestrator = new PageOrchestrator(); // main controller
+(function() { // Avoid variables ending up in the global scope
+
+    var customerEstimatesList,estimateDetails, estimatesToPrice, estimateToPriceDetails; // Page components
+    var pageOrchestrator = new PageOrchestrator(); // Main controller
 
     window.addEventListener("load", () => {
 		if (sessionStorage.getItem("username") == null) {
@@ -16,10 +17,10 @@
 	// Constructors of view components
 
 	function PersonalMessage(_username, messagecontainer) {
-	    this.username = _username;
-	    this.show = function() {
-	      messagecontainer.textContent = this.username;
-	    }
+	      this.username = _username;
+	      this.show = function() {
+	          messagecontainer.textContent = this.username;
+	      };
 	  }
 
 	function CustomerEstimatesList(_alert, _listcontainer, _listcontainerbody) {
@@ -28,35 +29,37 @@
 	    this.listcontainerbody = _listcontainerbody;
 
 	    this.reset = function() {
-	      this.listcontainer.style.visibility = "hidden";
+	        this.listcontainer.style.visibility = "hidden";
 	    };
 
 	    this.show = function(next) {
-	      var self = this;
-	      makeCall("GET", "GetPricedEstimates", null,
-	        function(req) {
-	          if (req.readyState == 4) {
-	            var message = req.responseText;
-	            if (req.status == 200) {
-	              var estimatesToShow = JSON.parse(req.responseText);
-	              if (estimatesToShow.length == 0) {
-	                self.alert.textContent = "No estimate has been inserted yet!";
-	                return;
-	              }
-	              self.update(estimatesToShow); // self visible by closure
-	              if (next) next(); // show the default element of the list if present
-	            }
-	          } else {
-	            self.alert.textContent = message;
-	          }
-	        }
-		  );
+			var self = this;
+			
+	        makeCall("GET", "GetPricedEstimates", null, function(req) {
+				if (req.readyState == 4) {
+					var message = req.responseText;
+					
+					if (req.status == 200) {
+						var estimatesToShow = JSON.parse(req.responseText);
+						if (estimatesToShow.length == 0) {
+						self.alert.textContent = "No estimate has been inserted yet!";
+						return;
+						}
+						self.update(estimatesToShow); // self visible by closure
+						if (next) next(); // show the default element of the list if present
+					} else {
+						self.alert.textContent = message;
+					}
+				}
+			});
 		};
 
         this.update = function(arrayEstimates) {
-            var row, idestimatecell, estimatecellname, pricecell,detailcell, anchor;
-            this.listcontainerbody.innerHTML = ""; // empty the table body
-            // build updated list
+			var row, idestimatecell, estimatecellname, pricecell, detailcell, anchor;
+
+			this.listcontainerbody.innerHTML = ""; // Empty the table body
+
+			// Build updated list
             var self = this;
             arrayEstimates.forEach(function(estimate) { // self visible here, not this
                 row = document.createElement("tr");
@@ -75,10 +78,10 @@
                 detailcell = document.createElement("td");
                 anchor = document.createElement("a");
                 detailcell.appendChild(anchor);
-                detailText = document.createTextNode("Show");
+				detailText = document.createTextNode("Show");
+				
                 anchor.appendChild(detailText);
-                //anchor.estimateid = estimate.id; // make list item clickable
-                anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
+				anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 	estimateDetails.show(estimate);
                 	
@@ -110,8 +113,7 @@
 		this.listcontainerbody = _listcontainerbody;
 		
 	    this.reset = function() {
-		  this.listcontainer.style.visibility = "hidden";
-		  
+		    this.listcontainer.style.visibility = "hidden";
 	    };
 
 	    this.show = function(next) {
@@ -123,27 +125,28 @@
                         if (req.status == 200) {
                             var productsToShow = JSON.parse(req.responseText);
                             if (productsToShow.length == 0) {
-                                self.alert.textContent = "there is no estimate to price!";
+                                self.alert.textContent = "There is no estimate to price!";
                                 return;
                             }
                             self.update(productsToShow); // self visible by closure
                             if (next) {
                                 next(); // show the default element of the list if present
                             } 
-                        }
-                    } else {
-                        self.alert.textContent = message;
+                        } else {
+							self.alert.textContent = message;
+                  		} 
                     }
                 }
             );
 		};
 
         this.update = function(estimateList) {
-            var row, idestimatecell, estimatecellname;
+			var row, idestimatecell, estimatecellname;
+			
             this.listcontainerbody.innerHTML = ""; // empty the table body
-            // build updated list
 			var self = this;
 			
+			// Build updated list
 			estimateList.forEach(function(estimate) { // self visible here, not this
 				
                 row = document.createElement("tr");
@@ -154,8 +157,8 @@
                 estimatecellname = document.createElement("td");
                 anchor = document.createElement("a");
                 estimatecellname.appendChild(anchor);
-                //estimatecellname.textContent = product.name;
-                productText = document.createTextNode(estimate.product.name);
+
+				productText = document.createTextNode(estimate.product.name);
                 anchor.appendChild(productText);
                 anchor.addEventListener("click", (e) => {
                 	
@@ -187,20 +190,20 @@
 				var rowOn = anchorToClick.parentNode.parentNode;
 				rowOn.style.backgroundColor = "#b6cfff";
 				anchorToClick.dispatchEvent(e);
-			};
-		}
-	} //end EstimatesToPrice()
+			}
+		};
+	} // End EstimatesToPrice()
 
 	
 	function EstimateDetails(options) {
-	    this.alert = options['alert'];
-	    this.estimatesTable = options['id_estimatetable'];
-	    this.customer = options['customer'];
-	    this.productid = options['productid'];
-	    this.price = options['price'];
-	    this.productname = options['productname'];
-	    this.optionals = options['optionals'];
-	    this.image = options['image'];
+	    this.alert = options.alert;
+	    this.estimatesTable = options.id_estimatetable;
+	    this.customer = options.customer;
+	    this.productid = options.productid;
+	    this.price = options.price;
+	    this.productname = options.productname;
+	    this.optionals = options.optionals;
+	    this.image = options.image;
 		
 		var self = this;
 	    
@@ -247,18 +250,18 @@
 				self.optionals.appendChild(li);
 			});
 	    };
-	} // end EstimateDetails()
+	} // End EstimateDetails()
 
 	
 	function EstimateToPriceDetails(options){
+		this.alert = options.alert;
+		this.customername = options.customername;
+		this.productid = options.productid;
+		this.productname = options.productname;
+		this.optionals = options.optional;
+		this.image = options.image;
+		this.priceestimateform = options.priceestimateform;
 
-		this.alert = options['alert'];	//ci serve per identificare errore di input
-		this.customername = options['customername'];
-		this.productid = options['productid'];
-		this.productname = options['productname'];
-		this.optionals = options['optional'];
-		this.image = options['image'];
-		this.priceestimateform = options['priceestimateform'];
 		var self = this;
 		
 		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
@@ -284,7 +287,7 @@
 					form.reportValidity();
 				}
 			});
-		}
+		};
 		
 		this.show = function(estimate) {
 			makeCall("GET", "GetEstimateDetailsEmployee?estimateid=" + estimate.id, null, function(req) {
@@ -303,7 +306,7 @@
 
 		this.reset = function() {
 		      
-		}
+		};
 
 		this.update = function(estimate) {
 			document.getElementById("prdct").setAttribute("value",estimate.id);
@@ -330,9 +333,9 @@
 				}
 				self.optionals.appendChild(li);
 			});
-			
-		}
-	}//end EstimateToPriceDetails()
+		};
+
+	} // End EstimateToPriceDetails()
 
     function PageOrchestrator() {
 	    var alertContainer = document.getElementById("id_alert");
@@ -366,8 +369,7 @@
 				document.getElementById("id_nonpricedestimatetablebody")
 			);
 			
-			estimateToPriceDetails = new EstimateToPriceDetails({ // many parameters, wrap them in an
-			// object
+			estimateToPriceDetails = new EstimateToPriceDetails({ // many parameters, wrap them in an object
 				alert: alertContainer,
 				customername: document.getElementById("id_customername"),
 				productid: document.getElementById("id_productid"),
@@ -375,14 +377,9 @@
 				optional: document.getElementById("id_optional"),
 				image: document.getElementById("id_npedetailsimage"),
 				priceestimateform : document.getElementById("id_npedetailsform")
-
-				//detailcontainer: document.getElementById("id_detailcontainer")
 			});
 			estimateToPriceDetails.registerEvents(this);
 
-			/*wizard = new Wizard(document.getElementById("id_createmissionform"), alertContainer);
-			wizard.registerEvents(this);
-			*/
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
 			});
@@ -400,10 +397,12 @@
 			estimatesToPrice.reset();
 			estimateToPriceDetails.reset();
 			estimatesToPrice.show(function() {
-				if(currentProduct == null){estimatesToPrice.autoclick()}
-				else estimatesToPrice.autoclick(currentProduct.id);//currentProduct.id
+				if (currentProduct == null) {
+					estimatesToPrice.autoclick()
+				} else {
+					estimatesToPrice.autoclick(currentProduct.id);
+				}
 			});
-			//wizard.reset();
 		};
     }
 })();

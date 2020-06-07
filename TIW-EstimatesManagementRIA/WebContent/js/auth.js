@@ -1,7 +1,9 @@
 /**
  * Handles the user authentication and signup.
  */
-(function() { // avoid variables ending up in the global scope
+/* jshint esversion: 6 */
+
+ (function() { // avoid variables ending up in the global scope
     var loginform, signupform;
 
     window.addEventListener("load", () => {
@@ -76,7 +78,7 @@
                 document.getElementById("alertmessagesignup").textContent = "Invalid email address!";
                 return false;
             }
-        };
+        }
 
         // Private function via closure
         function sendData() {
@@ -104,7 +106,7 @@
                     }
                 }
             });
-        };
+        }
      }, false);
     
 })();
