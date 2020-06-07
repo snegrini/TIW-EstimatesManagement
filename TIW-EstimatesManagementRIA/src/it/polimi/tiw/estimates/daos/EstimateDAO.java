@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,25 +20,36 @@ public class EstimateDAO {
 	}
 	
 
-	public boolean createEstimate(int customerId, int productId, String[] optionalsId) throws SQLException  {
+	public int createEstimate(int customerId, int productId, String[] optionalsId) throws SQLException  {
 		String query = "INSERT into estimate (usrid, prdid) VALUES(?, ?)";
+		int genEstimateId;
 		
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+		//https://stackoverflow.com/questions/1915166/how-to-get-the-insert-id-in-jdbc
+		try (PreparedStatement pstatement = connection.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS);) {	
 			pstatement.setInt(1, customerId);
 			pstatement.setInt(2, productId);
 			pstatement.executeUpdate();
+			
+			try (ResultSet generatedKeys = pstatement.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	            	genEstimateId = generatedKeys.getInt(1);
+	            }else {
+	                throw new SQLException("Creating user failed, no ID obtained.");
+	            }
+	        }
 		}
 		
-		// LAST_INSERT_ID() will return the last insert id from the current connection
+		
 		for (int i = 0; i < optionalsId.length; i++) {
-			query = "INSERT into chosenoptional (estid, optid) VALUES(LAST_INSERT_ID(), ?)";
+			query = "INSERT into chosenoptional (estid, optid) VALUES(?, ?)";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-				pstatement.setInt(1, Integer.parseInt(optionalsId[i]));
+				pstatement.setInt(1, genEstimateId);
+				pstatement.setInt(2, Integer.parseInt(optionalsId[i]));
 				pstatement.executeUpdate();
 			}
 		}
 		
-		return false;
+		return genEstimateId;
 	}
 	
 	public boolean addEstimatePrice(int employeeId, int estimateId, float price) throws SQLException {

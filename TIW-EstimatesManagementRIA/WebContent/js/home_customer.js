@@ -81,7 +81,7 @@
                 detailText = document.createTextNode("Show");
                 anchor.appendChild(detailText);
 
-                anchor.setAttribute('estimateid', estimate.id); // Set a custom HTML attribute
+                anchor.setAttribute('data-estimateid', estimate.id); // Set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                     estimateDetails.show(estimate);
 
@@ -101,7 +101,7 @@
 
         this.autoclick = function(estimateId) {
             var e = new Event("click");
-            var selector = "a[estimateid='" + estimateId + "']";
+            var selector = "a[data-estimateid='" + estimateId + "']";
             var anchorToClick = (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
 
             if (anchorToClick) {
@@ -262,6 +262,8 @@
                 }
                 self.optionals.appendChild(li);
             });
+            this.estimatestable.style.visibility = "visible";
+            this.image.style.visibility = "visible";
         };
     } // End EstimateDetails()
 
@@ -278,14 +280,13 @@
             	var form = e.target.closest("form");
 
                 if (form.checkValidity() && nCheckedOptionals>0) {
-                    var self = this,
-                    productToReport = form.querySelector("input[type = 'hidden']").value;
+                    var self = this;
                     makeCall("POST", 'AddEstimate', form, function(req) {
                         if (req.readyState == 4) {
                             var message = req.responseText;
 
                             if (req.status == 200) {
-                                orchestrator.refresh(productToReport);
+                                orchestrator.refresh(message);
                             } else {
                                 self.alert.textContent = message;
                             }

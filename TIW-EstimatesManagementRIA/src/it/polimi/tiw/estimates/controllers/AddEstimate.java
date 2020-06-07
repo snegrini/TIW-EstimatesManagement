@@ -69,9 +69,12 @@ public class AddEstimate extends HttpServlet {
 			EstimateDAO eDAO = new EstimateDAO(connection);
 			
 			try {
-				eDAO.createEstimate(userid, Integer.parseInt(productName), options);
-				String path = "/GetMyEstimatesData"; // dopo aver aggiunto l'estimate, reindirizza a GetPricedEstimates che ritorna la nuova tabella (VA TESTATO!!)
-				response.sendRedirect(request.getContextPath() + path);
+				int estimateId = eDAO.createEstimate(userid, Integer.parseInt(productName), options);
+				
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.setCharacterEncoding("UTF-8");
+			    response.getWriter().println(estimateId);
+				
 				
 			} catch (SQLException e) {
 				response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
