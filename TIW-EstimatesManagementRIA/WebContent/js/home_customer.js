@@ -43,6 +43,7 @@
                         var estimatesToShow = JSON.parse(req.responseText);
                         if (estimatesToShow.length == 0) {
                             self.alert.textContent = "No estimate has been inserted yet!";
+                            self.reset();
                             return;
                         }
                         self.update(estimatesToShow); // self visible by closure
@@ -202,7 +203,7 @@
 
     function EstimateDetails(options) {
         this.alert = options.alert;
-        this.estimatesTable = options.id_estimatetable;
+        this.estimatestable = options.id_estimatetable;
         this.employee = options.employee;
         this.productid = options.productid;
         this.price = options.price;
@@ -228,7 +229,8 @@
         };
 
         this.reset = function() {
-            // TODO
+            this.estimatestable.style.visibility = "hidden";
+            this.image.style.visibility = "hidden";
         };
 
         this.update = function(estimate) {
@@ -355,7 +357,7 @@
 
             estimateDetails = new EstimateDetails({ // many parameters, wrap them in an object
                 alert: alertContainer,
-                id_estimatetable: document.getElementById("id_estimatetable"),
+                id_estimatetable: document.getElementById("id_estimate_details_table"),
                 employee: document.getElementById("id_details_employeename"),
                 productid: document.getElementById("id_details_productid"),
                 price: document.getElementById("id_details_price"),
