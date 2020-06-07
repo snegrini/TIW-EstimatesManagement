@@ -42,11 +42,18 @@
     	<url-pattern>/HomeEmployee.html</url-pattern> 
     	<url-pattern>/CreateEstimatePrice</url-pattern>
     	<url-pattern>/AddEstimatePrice</url-pattern>
+    	<url-pattern>/GetEstimateDetailsEmployee</url-pattern>
+    	<url-pattern>/GetNonPricedEstimates</url-pattern>
+    	<url-pattern>/GetPricedEstimates</url-pattern>
  	</filter-mapping>
  	<filter-mapping> 
     	<filter-name>CustomerChecker</filter-name> 
     	<url-pattern>/HomeCustomer.html</url-pattern>
     	<url-pattern>/CreateEstimate</url-pattern>
+    	<url-pattern>/AddEstimate</url-pattern>
+    	<url-pattern>/GetEstimateDetails</url-pattern>
+    	<url-pattern>/GetMyEstimatesData</url-pattern>
+    	<url-pattern>/GetProductList</url-pattern>
  	</filter-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
