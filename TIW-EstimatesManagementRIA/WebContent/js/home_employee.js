@@ -126,6 +126,7 @@
                             var productsToShow = JSON.parse(req.responseText);
                             if (productsToShow.length == 0) {
                                 self.alert.textContent = "There is no estimate to price!";
+                                this.listcontainer.style.visibility = "hidden";
                                 return;
                             }
                             self.update(productsToShow); // self visible by closure
@@ -261,6 +262,7 @@
 		this.optionals = options.optional;
 		this.image = options.image;
 		this.priceestimateform = options.priceestimateform;
+		this.detailstable = options.detailstable
 
 		var self = this;
 		
@@ -270,6 +272,9 @@
         	this.productname.textContent = "";
         	this.optionals.innerHTML = "";
         	this.image.style.visibility = "hidden";
+        	this.priceestimateform.style.visibility = "hidden";
+        	this.priceestimateform.style.visibility = "hidden";
+        	this.detailstable.style.visibility = "hidden";
         };
 		
 		this.registerEvents = function(orchestrator) {	//on click the customer adds a new estimate to be priced in the DB
@@ -314,6 +319,12 @@
 
 		this.update = function(estimate) {
 			document.getElementById("prdct").setAttribute("value",estimate.id);
+			
+			if(estimate!=null) {
+				this.priceestimateform.style.visibility = "visible";
+	        	this.detailstable.style.visibility = "visible";
+
+			}
 			
         	this.optionals.innerHTML = "";
         	this.image.style.visibility = "visible";
@@ -380,7 +391,8 @@
 				productname: document.getElementById("id_productname"),
 				optional: document.getElementById("id_optional"),
 				image: document.getElementById("id_npedetailsimage"),
-				priceestimateform : document.getElementById("id_npedetailsform")
+				priceestimateform : document.getElementById("id_npedetailsform"),
+				detailstable: document.getElementById("id_npedetailstable")
 			});
 			estimateToPriceDetails.registerEvents(this);
 
