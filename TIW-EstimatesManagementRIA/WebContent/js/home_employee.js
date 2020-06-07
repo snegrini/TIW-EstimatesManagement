@@ -265,7 +265,7 @@
 		this.optionals = options.optional;
 		this.image = options.image;
 		this.priceestimateform = options.priceestimateform;
-		this.detailstable = options.detailstable
+		this.detailstable = options.detailstable;
 
 		var self = this;
 		
@@ -408,7 +408,7 @@
     	
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
-			alertContainer.textContent = "";
+			alertContainerNpe.textContent = "";
 			pricedEstimatesList.reset();	
 			nonPricedEstimatesList.reset();
 			nonPricedEstimateDetails.reset();
