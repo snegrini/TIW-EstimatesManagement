@@ -2,9 +2,12 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Customer page</title>
+	<title>Home Customer - Estimates Management</title>
+	<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+	
 	<link rel="stylesheet" type="text/css" href="css/default.css"/>
 	<link rel="stylesheet" type="text/css" href="css/homecustomer.css"/>
+	
 	<script src="js/utils.js" charset="utf-8" defer></script>
 	<script src="js/home_customer.js" charset="utf-8" defer></script>
 </head>
@@ -25,13 +28,12 @@
 	<div class="container">
 		<div class="column column-40">
 			<h4>Your estimates:</h4>
-			<div id="id_alert" class="alertmessage"></div>	
+			<div id="id_alert" class="errormessage"></div>	
 			<table id="id_estimatetable">
 				<thead>
 					<tr>
 						<th>ID</th>
 						<th>Product</th>
-						<th>Price</th>
 						<th>Details</th>
 					</tr>
 				</thead>
@@ -104,7 +106,7 @@
 			        
 		        <br>
 		        <input type="button" value="Insert" name="Insert">
-		        <p id="id_errormessage"></p>
+		        <p id="id_errormessage" class="errormessage"></p>
 		      </div>
 		    </div>    
 		  </fieldset>
