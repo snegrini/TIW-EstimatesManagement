@@ -51,6 +51,11 @@
         signupform.style.display = "inline";
     }, false);
 
+    document.getElementById("loginanchor").addEventListener("click", (e) => {
+        loginform.style.display = "inline";
+        signupform.style.display = "none";
+    }, false);
+
     document.getElementById("signupbutton").addEventListener("click", (e) => {
         var form = e.target.closest("form");
         
