@@ -354,7 +354,6 @@
 				document.getElementById("id_pricedestimatetable"),
 				document.getElementById("id_pricedestimatetablebody")
 			);
-			customerEstimatesList.show();
 
 			estimateDetails = new EstimateDetails({
 				alert: alertContainer,
@@ -392,14 +391,15 @@
     	
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
-			customerEstimatesList.reset();
+			customerEstimatesList.reset();	
+			estimatesToPrice.reset();
+			estimateToPriceDetails.reset();
+
 			//estimateDetails.reset();
 			customerEstimatesList.show(function() {
 				customerEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
 
-			estimatesToPrice.reset();
-			estimateToPriceDetails.reset();
 			estimatesToPrice.show(function() {
 				if (currentProduct == null) {
 					estimatesToPrice.autoclick()
