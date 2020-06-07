@@ -2,7 +2,7 @@
 
 (function() { // Avoid variables ending up in the global scope
 
-    var customerEstimatesList,estimateDetails, estimatesToPrice, estimateToPriceDetails; // Page components
+    var pricedEstimatesList, estimateDetails, nonPricedEstimatesList, nonPricedEstimateDetails; // Page components
     var pageOrchestrator = new PageOrchestrator(); // Main controller
 
     window.addEventListener("load", () => {
@@ -23,7 +23,7 @@
 	      };
 	  }
 
-	function CustomerEstimatesList(_alert, _listcontainer, _listcontainerbody) {
+	function PricedEstimatesList(_alert, _listcontainer, _listcontainerbody) {
 	    this.alert = _alert;
 	    this.listcontainer = _listcontainer;
 	    this.listcontainerbody = _listcontainerbody;
@@ -101,13 +101,14 @@
         this.autoclick = function(estimateId) {
             var e = new Event("click");
             var selector = "a[data-estimateid='" + estimateId + "']";
-            var anchorToClick =
-                (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-            if (anchorToClick) anchorToClick.dispatchEvent(e);
+            var anchorToClick = (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+            if (anchorToClick) {
+				anchorToClick.dispatchEvent(e);
+			}
         };
-	}
+	} // End PricedEstimatesList()
 
-	function EstimatesToPrice(_alert, _listcontainer, _listcontainerbody) {
+	function NonPricedEstimatesList(_alert, _listcontainer, _listcontainerbody) {
 	    this.alert = _alert;
 	    this.listcontainer = _listcontainer;
 		this.listcontainerbody = _listcontainerbody;
@@ -162,7 +163,7 @@
                 anchor.appendChild(productText);
                 anchor.addEventListener("click", (e) => {
                 	
-					estimateToPriceDetails.show(estimate);
+					nonPricedEstimateDetails.show(estimate);
 					
 					 var children = Array.from(self.listcontainerbody.children);
 					 children.forEach(function(child) {
@@ -184,15 +185,12 @@
         this.autoclick = function(productId) {
             var e = new Event("click");
             var selector = "a[data-productid='" + productId + "']";
-            var anchorToClick =
-				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+            var anchorToClick = (productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) {
-				var rowOn = anchorToClick.parentNode.parentNode;
-				rowOn.style.backgroundColor = "#b6cfff";
 				anchorToClick.dispatchEvent(e);
 			}
 		};
-	} // End EstimatesToPrice()
+	} // End NonPricedEstimatesList()
 
 	
 	function EstimateDetails(options) {
@@ -253,7 +251,7 @@
 	} // End EstimateDetails()
 
 	
-	function EstimateToPriceDetails(options){
+	function NonPricedEstimateDetails(options) {
 		this.alert = options.alert;
 		this.customername = options.customername;
 		this.productid = options.productid;
@@ -339,7 +337,7 @@
 			});
 		};
 
-	} // End EstimateToPriceDetails()
+	} // End NonPricedEstimateDetails()
 
     function PageOrchestrator() {
 	    var alertContainer = document.getElementById("id_alert");
@@ -349,7 +347,7 @@
 												document.getElementById("id_username"));
 			personalMessage.show();
 
-			customerEstimatesList = new CustomerEstimatesList(
+			pricedEstimatesList = new PricedEstimatesList(
 				alertContainer,
 				document.getElementById("id_pricedestimatetable"),
 				document.getElementById("id_pricedestimatetablebody")
@@ -366,13 +364,13 @@
 				image: document.getElementById("id_productimage")
 			});
 			
-			estimatesToPrice = new EstimatesToPrice(
+			nonPricedEstimatesList = new NonPricedEstimatesList(
 				alertContainer,
 				document.getElementById("id_nonpricedestimatetable"),
 				document.getElementById("id_nonpricedestimatetablebody")
 			);
 			
-			estimateToPriceDetails = new EstimateToPriceDetails({ // many parameters, wrap them in an object
+			nonPricedEstimateDetails = new NonPricedEstimateDetails({ // many parameters, wrap them in an object
 				alert: alertContainer,
 				customername: document.getElementById("id_customername"),
 				productid: document.getElementById("id_productid"),
@@ -381,7 +379,7 @@
 				image: document.getElementById("id_npedetailsimage"),
 				priceestimateform : document.getElementById("id_npedetailsform")
 			});
-			estimateToPriceDetails.registerEvents(this);
+			nonPricedEstimateDetails.registerEvents(this);
 
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
@@ -391,20 +389,20 @@
     	
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
-			customerEstimatesList.reset();	
-			estimatesToPrice.reset();
-			estimateToPriceDetails.reset();
+			pricedEstimatesList.reset();	
+			nonPricedEstimatesList.reset();
+			nonPricedEstimateDetails.reset();
 
 			//estimateDetails.reset();
-			customerEstimatesList.show(function() {
-				customerEstimatesList.autoclick(currentEstimate);
+			pricedEstimatesList.show(function() {
+				pricedEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
 
-			estimatesToPrice.show(function() {
+			nonPricedEstimatesList.show(function() {
 				if (currentProduct == null) {
-					estimatesToPrice.autoclick()
+					nonPricedEstimatesList.autoclick()
 				} else {
-					estimatesToPrice.autoclick(currentProduct.id);
+					nonPricedEstimatesList.autoclick(currentProduct.id);
 				}
 			});
 		};
