@@ -37,7 +37,6 @@ public class GetNonPricedEstimates extends HttpServlet {
      */
     public GetNonPricedEstimates() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -53,8 +52,6 @@ public class GetNonPricedEstimates extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
 		EstimateDAO eDAO = new EstimateDAO(connection);
 		ProductDAO pDAO = new ProductDAO(connection);
 		List<Estimate> estimates = new ArrayList<Estimate>();

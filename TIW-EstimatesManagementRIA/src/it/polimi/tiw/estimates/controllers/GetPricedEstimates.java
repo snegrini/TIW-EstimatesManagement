@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.polimi.tiw.estimates.beans.Estimate;
-import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
 import it.polimi.tiw.estimates.daos.ProductDAO;
@@ -39,7 +38,6 @@ public class GetPricedEstimates extends HttpServlet {
      */
     public GetPricedEstimates() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     @Override
