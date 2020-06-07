@@ -73,7 +73,7 @@ public class AddEstimate extends HttpServlet {
 				
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.setCharacterEncoding("UTF-8");
-			    response.getWriter().println(estimateId);
+			    response.getWriter().print(estimateId); // avoid '\n' to be sent!
 				
 				
 			} catch (SQLException e) {

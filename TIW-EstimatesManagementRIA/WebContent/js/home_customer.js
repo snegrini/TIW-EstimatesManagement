@@ -40,7 +40,7 @@
                     var message = req.responseText;
                     
                     if (req.status == 200) {
-                        var estimatesToShow = JSON.parse(req.responseText);
+                        var estimatesToShow = JSON.parse(message);
                         if (estimatesToShow.length == 0) {
                             self.alert.textContent = "No estimate has been inserted yet!";
                             self.reset();
@@ -56,7 +56,7 @@
         };
 
         this.update = function(arrayEstimates) {
-            var row, idestimatecell, productnamecell, pricecell,detailcell, anchor;
+            var row, idestimatecell, productnamecell, pricecell, detailcell, detailText, anchor;
             this.listcontainerbody.innerHTML = ""; // Empty the table body
             var self = this;
 
@@ -86,9 +86,9 @@
                     estimateDetails.show(estimate);
 
                     var children = Array.from(self.listcontainerbody.children);
-                     children.forEach(function(child) {
-                         child.style.backgroundColor = "white";
-                     });
+                    children.forEach(function(child) {
+                        child.style.backgroundColor = "white";
+                    });
                     e.target.closest("tr").style.backgroundColor = "#b6cfff";
                 }, false);
 
@@ -105,8 +105,6 @@
             var anchorToClick = (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
 
             if (anchorToClick) {
-                var rowOn = anchorToClick.parentNode.parentNode;
-                rowOn.style.backgroundColor = "#b6cfff";
                 anchorToClick.dispatchEvent(e);
             }
         };
@@ -129,7 +127,7 @@
                         var message = req.responseText;
 
                         if (req.status == 200) {
-                            var productsToShow = JSON.parse(req.responseText);
+                            var productsToShow = JSON.parse(message);
                             if (productsToShow.length == 0) {
                                 self.alert.textContent = "No products available!";
                                 return;
@@ -148,7 +146,7 @@
         };
 
         this.update = function(arrayProducts) {
-            var row, idproductcell, productnamecell;
+            var row, idproductcell, productnamecell, productText, anchor;
             this.listcontainerbody.innerHTML = ""; // Empty the table body
             var self = this;
 
@@ -166,18 +164,17 @@
 
                 productText = document.createTextNode(product.name);
                 anchor.appendChild(productText);
-                anchor.setAttribute('productid', product.id);
+                anchor.setAttribute('data-productid', product.id);
                 anchor.addEventListener("click", (e) => {
-
                     productDetails.show(product); // the list must know the details container
 
-                     var children = Array.from(self.listcontainerbody.children);
-                     children.forEach(function(child) {
-                         child.style.backgroundColor = "white";
-                     });
-
+                    var children = Array.from(self.listcontainerbody.children);
+                    children.forEach(function(child) {
+                        child.style.backgroundColor = "white";
+                    });
                     e.target.closest("tr").style.backgroundColor = "#b6cfff";
                 }, false);
+
                 anchor.href = "#";
                 row.appendChild(productnamecell);
 
@@ -189,12 +186,10 @@
 
         this.autoclick = function(productId) {
             var e = new Event("click");
-            var selector = "a[productid='" + productId + "']";
+            var selector = "a[data-productid='" + productId + "']";
             var anchorToClick = (productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             
             if (anchorToClick) {
-                var rowOn = anchorToClick.parentNode.parentNode;
-                rowOn.style.backgroundColor = "#b6cfff";
                 anchorToClick.dispatchEvent(e);
             }
         };
@@ -219,7 +214,7 @@
                     var message = req.responseText;
 
                     if (req.status == 200) {
-                        var estimateWithDetails = JSON.parse(req.responseText);
+                        var estimateWithDetails = JSON.parse(message);
                         self.update(estimateWithDetails);
                     } else {
                         self.alert.textContent = message;
@@ -276,10 +271,10 @@
 
         this.registerEvents = function(orchestrator) {	// On click the customer adds a new estimate to be priced into the DB
             this.addestimateform.querySelector("input[type='button']").addEventListener('click', (e) => {
-            	var nCheckedOptionals=document.querySelectorAll('input[type="checkbox"]:checked').length;	//calculate the number of checked checkboxes
+            	var nCheckedOptionals = document.querySelectorAll('input[type="checkbox"]:checked').length;	//calculate the number of checked checkboxes
             	var form = e.target.closest("form");
 
-                if (form.checkValidity() && nCheckedOptionals>0) {
+                if (form.checkValidity() && nCheckedOptionals > 0) {
                     var self = this;
                     makeCall("POST", 'AddEstimate', form, function(req) {
                         if (req.readyState == 4) {
@@ -330,7 +325,7 @@
 
                 if (optional.type == "SALE") {
                     var saleSpan = document.createElement("span");
-                    saleSpan.setAttribute("class","sale");
+                    saleSpan.setAttribute("class", "sale");
                     saleSpan.textContent = "SALE!";
                     li.appendChild(saleSpan);
                 }
@@ -354,7 +349,6 @@
                 document.getElementById("id_estimatetable"),
                 document.getElementById("id_estimatetablebody")
             );
-            customerEstimatesList.show();
 
             estimateDetails = new EstimateDetails({ // many parameters, wrap them in an object
                 alert: alertContainer,
@@ -391,13 +385,13 @@
             alertContainer.textContent = "";
             customerEstimatesList.reset();
             estimateDetails.reset();
+            productList.reset();
+            productDetails.reset();
 
             customerEstimatesList.show(function() {
                 customerEstimatesList.autoclick(currentEstimate);
             });
 
-            productList.reset();
-            productDetails.reset();
             productList.show(function() {
                 if (currentProduct == null) {
                     productList.autoclick();

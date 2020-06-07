@@ -2,7 +2,7 @@
 
 (function() { // Avoid variables ending up in the global scope
 
-    var customerEstimatesList,estimateDetails, estimatesToPrice, estimateToPriceDetails; // Page components
+    var pricedEstimatesList, estimateDetails, nonPricedEstimatesList, nonPricedEstimateDetails; // Page components
     var pageOrchestrator = new PageOrchestrator(); // Main controller
 
     window.addEventListener("load", () => {
@@ -23,7 +23,7 @@
 	      };
 	  }
 
-	function CustomerEstimatesList(_alert, _listcontainer, _listcontainerbody) {
+	function PricedEstimatesList(_alert, _listcontainer, _listcontainerbody) {
 	    this.alert = _alert;
 	    this.listcontainer = _listcontainer;
 	    this.listcontainerbody = _listcontainerbody;
@@ -40,7 +40,7 @@
 					var message = req.responseText;
 					
 					if (req.status == 200) {
-						var estimatesToShow = JSON.parse(req.responseText);
+						var estimatesToShow = JSON.parse(message);
 						if (estimatesToShow.length == 0) {
 						self.alert.textContent = "No estimate has been inserted yet!";
 						return;
@@ -81,7 +81,7 @@
 				detailText = document.createTextNode("Show");
 				
                 anchor.appendChild(detailText);
-				anchor.setAttribute('estimateid', estimate.id); // set a custom HTML attribute
+				anchor.setAttribute('data-estimateid', estimate.id); // set a custom HTML attribute
                 anchor.addEventListener("click", (e) => {
                 	estimateDetails.show(estimate);
                 	
@@ -100,14 +100,15 @@
   
         this.autoclick = function(estimateId) {
             var e = new Event("click");
-            var selector = "a[estimateid='" + estimateId + "']";
-            var anchorToClick =
-                (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-            if (anchorToClick) anchorToClick.dispatchEvent(e);
+            var selector = "a[data-estimateid='" + estimateId + "']";
+            var anchorToClick = (estimateId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+            if (anchorToClick) {
+				anchorToClick.dispatchEvent(e);
+			}
         };
-	}
+	} // End PricedEstimatesList()
 
-	function EstimatesToPrice(_alert, _listcontainer, _listcontainerbody) {
+	function NonPricedEstimatesList(_alert, _listcontainer, _listcontainerbody) {
 	    this.alert = _alert;
 	    this.listcontainer = _listcontainer;
 		this.listcontainerbody = _listcontainerbody;
@@ -123,7 +124,7 @@
                     if (req.readyState == 4) {
                         var message = req.responseText;
                         if (req.status == 200) {
-                            var productsToShow = JSON.parse(req.responseText);
+                            var productsToShow = JSON.parse(message);
                             if (productsToShow.length == 0) {
                                 self.alert.textContent = "There is no estimate to price!";
                                 this.listcontainer.style.visibility = "hidden";
@@ -163,7 +164,7 @@
                 anchor.appendChild(productText);
                 anchor.addEventListener("click", (e) => {
                 	
-					estimateToPriceDetails.show(estimate);
+					nonPricedEstimateDetails.show(estimate);
 					
 					 var children = Array.from(self.listcontainerbody.children);
 					 children.forEach(function(child) {
@@ -184,16 +185,13 @@
 
         this.autoclick = function(productId) {
             var e = new Event("click");
-            var selector = "a[productid='" + productId + "']";
-            var anchorToClick =
-				(productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+            var selector = "a[data-productid='" + productId + "']";
+            var anchorToClick = (productId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
             if (anchorToClick) {
-				var rowOn = anchorToClick.parentNode.parentNode;
-				rowOn.style.backgroundColor = "#b6cfff";
 				anchorToClick.dispatchEvent(e);
 			}
 		};
-	} // End EstimatesToPrice()
+	} // End NonPricedEstimatesList()
 
 	
 	function EstimateDetails(options) {
@@ -254,7 +252,7 @@
 	} // End EstimateDetails()
 
 	
-	function EstimateToPriceDetails(options){
+	function NonPricedEstimateDetails(options) {
 		this.alert = options.alert;
 		this.customername = options.customername;
 		this.productid = options.productid;
@@ -318,7 +316,7 @@
 		};
 
 		this.update = function(estimate) {
-			document.getElementById("prdct").setAttribute("value",estimate.id);
+			document.getElementById("prdct").setAttribute("value", estimate.id);
 			
 			if(estimate!=null) {
 				this.priceestimateform.style.visibility = "visible";
@@ -328,7 +326,7 @@
 			
         	this.optionals.innerHTML = "";
         	this.image.style.visibility = "visible";
-			this.image.setAttribute("src","images/".concat(estimate.product.image));
+			this.image.setAttribute("src", "images/".concat(estimate.product.image));
 			this.customername.textContent = estimate.customer.name + " " + estimate.customer.surname;
 			this.productid.textContent = estimate.product.id;
 			this.productname.textContent = estimate.product.name;
@@ -342,7 +340,7 @@
 				
 				if (opt.type == "SALE"){
 					var saleSpan = document.createElement("span");
-					saleSpan.setAttribute("class","sale");
+					saleSpan.setAttribute("class", "sale");
 					saleSpan.textContent = "SALE!";
 					li.appendChild(saleSpan);
 				}
@@ -350,7 +348,7 @@
 			});
 		};
 
-	} // End EstimateToPriceDetails()
+	} // End NonPricedEstimateDetails()
 
     function PageOrchestrator() {
 	    var alertContainer = document.getElementById("id_alert");
@@ -360,12 +358,11 @@
 												document.getElementById("id_username"));
 			personalMessage.show();
 
-			customerEstimatesList = new CustomerEstimatesList(
+			pricedEstimatesList = new PricedEstimatesList(
 				alertContainer,
 				document.getElementById("id_pricedestimatetable"),
 				document.getElementById("id_pricedestimatetablebody")
 			);
-			customerEstimatesList.show();
 
 			estimateDetails = new EstimateDetails({
 				alert: alertContainer,
@@ -378,13 +375,13 @@
 				image: document.getElementById("id_productimage")
 			});
 			
-			estimatesToPrice = new EstimatesToPrice(
+			nonPricedEstimatesList = new NonPricedEstimatesList(
 				alertContainer,
 				document.getElementById("id_nonpricedestimatetable"),
 				document.getElementById("id_nonpricedestimatetablebody")
 			);
 			
-			estimateToPriceDetails = new EstimateToPriceDetails({ // many parameters, wrap them in an object
+			nonPricedEstimateDetails = new NonPricedEstimateDetails({ // many parameters, wrap them in an object
 				alert: alertContainer,
 				customername: document.getElementById("id_customername"),
 				productid: document.getElementById("id_productid"),
@@ -394,7 +391,7 @@
 				priceestimateform : document.getElementById("id_npedetailsform"),
 				detailstable: document.getElementById("id_npedetailstable")
 			});
-			estimateToPriceDetails.registerEvents(this);
+			nonPricedEstimateDetails.registerEvents(this);
 
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.removeItem('username');
@@ -404,19 +401,20 @@
     	
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
-			customerEstimatesList.reset();
+			pricedEstimatesList.reset();	
+			nonPricedEstimatesList.reset();
+			nonPricedEstimateDetails.reset();
+
 			//estimateDetails.reset();
-			customerEstimatesList.show(function() {
-				customerEstimatesList.autoclick(currentEstimate);
+			pricedEstimatesList.show(function() {
+				pricedEstimatesList.autoclick(currentEstimate);
 			}); // closure preserves visibility of this
 
-			estimatesToPrice.reset();
-			estimateToPriceDetails.reset();
-			estimatesToPrice.show(function() {
+			nonPricedEstimatesList.show(function() {
 				if (currentProduct == null) {
-					estimatesToPrice.autoclick()
+					nonPricedEstimatesList.autoclick()
 				} else {
-					estimatesToPrice.autoclick(currentProduct.id);
+					nonPricedEstimatesList.autoclick(currentProduct.id);
 				}
 			});
 		};
