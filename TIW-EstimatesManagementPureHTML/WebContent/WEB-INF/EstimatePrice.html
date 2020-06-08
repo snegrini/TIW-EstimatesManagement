@@ -6,13 +6,14 @@
 	<link rel="stylesheet" type="text/css" href="../css/default.css" th:href="@{/css/default.css}"/>
 	<link rel="stylesheet" type="text/css" href="../css/estimateorder.css" th:href="@{/css/estimateorder.css}"/>
 </head>
-<body>
-	<header>
-		<h1>Estimate Price page</h1>
-		<h5>Employee <span th:text="${session.user.username}">Mario</span></h5>
-		
+<body>	
+	<header class="headerrow">
+		<div class="titlecolumn">
+			<h1>Estimate Price page</h1>
+			<h4>Employee <span th:text="${session.user.username} + ' !'">MarioRossi</span></h4>
+		</div>
 		<div class="buttoncolumn">
-			<a href="Logout">Logout</a>
+			<a th:href="@{/Logout}">Logout</a>
 		</div>
 	</header>
 
@@ -37,21 +38,21 @@
 			  </tr>
 			  <tr>
 			    <th>Product name:</th>
-			    <td th:text="${product.name}">Dildo Gommoso</td>
+			    <td th:text="${product.name}">Treno Suburbano S11</td>
 			  </tr>
 			  <tr>
 			    <th>Optional:</th>
 				    <td>
 				    	<ul th:remove="all-but-first">
 							<li th:each="o : ${optionals}">
-								<span th:text="${o.name}">Rosso Fuoco</span>
+								<span th:text="${o.name}">Sedili in pelle</span>
 								<span class="sale" th:if="${o.type == (@it.polimi.tiw.estimates.beans.OptionalType@SALE)}" th:class="sale">SALE!</span>
 							</li>
 							<li>
-								<span>Verde Foglia</span>
+								<span>Porta Biciclette</span>
 							</li>
 							<li>
-								<span>Jet Black</span>
+								<span>Wifi</span>
 							</li>
 						</ul>
 					</td>
@@ -71,7 +72,7 @@
 		
 	</div>
 	<footer>
-	  <p>Made with ❤️ by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
+	  <p>Made with ❤&hearts; by Samuele Negrini, Aldo Plenzich, Mattia Sala</p>
 	</footer>
 </body>
 </html>

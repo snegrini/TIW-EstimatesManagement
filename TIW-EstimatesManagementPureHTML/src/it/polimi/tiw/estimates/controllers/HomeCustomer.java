@@ -78,7 +78,7 @@ public class HomeCustomer extends HttpServlet {
 
 		Product chosenProduct = null;
 		Product chosenEstimateProduct = null;
-		Product chosenEstimate = null;
+		Estimate chosenEstimate = null;
 		
 		
 		try {
@@ -86,10 +86,11 @@ public class HomeCustomer extends HttpServlet {
 			estimates = eDAO.findEstimatesByCustomer(user.getId());
 			
 			if(chosenEstimateId == null) {
-				chosenEstimate = pDAO.findDefaultProduct();
-				chosenEstimateProduct = ;
+				//chosenEstimate = eDAO.findEstimateById(chosenEstimateId);
+				//chosenEstimateProduct = pDAO.findDefaultProduct();//
 			}else {
-				
+				//chosenEstimate = pDAO.findDefaultProduct();
+				//chosenEstimateProduct = eDAO.findEstimateById(chosenEstimateId);
 			}
 			
 			if (chosenProductId == null) {
