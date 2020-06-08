@@ -25,6 +25,7 @@ import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
 import it.polimi.tiw.estimates.daos.OptionalDAO;
 import it.polimi.tiw.estimates.daos.ProductDAO;
+import it.polimi.tiw.estimates.daos.UserDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
@@ -64,6 +65,7 @@ public class HomeCustomer extends HttpServlet {
 		
 		HttpSession s = request.getSession();
 		User user = (User) s.getAttribute("user");
+		String chosenEstimateId = request.getParameter("estimateid");
 		String chosenProductId = request.getParameter("productid");
 		
 		EstimateDAO eDAO = new EstimateDAO(connection);
@@ -74,12 +76,39 @@ public class HomeCustomer extends HttpServlet {
 		
 		OptionalDAO oDAO = new OptionalDAO(connection);
 		List<Optional> optionals = null;
+		
+		UserDAO uDAO = new UserDAO(connection);
+		User detailsEmployee = null;
+		
+		Product detailsProduct = null;
+		List<Optional> detailsOptionals = null;
 
+		Estimate chosenEstimate = null;
 		Product chosenProduct = null;
 		
 		try {
-			products = pDAO.findProducts();
 			estimates = eDAO.findEstimatesByCustomer(user.getId());
+			
+			if (chosenEstimateId == null) {
+				chosenEstimate = eDAO.findDefaultEstimateByCustomer(user.getId());
+			} else {
+				chosenEstimate = eDAO.findEstimateById(Integer.parseInt(chosenEstimateId));
+			}
+			
+			detailsEmployee  = uDAO.findUserById(chosenEstimate.getEmployeeId());
+			detailsProduct   = pDAO.findProductById(chosenEstimate.getProductId());
+			detailsOptionals = oDAO.findChosenOptionalsByEstimate(chosenEstimate.getId());
+			
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Bad estimate number");
+			return;
+		} catch (NullPointerException | SQLException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in estimate's database extraction");
+			return;
+		}
+		
+		try {
+			products = pDAO.findProducts();
 			
 			if (chosenProductId == null) {
 				chosenProduct = pDAO.findDefaultProduct();
@@ -88,10 +117,11 @@ public class HomeCustomer extends HttpServlet {
 			}
 			
 			optionals = oDAO.findAvailableOptionalsByProduct(chosenProduct.getId());
+			
 		} catch (NumberFormatException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Bad product number");
 			return;
-		} catch (SQLException e) {
+		} catch (NullPointerException | SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in product's database extraction");
 			return;
 		}
@@ -99,10 +129,17 @@ public class HomeCustomer extends HttpServlet {
 		String path = "/WEB-INF/HomeCustomer.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		ctx.setVariable("estimates", estimates);
+		ctx.setVariable("selectedEstimate", chosenEstimate);
+		ctx.setVariable("detailsEmployee", detailsEmployee);
+		ctx.setVariable("detailsProduct", detailsProduct);
+		ctx.setVariable("detailsOptionals", detailsOptionals);
+
 		ctx.setVariable("products", products);
 		ctx.setVariable("selectedProduct", chosenProduct);
 		ctx.setVariable("optionals", optionals);
-		ctx.setVariable("estimates", estimates);
+		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

@@ -27,7 +27,7 @@ public class EstimateDAO {
 		}
 		
 		// LAST_INSERT_ID() will return the last insert id from the current connection
-		for(int i = 0; i< optionalsId.length; i++) {
+		for(int i = 0; i < optionalsId.length; i++) {
 			query = "INSERT into chosenoptional (estid, optid) VALUES(LAST_INSERT_ID(), ?)";
 			try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 				pstatement.setInt(1, Integer.parseInt(optionalsId[i]));
@@ -47,6 +47,27 @@ public class EstimateDAO {
 			pstatement.executeUpdate();
 		}
 		return false;
+	}
+	
+
+	public Estimate findDefaultEstimateByCustomer(int customerId) throws SQLException {
+		
+		Estimate estimate = null;
+		String query = "SELECT id, prdid, empid, price FROM estimate ORDER BY id ASC LIMIT 1";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			
+			try (ResultSet result = pstatement.executeQuery();) {	
+				if (result.next()) {
+					estimate = new Estimate();
+					estimate.setId(result.getInt("id"));
+					estimate.setProductId(result.getInt("prdid"));
+					estimate.setEmployeeId(result.getInt("empid"));
+					estimate.setPrice(result.getFloat("price"));
+				}	
+			}	
+		}	
+		return estimate;
 	}
 	
 	
