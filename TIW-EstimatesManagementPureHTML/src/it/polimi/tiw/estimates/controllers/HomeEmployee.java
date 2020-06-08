@@ -19,10 +19,13 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.estimates.beans.Estimate;
+import it.polimi.tiw.estimates.beans.Optional;
 import it.polimi.tiw.estimates.beans.Product;
 import it.polimi.tiw.estimates.beans.User;
 import it.polimi.tiw.estimates.daos.EstimateDAO;
+import it.polimi.tiw.estimates.daos.OptionalDAO;
 import it.polimi.tiw.estimates.daos.ProductDAO;
+import it.polimi.tiw.estimates.daos.UserDAO;
 import it.polimi.tiw.estimates.utils.ConnectionHandler;
 
 /**
@@ -62,23 +65,46 @@ public class HomeEmployee extends HttpServlet {
 		
 		HttpSession s = request.getSession();
 		User user = (User) s.getAttribute("user");
+		String chosenEstimateId = request.getParameter("estimateid");
 		
 		EstimateDAO estimateDao = new EstimateDAO(connection);
+		ProductDAO productDao = new ProductDAO(connection);
+		OptionalDAO optionalDao = new OptionalDAO(connection);
+		UserDAO userDao = new UserDAO(connection);
+		
 		List<Estimate> pricedEstimates = null;
 		List<Estimate> nonPricedEstimates = null;
 		
-		ProductDAO productDao = new ProductDAO(connection);
 		List<Product> pricedProducts = null;
 		List<Product> nonPricedProducts = null;
+		
+		Estimate chosenEstimate = null;
+		User detailsCustomer = null;
+		Product detailsProduct = null;
+		List<Optional> detailsOptionals = null;
 		
 		try {
 			pricedEstimates = estimateDao.findPricedEstimatesByEmployee(user.getId());
 			pricedProducts = productDao.findPricedProductsByEmployee(user.getId());
 			
+			if (chosenEstimateId == null) {
+				chosenEstimate = estimateDao.findDefaultEstimateByEmployee(user.getId());
+			} else {
+				chosenEstimate = estimateDao.findEstimateById(Integer.parseInt(chosenEstimateId));
+			}
+			
+			detailsCustomer  = userDao.findUserById(chosenEstimate.getCustomerId());
+			detailsProduct   = productDao.findProductById(chosenEstimate.getProductId());
+			detailsOptionals = optionalDao.findChosenOptionalsByEstimate(chosenEstimate.getId());
+			
 			nonPricedEstimates = estimateDao.findNonPricedEstimates();
 			nonPricedProducts = productDao.findNonPricedProducts();
-		} catch (SQLException e) {
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Bad estimate number");
+			return;
+		} catch (NullPointerException | SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in estimates database extraction");
+			return;
 		}
 		
 		
@@ -88,9 +114,14 @@ public class HomeEmployee extends HttpServlet {
 		
 		ctx.setVariable("pricedEstimates", pricedEstimates);
 		ctx.setVariable("pricedProducts", pricedProducts);
+		
+		ctx.setVariable("detailsEstimate", chosenEstimate);
+		ctx.setVariable("detailsCustomer", detailsCustomer);
+		ctx.setVariable("detailsProduct", detailsProduct);
+		ctx.setVariable("detailsOptionals", detailsOptionals);
+		
 		ctx.setVariable("nonPricedEstimates", nonPricedEstimates);
 		ctx.setVariable("nonPricedProducts", nonPricedProducts);
-		// TODO set default estimate to be selected
 		
 		templateEngine.process(path, ctx, response.getWriter());
 	}

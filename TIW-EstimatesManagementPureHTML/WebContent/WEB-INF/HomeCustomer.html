@@ -29,49 +29,62 @@
 					<tr>
 						<th>ID</th>
 						<th>Product</th>
-						<th>Price</th>
 						<th>Details</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="e : ${estimates}" th:class="(${e.id} == ${selectedEstimate.id})? 'current'">
+					<tr th:each="e : ${estimates}" th:class="(${e.id} == ${detailsEstimate.id}) ? 'current'">
 						<td th:text="${e.id}">5</td>
-						<td >
+						<td>
 							<span th:each="p : ${products}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Treno Suburbano S11</span>
 						</td>
-						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
-						<td><a href="" th:href="@{/HomeCustomer(estimateid=${e.id})}">Details</a></td>
+						<td><a href="" th:href="@{/HomeCustomer(estimateid=${e.id},productid=${selectedProduct.id})}">Details</a></td>
 					</tr>
 				</tbody>
 			</table>
 			
 			<div class="container">
 				<div class="column column-25">
-					<img id="id_productimage" style="width:100%; height: 200px;">
+					<img class="productimg" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img"
+		      			th:alt="${detailsProduct.name}" th:src="@{/images/{image}(image=${detailsProduct.image})}"/>
 				</div>
 				<div class="column column-45">
-					<table id="id_estimate_details_table">
+					<table>
 					  <tr>
 					    <th>Employee:</th>
-					    <td id="id_details_employeename">Luca Tony</td>
+					    <td th:text="(${detailsEmployee == null}) ? '----' : ${detailsEmployee.name + ' ' + detailsEmployee.surname}">Luca Tony</td>
 					  </tr>
 					  <tr>
 					    <th>Product ID:</th>
-					    <td id="id_details_productid">5</td>
-					  </tr>
-					  <tr>
-					    <th>Price:</th>
-					    <td id="id_details_price">100 <span>€</span></td>
+					    <td th:text="${detailsProduct.id}">5</td>
 					  </tr>
 					  <tr>
 					    <th>Product name:</th>
-					    <td id="id_details_productname">Treno Suburbano S4</td>
+					    <td th:text="${detailsProduct.name}">Treno Suburbano S4</td>
+					  </tr>
+					  <tr>
+					    <th>Price:</th>
+					    <td>
+					    	<span th:text="(${detailsEmployee == null}) ? 'Not priced yet' : ${detailsEstimate.price}">100</span>
+					    	<span th:if="${detailsEmployee != null}">&euro;</span>
+					    </td>
 					  </tr>
 					  <tr>
 					    <th>Optional:</th>
 						    <td>
-								<ul id="id_details_optionals">	
-								</ul>
+						        <ul th:remove="all-but-first">
+						          <li th:each="o : ${detailsOptionals}">
+					            	<span th:text="${o.name}">Optional 1</span>
+					            	<span class="sale" th:if="${o.type == (@it.polimi.tiw.estimates.beans.OptionalType@SALE)}" th:class="sale">SALE!</span>
+						          </li>
+						          <li>
+					            	<span>Optional 2</span>
+						          </li>
+						          <li>
+					            	<span>Optional 3</span>
+					            	<span class="sale">SALE!</span>
+						          </li>
+						        </ul>
 							</td>
 					  </tr>
 					</table>
@@ -100,7 +113,7 @@
 		  					<span th:text="${p.id}"></span>
 		  				</td>
 		  				<td>
-		  					<a th:href="@{/HomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
+		  					<a th:href="@{/HomeCustomer(estimateid=${detailsEstimate.id},productid=${p.id})}"><span th:text="${p.name}"></span></a>
 		  				</td>
 		  			</tr>
 		  		 </tbody>

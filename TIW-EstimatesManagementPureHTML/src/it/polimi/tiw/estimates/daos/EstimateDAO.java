@@ -53,9 +53,13 @@ public class EstimateDAO {
 	public Estimate findDefaultEstimateByCustomer(int customerId) throws SQLException {
 		
 		Estimate estimate = null;
-		String query = "SELECT id, prdid, empid, price FROM estimate ORDER BY id ASC LIMIT 1";
+		String query = "SELECT id, prdid, empid, price " +
+				"FROM estimate " +
+				"WHERE usrid = ? " +
+				"ORDER BY id ASC LIMIT 1";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, customerId);
 			
 			try (ResultSet result = pstatement.executeQuery();) {	
 				if (result.next()) {
@@ -63,6 +67,30 @@ public class EstimateDAO {
 					estimate.setId(result.getInt("id"));
 					estimate.setProductId(result.getInt("prdid"));
 					estimate.setEmployeeId(result.getInt("empid"));
+					estimate.setPrice(result.getFloat("price"));
+				}	
+			}	
+		}	
+		return estimate;
+	}
+	
+	public Estimate findDefaultEstimateByEmployee(int employeeId) throws SQLException {
+		
+		Estimate estimate = null;
+		String query = "SELECT id, usrid, prdid, price " +
+				"FROM estimate " +
+				"WHERE empid = ? " +
+				"ORDER BY id ASC LIMIT 1";
+		
+		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
+			pstatement.setInt(1, employeeId);
+			
+			try (ResultSet result = pstatement.executeQuery();) {	
+				if (result.next()) {
+					estimate = new Estimate();
+					estimate.setId(result.getInt("id"));
+					estimate.setProductId(result.getInt("prdid"));
+					estimate.setCustomerId(result.getInt("usrid"));
 					estimate.setPrice(result.getFloat("price"));
 				}	
 			}	
@@ -114,7 +142,7 @@ public class EstimateDAO {
 					Estimate estimate = new Estimate();
 					
 					estimate.setId(result.getInt("id"));
-					estimate.setClientId(result.getInt("usrid"));
+					estimate.setCustomerId(result.getInt("usrid"));
 					estimate.setProductId(result.getInt("prdid"));			
 					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
@@ -156,7 +184,7 @@ public class EstimateDAO {
 				if (result.next()) {
 					estimate = new Estimate();
 					estimate.setId(result.getInt("id"));
-					estimate.setClientId(result.getInt("usrid"));
+					estimate.setCustomerId(result.getInt("usrid"));
 					estimate.setProductId(result.getInt("prdid"));
 					estimate.setEmployeeId(result.getInt("empid"));
 					estimate.setPrice(result.getFloat("price"));
@@ -176,4 +204,5 @@ public class EstimateDAO {
 			pstatement.executeUpdate();
 		}
 	}
+
 }

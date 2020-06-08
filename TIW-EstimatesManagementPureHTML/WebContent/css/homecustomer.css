@@ -94,13 +94,6 @@ fieldset{
 	border-radius:10px;
 }
 
-.current {background-color: #b6cfff;}
-
-.productimg{
-	height: 200px;
-	width: 300px;
-}
-
 .checkbox{
 	list-style:none;
 	float:left;

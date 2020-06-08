@@ -83,7 +83,7 @@ public class AddEstimatePrice extends HttpServlet {
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Price cannot be negative!");				
 				} else {
 					eDAO.addEstimatePrice(userid, estimateid, price);
-					path = "/HomeEmployee";
+					path = "/HomeEmployee?estimateid=" + estimateid;
 					response.sendRedirect(request.getContextPath() + path);
 				}
 			} catch (NumberFormatException | SQLException e) {
