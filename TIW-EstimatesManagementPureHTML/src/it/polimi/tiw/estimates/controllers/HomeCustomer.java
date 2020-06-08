@@ -65,6 +65,7 @@ public class HomeCustomer extends HttpServlet {
 		HttpSession s = request.getSession();
 		User user = (User) s.getAttribute("user");
 		String chosenProductId = request.getParameter("productid");
+		String chosenEstimateId = request.getParameter("estimateid");
 		
 		EstimateDAO eDAO = new EstimateDAO(connection);
 		List<Estimate> estimates = null;
@@ -76,10 +77,20 @@ public class HomeCustomer extends HttpServlet {
 		List<Optional> optionals = null;
 
 		Product chosenProduct = null;
+		Product chosenEstimateProduct = null;
+		Product chosenEstimate = null;
+		
 		
 		try {
 			products = pDAO.findProducts();
 			estimates = eDAO.findEstimatesByCustomer(user.getId());
+			
+			if(chosenEstimateId == null) {
+				chosenEstimate = pDAO.findDefaultProduct();
+				chosenEstimateProduct = ;
+			}else {
+				
+			}
 			
 			if (chosenProductId == null) {
 				chosenProduct = pDAO.findDefaultProduct();
@@ -101,6 +112,7 @@ public class HomeCustomer extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("products", products);
 		ctx.setVariable("selectedProduct", chosenProduct);
+		ctx.setVariable("selectedEstimate", chosenEstimate);
 		ctx.setVariable("optionals", optionals);
 		ctx.setVariable("estimates", estimates);
 		templateEngine.process(path, ctx, response.getWriter());
