@@ -10,7 +10,7 @@
 	<header class="headerrow">
 		<div class="titlecolumn">
 			<h1>Customer Page</h1>
-			<h4>Welcome <span th:text="${session.user.username}">EmployeeName</span></h4>
+			<h4>Welcome <span th:text="${session.user.username} + ' !'">MarioRossi</span></h4>
 		</div>
 		<div class="buttoncolumn">
 			<a th:href="@{/Logout}">Logout</a>
@@ -24,7 +24,8 @@
 	<div class="container">
 		<div class="column column-50">
 			<h4>Priced estimates by you:</h4>
-			<table>
+			<p th:if="${#lists.isEmpty(pricedEstimates)}" th:text="'You haven't priced any estimates.'"></p>
+			<table th:unless="${#lists.isEmpty(pricedEstimates)}">
 				<thead>
 					<tr>
 						<th>Estimate ID</th>
@@ -37,7 +38,7 @@
 					<tr th:each="e : ${pricedEstimates}" th:class="(${e.id} == ${estimateid})? 'current'">
 						<td th:text="${e.id}">5</td>
 						<td>
-							<span th:each="p : ${pricedProducts}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Dildo Gommoso</span>
+							<span th:each="p : ${pricedProducts}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Treno Suburbano S111</span>
 						</td>
 						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
 						<td><a href="">Details</a></td>
@@ -45,7 +46,7 @@
 					<tr>
 						<td>6</td>
 						<td>
-							<span>Spazzola Rossa</span>
+							<span>Treno S4</span>
 						</td>
 						<td><span th:text="${e.price}">79.90</span> <span>&euro;</span></td>
 						<td><a href="">Details</a></td>
@@ -53,7 +54,7 @@
 					<tr>
 						<td>8</td>
 						<td>
-							<span>Shampoo</span>
+							<span>Treno S9</span>
 						</td>
 						<td><span th:text="${e.price}">9.75</span> <span>&euro;</span></td>
 						<td><a href="">Details</a></td>
@@ -65,7 +66,8 @@
 		<!-- div of non-priced order -->
 		<div class="column column-50">
 			<h4>Product not priced yet:</h4>
-			<table>
+			<p th:if="${#lists.isEmpty(nonPricedEstimates)}" th:text="'There are no estimates to be priced.'"></p>
+			<table th:unless="${#lists.isEmpty(nonPricedEstimates)}">
 				<thead>
 					<tr>
 						<th>Estimate ID</th>

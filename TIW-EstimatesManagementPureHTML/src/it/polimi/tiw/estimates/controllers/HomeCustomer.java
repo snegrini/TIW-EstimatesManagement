@@ -69,17 +69,15 @@ public class HomeCustomer extends HttpServlet {
 		String chosenProductId = request.getParameter("productid");
 		
 		EstimateDAO eDAO = new EstimateDAO(connection);
-		List<Estimate> estimates = null;
-		
 		ProductDAO pDAO = new ProductDAO(connection);
-		List<Product> products = null;
-		
 		OptionalDAO oDAO = new OptionalDAO(connection);
+		UserDAO uDAO = new UserDAO(connection);
+		
+		List<Estimate> estimates = null;		
+		List<Product> products = null;
 		List<Optional> optionals = null;
 		
-		UserDAO uDAO = new UserDAO(connection);
 		User detailsEmployee = null;
-		
 		Product detailsProduct = null;
 		List<Optional> detailsOptionals = null;
 
@@ -109,7 +107,7 @@ public class HomeCustomer extends HttpServlet {
 		
 		try {
 			products = pDAO.findProducts();
-			
+
 			if (chosenProductId == null) {
 				chosenProduct = pDAO.findDefaultProduct();
 			} else {

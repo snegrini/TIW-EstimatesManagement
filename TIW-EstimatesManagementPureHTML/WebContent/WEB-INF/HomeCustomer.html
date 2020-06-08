@@ -10,7 +10,7 @@
 	<header class="headerrow">
 		<div class="titlecolumn">
 			<h1>Customer Page</h1>
-			<h4>Welcome <span th:text="${session.user.username}">CustomerName</span></h4>
+			<h4>Welcome <span th:text="${session.user.username} + ' !'">MarioRossi</span></h4>
 		</div>
 		<div class="buttoncolumn">
 			<a th:href="@{/Logout}">Logout</a>
@@ -23,7 +23,8 @@
 	<div class="container">
 		<div class="column column-40">
 			<h4>Your estimates:</h4>
-			<table>
+			<p th:if="${#lists.isEmpty(estimates)}" th:text="'You have no estimates.'"></p>
+			<table th:unless="${#lists.isEmpty(estimates)}">
 				<thead>
 					<tr>
 						<th>ID</th>
@@ -33,16 +34,50 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="e : ${estimates}">
+					<tr th:each="e : ${estimates}" th:class="(${e.id} == ${selectedEstimate.id})? 'current'">
 						<td th:text="${e.id}">5</td>
 						<td >
-							<span th:each="p : ${products}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Dildo Gommoso</span>
+							<span th:each="p : ${products}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Treno Suburbano S11</span>
 						</td>
 						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
-						<td><a href="">Details</a></td>
+						<td><a href="" th:href="@{/HomeCustomer(estimateid=${e.id})}">Details</a></td>
 					</tr>
 				</tbody>
 			</table>
+			
+			<div class="container">
+				<div class="column column-25">
+					<img id="id_productimage" style="width:100%; height: 200px;">
+				</div>
+				<div class="column column-45">
+					<table id="id_estimate_details_table">
+					  <tr>
+					    <th>Employee:</th>
+					    <td id="id_details_employeename">Luca Tony</td>
+					  </tr>
+					  <tr>
+					    <th>Product ID:</th>
+					    <td id="id_details_productid">5</td>
+					  </tr>
+					  <tr>
+					    <th>Price:</th>
+					    <td id="id_details_price">100 <span>€</span></td>
+					  </tr>
+					  <tr>
+					    <th>Product name:</th>
+					    <td id="id_details_productname">Treno Suburbano S4</td>
+					  </tr>
+					  <tr>
+					    <th>Optional:</th>
+						    <td>
+								<ul id="id_details_optionals">	
+								</ul>
+							</td>
+					  </tr>
+					</table>
+				</div>
+		  	</div>
+			
 		</div>
 
 		<!-- div of non-priced order -->
