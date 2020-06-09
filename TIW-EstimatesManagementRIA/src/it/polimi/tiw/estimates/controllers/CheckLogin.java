@@ -63,16 +63,15 @@ public class CheckLogin extends HttpServlet {
 		} catch (NullPointerException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Missing param values");
-			
 			return;
 		}
 		
-		if(usr == null || pwd == null) {
+		if (usr == null || pwd == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Username and password cannot be null");
 			return;
 		}
-		if (usr.isEmpty() || pwd.isEmpty()) {
+		else if (usr.isEmpty() || pwd.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Username and password cannot be empty");
 			return;
