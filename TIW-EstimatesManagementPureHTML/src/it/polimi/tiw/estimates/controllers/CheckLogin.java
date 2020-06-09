@@ -70,9 +70,15 @@ public class CheckLogin extends HttpServlet {
 		
 		if (usr == null || pwd == null) {
 			webContext.setVariable("errorMsg", "Username and password cannot be null");
+			String path = "/index.html";
+			templateEngine.process(path, webContext, response.getWriter());
+			return;
 		} 
 		else if (usr.isEmpty() || pwd.isEmpty()) {
 			webContext.setVariable("errorMsg", "Username and password cannot be empty");
+			String path = "/index.html";
+			templateEngine.process(path, webContext, response.getWriter());
+			return;
 		} 
 
 		// Query the database to authenticate the user
