@@ -57,6 +57,8 @@ public class CheckLogin extends HttpServlet {
 
 		String usr = null;
 		String pwd = null;
+		ServletContext servletContext = getServletContext();
+		final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
 
 		try {
 			usr = StringEscapeUtils.escapeJava(request.getParameter("username"));
@@ -65,6 +67,13 @@ public class CheckLogin extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing param values");
 			return;
 		}
+		
+		if (usr == null || pwd == null) {
+			webContext.setVariable("errorMsg", "Username and password cannot be null");
+		} 
+		else if (usr.isEmpty() || pwd.isEmpty()) {
+			webContext.setVariable("errorMsg", "Username and password cannot be empty");
+		} 
 
 		// Query the database to authenticate the user
 		UserDAO userDao = new UserDAO(connection);
@@ -81,15 +90,8 @@ public class CheckLogin extends HttpServlet {
 
 		String path;
 		if (user == null) {
-			ServletContext servletContext = getServletContext();
-			final WebContext webContext = new WebContext(request, response, servletContext, request.getLocale());
-			
-			if (usr.isEmpty() || pwd.isEmpty()) {
-				webContext.setVariable("errorMsg", "Username and password cannot be empty");
-			} else {
-				webContext.setVariable("errorMsg", "Incorrect username or password");
-			}
-			
+			webContext.setVariable("errorMsg", "Incorrect username or password");
+				
 			path = "/index.html";
 			templateEngine.process(path, webContext, response.getWriter());
 		} else {

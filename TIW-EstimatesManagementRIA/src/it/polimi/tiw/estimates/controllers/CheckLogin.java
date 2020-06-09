@@ -66,6 +66,17 @@ public class CheckLogin extends HttpServlet {
 			
 			return;
 		}
+		
+		if(usr == null || pwd == null) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Username and password cannot be null");
+			return;
+		}
+		if (usr.isEmpty() || pwd.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Username and password cannot be empty");
+			return;
+		} 
 
 		// Query the database to authenticate the user
 		UserDAO userDao = new UserDAO(connection);
@@ -82,15 +93,9 @@ public class CheckLogin extends HttpServlet {
 		// show login page with error message
 
 		if (user == null) {
-			
-			if (usr.isEmpty() || pwd.isEmpty()) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.getWriter().println("Username and password cannot be empty");
-				
-			} else {
-				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				response.getWriter().println("Wrong username or password");
-			}
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().println("Wrong username or password");
+			return;
 			
 		} else {
 			request.getSession().setAttribute("user", user);
