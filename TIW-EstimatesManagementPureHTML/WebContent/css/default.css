@@ -75,6 +75,13 @@ body {
 	padding:10px;
 }
 
+.column.column-10 {
+	width:10%;
+}
+
+.column.column-15 {
+	width:15%;
+}
 
 .column.column-25 {
 	width:25%;
@@ -125,6 +132,12 @@ body {
 }
 
 .current {background-color: #b6cfff;}
+
+.productimg{
+	height: 200px;
+	width: 300px;
+}
+
 
 footer {
 	width:100%;

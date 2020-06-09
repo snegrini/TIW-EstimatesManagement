@@ -129,7 +129,8 @@ public class HomeCustomer extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("estimates", estimates);
-		ctx.setVariable("selectedEstimate", chosenEstimate);
+		
+		ctx.setVariable("detailsEstimate", chosenEstimate);
 		ctx.setVariable("detailsEmployee", detailsEmployee);
 		ctx.setVariable("detailsProduct", detailsProduct);
 		ctx.setVariable("detailsOptionals", detailsOptionals);
