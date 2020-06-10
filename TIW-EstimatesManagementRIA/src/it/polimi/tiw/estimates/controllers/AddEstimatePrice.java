@@ -67,8 +67,6 @@ public class AddEstimatePrice extends HttpServlet {
 					return;
 				} else {
 					eDAO.addEstimatePrice(userid, estimateid, price);
-					path = "/GetPricedEstimates"; // dopo aver aggiunto il prezzo, reindirizza a GetPricedEstimates che ritorna la nuova tabella (VA TESTATO!!)
-					response.sendRedirect(request.getContextPath() + path);
 				}
 			} catch (NumberFormatException | SQLException e) {
 				response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
