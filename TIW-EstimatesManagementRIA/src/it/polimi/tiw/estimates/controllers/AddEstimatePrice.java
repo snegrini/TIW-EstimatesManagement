@@ -73,7 +73,11 @@ public class AddEstimatePrice extends HttpServlet {
 				response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
 				response.getWriter().println("Failed to retrieve estimate details");
 			}
-		}	
+		}
+		else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Estimate id or price cannot be null");
+		}
 	}
 
 	/**
