@@ -231,7 +231,7 @@
 
             if (estimate.employee != null) {
                 self.employee.textContent = estimate.employee.name + " " + estimate.employee.surname;
-                self.price.textContent = estimate.price;
+                self.price.textContent = estimate.price + " €";
             } else {
                 self.employee.textContent = "----";
                 self.price.textContent = "Not priced yet";

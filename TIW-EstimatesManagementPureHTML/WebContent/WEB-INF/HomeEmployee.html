@@ -6,12 +6,11 @@
 	<link rel="icon" type="image/png" href="../favicon-32x32.png" th:href="@{/favicon-32x32.png}" sizes="32x32">
 	
 	<link rel="stylesheet" type="text/css" href="../css/default.css" th:href="@{/css/default.css}"/>
-	<link rel="stylesheet" type="text/css" href="../css/homeemployee.css" th:href="@{/css/homeemployee.css}"/>
 </head>
 <body>
 	<header class="headerrow">
 		<div class="titlecolumn">
-			<h1>Customer Page</h1>
+			<h1>Employee Page</h1>
 			<h4>Welcome <span th:text="${session.user.username} + ' !'">MarioRossi</span></h4>
 		</div>
 		<div class="buttoncolumn">
@@ -63,6 +62,8 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<br>
 			
 			<div class="column column-10"></div>
 			
@@ -74,7 +75,7 @@
 				<table>
 				  <tr>
 				    <th>Customer:</th>
-				    <td th:text="${detailsCustomer.name + ' ' + detailsCustomer.surname}">Luca Tony</td>
+				    <td th:text="${detailsCustomer.name + ' ' + detailsCustomer.surname}">Michael Jordan</td>
 				  </tr>
 				  <tr>
 				    <th>Product ID:</th>

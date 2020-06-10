@@ -70,10 +70,6 @@
                 estimatecellname = document.createElement("td");
                 estimatecellname.textContent = estimate.product.name;
                 row.appendChild(estimatecellname);
-                
-                pricecell = document.createElement("td");
-                pricecell.textContent = estimate.price;
-                row.appendChild(pricecell);
 
                 detailcell = document.createElement("td");
                 anchor = document.createElement("a");
@@ -236,7 +232,7 @@
 	    	self.customer.textContent = estimate.customer.name + " " + estimate.customer.surname;
 			self.productid.textContent = estimate.product.id;
 	    	self.productname.textContent = estimate.product.name;
-			self.price.textContent = estimate.price;
+			self.price.textContent = estimate.price + " €";
 			self.image.setAttribute("src","images/".concat(estimate.product.image));
 			
 			estimate.product.optionals.forEach(function(opt) {

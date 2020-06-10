@@ -22,8 +22,6 @@
 		</div>
 	</header>
 	
-	<br>
-
 	<!-- div of all of customer estimates -->
 	<div class="container">
 		<div class="column column-40">
@@ -41,38 +39,40 @@
 				</tbody>
 			</table>
 			
-			<div class="container">
-				<div class="column column-25">
-					<img id="id_productimage" style="width:100%; height: 200px;">
-				</div>
-				<div class="column column-45">
-					<table id="id_estimate_details_table">
-					  <tr>
-					    <th>Employee:</th>
-					    <td id="id_details_employeename"></td>
-					  </tr>
-					  <tr>
-					    <th>Product ID:</th>
-					    <td id="id_details_productid"></td>
-					  </tr>
-					  <tr>
-					    <th>Price:</th>
-					    <td id="id_details_price"></td>
-					  </tr>
-					  <tr>
-					    <th>Product name:</th>
-					    <td id="id_details_productname"></td>
-					  </tr>
-					  <tr>
-					    <th>Optional:</th>
-						    <td>
-								<ul id="id_details_optionals">	
-								</ul>
-							</td>
-					  </tr>
-					</table>
-				</div>
-		  	</div>
+			<br>
+
+			<div class="column column-10"></div>
+
+			<div class="column column-40">
+				<img id="id_productimage" class="productimg">
+			</div>
+			<div class="column column-50">
+				<table id="id_estimate_details_table">
+					<tr>
+					<th>Employee:</th>
+					<td id="id_details_employeename"></td>
+					</tr>
+					<tr>
+					<th>Product ID:</th>
+					<td id="id_details_productid"></td>
+					</tr>
+					<tr>
+					<th>Price:</th>
+					<td id="id_details_price"></td>
+					</tr>
+					<tr>
+					<th>Product name:</th>
+					<td id="id_details_productname"></td>
+					</tr>
+					<tr>
+					<th>Optional:</th>
+						<td>
+							<ul id="id_details_optionals">	
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</div>
 	</div>
 
 		<!-- div creation of a new estimate -->
@@ -80,7 +80,6 @@
 		<form action="#" id="id_addestimateform" class="column column-60">
 		  <fieldset>
 		    <legend>Select a product:</legend>
-		    <div class="container">
 		      <div class="column column-40">
 		        <table id="id_producttable">
 		          <thead>
@@ -94,7 +93,7 @@
 		        </table>
 		      </div>
 		      <div class="column column-60">
-		      <img id="id_insert_product_img" class="productimg" alt="Product Img"/>
+		      <img id="id_insert_product_img" class="productimg-large" alt="Product Img"/>
 		        <h5>Select one or more options:</h5>
 		        <input type="hidden" name="prdct" id="prdct">
 		        
@@ -108,7 +107,6 @@
 		        <input type="button" value="Insert" name="Insert">
 		        <p id="id_errormessage" class="errormessage"></p>
 		      </div>
-		    </div>    
 		  </fieldset>
 		</form>
 	</div>
