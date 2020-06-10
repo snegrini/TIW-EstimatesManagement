@@ -33,7 +33,7 @@
 						<th>Estimate ID</th>
 						<th>Product Name</th>
 						<th>Price</th>
-						<th>Link</th>
+						<th>Details</th>
 					</tr>
 				</thead>
 				<tbody th:remove="all-but-first">
@@ -43,7 +43,7 @@
 							<span th:each="p : ${pricedProducts}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Treno Suburbano S111</span>
 						</td>
 						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
-						<td><a href="" th:href="@{/HomeEmployee(estimateid=${e.id})}">Details</a></td>
+						<td><a href="" th:href="@{/HomeEmployee(estimateid=${e.id})}">Show</a></td>
 					</tr>
 					<tr>
 						<td>6</td>

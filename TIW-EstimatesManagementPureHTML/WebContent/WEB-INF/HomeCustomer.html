@@ -40,7 +40,7 @@
 						<td>
 							<span th:each="p : ${products}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Treno Suburbano S11</span>
 						</td>
-						<td><a href="" th:href="@{/HomeCustomer(estimateid=${e.id},productid=${selectedProduct.id})}">Details</a></td>
+						<td><a href="" th:href="@{/HomeCustomer(estimateid=${e.id},productid=${selectedProduct.id})}">Show</a></td>
 					</tr>
 				</tbody>
 			</table>
