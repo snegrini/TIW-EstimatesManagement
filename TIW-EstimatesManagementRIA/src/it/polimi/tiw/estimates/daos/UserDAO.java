@@ -95,7 +95,7 @@ public class UserDAO {
 	public User findEmployeeByEstimate(int estimateId) throws SQLException {
 		User user = null;
 		
-		String query = "SELECT u.name, u.surname "
+		String query = "SELECT u.id, u.name, u.surname "
 				+ "FROM user AS u, estimate AS e "
 				+ "WHERE u.id = e.empid "
 				+ "AND e.id = ?";
@@ -108,6 +108,7 @@ public class UserDAO {
 				
 				if (result.next()) {
 					user = new User();
+					user.setId(result.getInt("id"));
 					user.setName(result.getString("name"));
 					user.setSurname(result.getString("surname"));
 				}	
