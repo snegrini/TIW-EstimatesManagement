@@ -72,7 +72,7 @@ public class GetEstimateDetails extends HttpServlet {
 		User employee = null;
 		User customer = null;
 		
-		try { //TODO: check if user is authorized
+		try {
 			estimate = eDAO.findEstimateById(Integer.parseInt(estimateId));
 			customer = uDAO.findCustomerByEstimate(estimate.getId());
 			

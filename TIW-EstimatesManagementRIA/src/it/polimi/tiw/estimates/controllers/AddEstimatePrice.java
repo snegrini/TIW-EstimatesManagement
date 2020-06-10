@@ -55,8 +55,7 @@ public class AddEstimatePrice extends HttpServlet {
 		
 		String path;
 		
-		if (estimateidStr != null && priceStr != null) {
-			
+		if (estimateidStr != null && priceStr != null) {	
 			try {
 				int estimateid = Integer.parseInt(estimateidStr);
 				float price = Float.parseFloat(priceStr);
