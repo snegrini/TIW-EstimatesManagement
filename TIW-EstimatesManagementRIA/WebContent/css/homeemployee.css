@@ -20,6 +20,10 @@
 	height: 100%;
 }
 
+.alertmessage{
+	color: red;
+}
+
 
 .vertical-table thead {
 	float: left;   

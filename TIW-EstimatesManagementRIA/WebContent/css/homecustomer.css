@@ -8,6 +8,10 @@ fieldset{
 	margin:0;
 }
 
+.alertmessage{
+	color: red;
+}
+
 
 li{
 	display:block;

@@ -354,6 +354,7 @@
     function PageOrchestrator() {
 	    var alertContainer = document.getElementById("id_alert");
 	    var alertContainerNpe = document.getElementById("id_alert_npe");
+	    var alertContainerNpeDetails = document.getElementById("id_alert_npe_details");
 		
 		this.start = function() {
 			personalMessage = new PersonalMessage(sessionStorage.getItem('username'),
@@ -385,7 +386,7 @@
 			);
 			
 			nonPricedEstimateDetails = new NonPricedEstimateDetails({ // many parameters, wrap them in an object
-				alert: alertContainerNpe,
+				alert: alertContainerNpeDetails,
 				customername: document.getElementById("id_customername"),
 				productid: document.getElementById("id_productid"),
 				productname: document.getElementById("id_productname"),
@@ -405,6 +406,7 @@
 		this.refresh = function(currentEstimate, currentProduct) {
 			alertContainer.textContent = "";
 			alertContainerNpe.textContent = "";
+			alertContainerNpeDetails.textContent = "";
 			pricedEstimatesList.reset();	
 			nonPricedEstimatesList.reset();
 			nonPricedEstimateDetails.reset();
