@@ -91,7 +91,7 @@ body{
 	;
 }
 
-.container{
+.container {
 	content:"";
 	clear:both;
 	display:table;
@@ -113,6 +113,16 @@ body{
 
 .current {
 	background-color: #b6cfff;
+}
+
+.column.column-10 {
+	width:10%;
+	height: 100%;
+}
+
+.column.column-15{
+	width:15%;
+	height: 100%;
 }
 
 .column.column-25{
@@ -226,4 +236,9 @@ td{
 	text-align: center;
 	padding:3px;
 	border-bottom: 1px solid #ddd;
+}
+
+.table-details {
+	margin-left:0;
+	width:100%; 
 }

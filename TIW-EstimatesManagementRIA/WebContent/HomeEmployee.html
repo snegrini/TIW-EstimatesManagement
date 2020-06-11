@@ -24,7 +24,7 @@
 
 	<div class="container">		
 			<!-- div of priced order -->
-			<div class="column column-50">
+			<div class="column column-40">
 				<h4>Priced estimates by you:</h4>
 				<div id="id_alert" class="alertmessage"></div>	
 				<table id="id_pricedestimatetable">
@@ -44,12 +44,12 @@
 				<div class="column column-10"></div>
 
 				<div id="id_details_container">
-					<div class="column column-25">
+					<div class="column column-30">
 						<img id="id_productimage" class="productimg">
 					</div>
 					
 					<div class="column column-60">
-					<table>
+					<table class="table-details">
 					  <tr>
 					    <th>Customer:</th>
 					    <td id="id_details_customername"></td>
@@ -81,7 +81,7 @@
 			
 
 			<!-- div of non-priced order -->
-			<div class="column column-50">
+			<div class="column column-60">
 				<h4>Product not priced yet:</h4>
 				<div id="id_alert_npe" class="alertmessage"></div>	
 				<table id="id_nonpricedestimatetable">
@@ -96,37 +96,43 @@
 				</table>
 				
 				<br>
-				<br>
-				<div id="id_alert_npe_details" class="alertmessage"></div>	
+				<div class="column column-10"></div>
+
 				<div class="column column-25">
 					<img id="id_npedetailsimage" class="productimg" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img">
 				</div>
-				<table id="id_npedetailstable" class="vertical-table">
-					<thead>
-						<tr>
-							<th>Customer:</th>
-							<th>Product ID:</th>
-							<th>Product name:</th>
-							<th>Optional:</th>
-						</tr>
-					</thead>
-					<tbody id="id_npedetailstablebody">
-						<tr>
-							<td id="id_customername"></td>
-							<td id="id_productid"></td>
-							<td id="id_productname"></td>
-							<td id="id_optional"></td>
-						</tr>				
-					</tbody>
-				</table>
 
-				<form action="#" id="id_npedetailsform" class="column column-30">
-					<label>Insert the price of the product:</label><br>
-					<input type="hidden" name="estimateid" id="prdct">
-					<input type="number" step="0.01" name="price" min="0" value="0"> <span>&euro;</span>
-					<input class="submitbtn" type="button" value="Invia Prezzo">
-					<p id="errormessage"></p>
-				</form>			
+				<div class="column column-60">
+					<table id="id_npedetailstable" class="table-details vertical-table">
+						<thead>
+							<tr>
+								<th>Customer:</th>
+								<th>Product ID:</th>
+								<th>Product name:</th>
+								<th>Optional:</th>
+							</tr>
+						</thead>
+						<tbody id="id_npedetailstablebody">
+							<tr>
+								<td id="id_customername"></td>
+								<td id="id_productid"></td>
+								<td id="id_productname"></td>
+								<td id="id_optional"></td>
+							</tr>				
+						</tbody>
+					</table>
+					
+					<br>
+					<div class="column column-10"></div>
+
+					<form action="#" id="id_npedetailsform">
+						<label>Insert the price of the product:</label><br>
+						<input type="hidden" name="estimateid" id="prdct">
+						<input type="number" step="0.01" name="price" min="0" value="0"> <span>&euro;</span>
+						<input class="submitbtn" type="button" value="Invia Prezzo">
+						<div id="id_alert_npe_details" class="alertmessage"></div>	
+					</form>	
+			    </div>		
 			</div>			
 		</div>		
 		<footer>
