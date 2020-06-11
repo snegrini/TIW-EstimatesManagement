@@ -23,7 +23,7 @@
 	<div class="container">
 		<div class="column column-40">
 			<h4>Your estimates:</h4>
-			<p th:if="${#lists.isEmpty(estimates)}" th:text="'You have no estimates.'"></p>
+			<p th:text="${errormsg}"></p>
 			<table th:unless="${#lists.isEmpty(estimates)}">
 				<thead>
 					<tr>
@@ -49,10 +49,10 @@
 
 			<div class="column column-40">
 				<img class="thumbnail" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img"
-					th:alt="${detailsProduct.name}" th:src="@{/images/{image}(image=${detailsProduct.image})}"/>
+					th:if="${detailsProduct != null}" th:alt="${detailsProduct.name}" th:src="@{/images/{image}(image=${detailsProduct.image})}"/>
 			</div>
 			<div class="column column-50">
-				<table class="table-details">
+				<table th:if="${detailsEstimate != null}" class="table-details">
 					<tr>
 					<th>Employee:</th>
 					<td th:text="(${detailsEmployee == null}) ? '----' : ${detailsEmployee.name + ' ' + detailsEmployee.surname}">Luca Tony</td>
@@ -113,7 +113,9 @@
 		  					<span th:text="${p.id}"></span>
 		  				</td>
 		  				<td>
-		  					<a th:href="@{/HomeCustomer(estimateid=${detailsEstimate.id},productid=${p.id})}"><span th:text="${p.name}"></span></a>
+		  					<a th:if="${detailsEstimate != null}" th:href="@{/HomeCustomer(estimateid=${detailsEstimate.id},productid=${p.id})}"><span th:text="${p.name}"></span></a>
+		  					<a th:if="${detailsEstimate == null}" th:href="@{/HomeCustomer(productid=${p.id})}"><span th:text="${p.name}"></span></a>
+		  				
 		  				</td>
 		  			</tr>
 		  		 </tbody>

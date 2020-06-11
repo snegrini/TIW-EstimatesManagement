@@ -12,11 +12,10 @@ fieldset{
 	color: red;
 }
 
-
-li{
-	display:block;
+ul{
+	list-style:none;
 	float:left;
-	clear:left;
+	padding: 0px;
 }
 
 input[type=button]{

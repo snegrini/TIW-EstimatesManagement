@@ -25,7 +25,7 @@
 	<div class="container">
 		<div class="column column-50">
 			<h4>Priced estimates by you:</h4>
-			<p th:if="${#lists.isEmpty(pricedEstimates)}" th:text="'You haven't priced any estimates.'"></p>
+			<p th:text="${errormsg}"></p>
 			<table th:unless="${#lists.isEmpty(pricedEstimates)}">
 				<thead>
 					<tr>
@@ -69,10 +69,10 @@
 			
 			<div class="column column-25">
 				<img class="productimg" alt="Product Img" src="https://dummyimage.com/250x250/000/ffffff.png&text=Product+Img"
-	      			th:alt="${detailsProduct.name}" th:src="@{/images/{image}(image=${detailsProduct.image})}"/>
+	      			th:if="${detailsProduct != null}" th:alt="${detailsProduct.name}" th:src="@{/images/{image}(image=${detailsProduct.image})}"/>
 			</div>
 			<div class="column column-60">
-				<table>
+				<table th:if="${detailsEstimate != null}" >
 				  <tr>
 				    <th>Customer:</th>
 				    <td th:text="${detailsCustomer.name + ' ' + detailsCustomer.surname}">Michael Jordan</td>

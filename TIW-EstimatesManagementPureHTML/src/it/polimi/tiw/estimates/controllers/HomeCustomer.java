@@ -63,6 +63,11 @@ public class HomeCustomer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		String path = "/WEB-INF/HomeCustomer.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		
 		HttpSession s = request.getSession();
 		User user = (User) s.getAttribute("user");
 		String chosenEstimateId = request.getParameter("estimateid");
@@ -100,9 +105,12 @@ public class HomeCustomer extends HttpServlet {
 		} catch (NumberFormatException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Bad estimate number");
 			return;
-		} catch (NullPointerException | SQLException e) {
+		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in estimate's database extraction");
 			return;
+		}
+		catch (NullPointerException e) {
+			ctx.setVariable("errormsg", "Estimates list is empty");
 		}
 		
 		try {
@@ -123,10 +131,6 @@ public class HomeCustomer extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in product's database extraction");
 			return;
 		}
-		
-		String path = "/WEB-INF/HomeCustomer.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("estimates", estimates);
 		

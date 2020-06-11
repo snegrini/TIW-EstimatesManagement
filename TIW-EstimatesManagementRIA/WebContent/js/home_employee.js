@@ -333,6 +333,7 @@
 			this.productname.textContent = estimate.product.name;
 			
 			var self = this;
+			var ul = document.createElement("ul");
 			estimate.product.optionals.forEach(function(opt) {
 				var li = document.createElement("li");
 				var textSpan = document.createElement("span");
@@ -345,8 +346,9 @@
 					saleSpan.textContent = "SALE!";
 					li.appendChild(saleSpan);
 				}
-				self.optionals.appendChild(li);
+				ul.appendChild(li);
 			});
+			this.optionals.appendChild(ul);
 		};
 
 	} // End NonPricedEstimateDetails()

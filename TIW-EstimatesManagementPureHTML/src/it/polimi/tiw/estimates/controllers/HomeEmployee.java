@@ -63,6 +63,10 @@ public class HomeEmployee extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		String path = "/WEB-INF/HomeEmployee.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
 		HttpSession s = request.getSession();
 		User user = (User) s.getAttribute("user");
 		String chosenEstimateId = request.getParameter("estimateid");
@@ -87,6 +91,9 @@ public class HomeEmployee extends HttpServlet {
 			pricedEstimates = estimateDao.findPricedEstimatesByEmployee(user.getId());
 			pricedProducts = productDao.findPricedProductsByEmployee(user.getId());
 			
+			nonPricedEstimates = estimateDao.findNonPricedEstimates();
+			nonPricedProducts = productDao.findNonPricedProducts();
+			
 			if (chosenEstimateId == null) {
 				chosenEstimate = estimateDao.findDefaultEstimateByEmployee(user.getId());
 			} else {
@@ -96,21 +103,17 @@ public class HomeEmployee extends HttpServlet {
 			detailsCustomer  = userDao.findUserById(chosenEstimate.getCustomerId());
 			detailsProduct   = productDao.findProductById(chosenEstimate.getProductId());
 			detailsOptionals = optionalDao.findChosenOptionalsByEstimate(chosenEstimate.getId());
-			
-			nonPricedEstimates = estimateDao.findNonPricedEstimates();
-			nonPricedProducts = productDao.findNonPricedProducts();
+
 		} catch (NumberFormatException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Bad estimate number");
 			return;
-		} catch (NullPointerException | SQLException e) {
+		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in estimates database extraction");
 			return;
 		}
-		
-		
-		String path = "/WEB-INF/HomeEmployee.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		catch(NullPointerException e) {
+			ctx.setVariable("errormsg", "Estimates list is empty");
+		}
 		
 		ctx.setVariable("pricedEstimates", pricedEstimates);
 		ctx.setVariable("pricedProducts", pricedProducts);

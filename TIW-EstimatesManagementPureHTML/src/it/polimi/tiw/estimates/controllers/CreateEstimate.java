@@ -57,7 +57,7 @@ public class CreateEstimate extends HttpServlet {
 		HttpSession s = request.getSession();
 		u = (User) s.getAttribute("user");
 		int userid = u.getId();
-
+		int lastId;
 		
 		String productName = request.getParameter("prdct");
 		String[] options = request.getParameterValues("option[]");
@@ -74,7 +74,7 @@ public class CreateEstimate extends HttpServlet {
 			EstimateDAO eDAO = new EstimateDAO(connection);
 			
 			try {
-				eDAO.createEstimate(userid, Integer.parseInt(productName), options);
+				lastId = eDAO.createEstimate(userid, Integer.parseInt(productName), options);
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure of price quotation creation in database");
 				return;
@@ -82,7 +82,7 @@ public class CreateEstimate extends HttpServlet {
 		}
 		
 		String ctxpath = getServletContext().getContextPath();
-		String path = ctxpath + "/HomeCustomer";
+		String path = ctxpath + "/HomeCustomer?estimateid=" + lastId;
 		response.sendRedirect(path);
 	}
 	
