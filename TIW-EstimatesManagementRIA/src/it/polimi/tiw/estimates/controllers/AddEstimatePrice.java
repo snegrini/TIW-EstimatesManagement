@@ -52,15 +52,13 @@ public class AddEstimatePrice extends HttpServlet {
 		String priceStr = request.getParameter("price");
 		
 		EstimateDAO eDAO = new EstimateDAO(connection);
-		
-		String path;
-		
+				
 		if (estimateidStr != null && priceStr != null) {	
 			try {
 				int estimateid = Integer.parseInt(estimateidStr);
-				float price = Float.parseFloat(priceStr);
+				double price = Double.parseDouble(priceStr);
 				
-				if (price <= 0f) {
+				if (price <= 0d) {
 					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 					response.getWriter().println("Price cannot be negative!");
 					return;

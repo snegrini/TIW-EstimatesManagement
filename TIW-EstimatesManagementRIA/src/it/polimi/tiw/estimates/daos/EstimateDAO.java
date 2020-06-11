@@ -52,10 +52,10 @@ public class EstimateDAO {
 		return genEstimateId;
 	}
 	
-	public boolean addEstimatePrice(int employeeId, int estimateId, float price) throws SQLException {
+	public boolean addEstimatePrice(int employeeId, int estimateId, double price) throws SQLException {
 		String query = "UPDATE estimate SET price=?, empid=? WHERE id=?";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setFloat(1, price);
+			pstatement.setDouble(1, price);
 			pstatement.setInt(2, employeeId);
 			pstatement.setInt(3, estimateId);
 			pstatement.executeUpdate();
@@ -87,7 +87,7 @@ public class EstimateDAO {
 					product.setName(result.getString("name"));
 					
 					estimate.setId(result.getInt("id"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 					estimate.setProduct(product);
 
 					estimates.add(estimate);
@@ -114,7 +114,7 @@ public class EstimateDAO {
 					user.setId(result.getInt("empid"));
 					
 					estimate.setId(result.getInt("id"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 					estimate.setEmployee(user);
 					
 					estimates.add(estimate);
@@ -155,19 +155,19 @@ public class EstimateDAO {
 					estimate = new Estimate();
 					
 					estimate.setId(result.getInt("id"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 				}
 			}
 		}
 		return estimate;
 	}
 	
-	public void changeEstimatePrice(int estimateId, int employeeId, float price) throws SQLException {
+	public void changeEstimatePrice(int estimateId, int employeeId, double price) throws SQLException {
 		String query = "UPDATE estimate SET empid = ?, price = ? WHERE id = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, employeeId);
-			pstatement.setFloat(2, price);
+			pstatement.setDouble(2, price);
 			pstatement.setInt(3, estimateId);
 			pstatement.executeUpdate();
 		}
@@ -188,7 +188,7 @@ public class EstimateDAO {
 					estimate = new Estimate();
 					
 					estimate.setId(result.getInt("id"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 				}
 			}
 		}

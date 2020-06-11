@@ -2,7 +2,7 @@ package it.polimi.tiw.estimates.beans;
 
 public class Estimate {
 	private int id;
-	private float price;
+	private double price;
 	private Product product;
 	private User customer;
 	private User employee;
@@ -15,11 +15,11 @@ public class Estimate {
 		this.id = id;
 	}
 	
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 	
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	

@@ -77,9 +77,9 @@ public class AddEstimatePrice extends HttpServlet {
 			
 			try {
 				int estimateid = Integer.parseInt(estimateidStr);
-				float price = Float.parseFloat(priceStr);
+				double price = Double.parseDouble(priceStr);
 				
-				if (price <= 0f) {
+				if (price <= 0d) {
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Price cannot be negative!");				
 				} else {
 					eDAO.addEstimatePrice(userid, estimateid, price);

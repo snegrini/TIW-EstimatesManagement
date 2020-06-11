@@ -39,7 +39,7 @@
 					<tr th:each="e : ${pricedEstimates}" th:class="(${e.id} == ${detailsEstimate.id}) ? 'current'">
 						<td th:text="${e.id}">5</td>
 						<td>
-							<span th:each="p : ${pricedProducts}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Treno Suburbano S111</span>
+							<span th:each="p : ${pricedProducts}" th:if="${e.productId} == ${p.id}" th:text="${p.name}">Treno Suburbano S11</span>
 						</td>
 						<td><span th:text="${e.price}">15</span> <span>&euro;</span></td>
 						<td><a href="" th:href="@{/HomeEmployee(estimateid=${e.id})}">Show</a></td>

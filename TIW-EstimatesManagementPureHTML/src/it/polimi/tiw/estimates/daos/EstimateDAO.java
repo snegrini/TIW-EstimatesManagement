@@ -50,10 +50,10 @@ public class EstimateDAO {
 		return genEstimateId;
 	}
 	
-	public boolean addEstimatePrice(int employeeId, int estimateId, float price) throws SQLException {
+	public boolean addEstimatePrice(int employeeId, int estimateId, double price) throws SQLException {
 		String query = "UPDATE estimate SET price=?, empid=? WHERE id=?";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setFloat(1, price);
+			pstatement.setDouble(1, price);
 			pstatement.setInt(2, employeeId);
 			pstatement.setInt(3, estimateId);
 			pstatement.executeUpdate();
@@ -79,7 +79,7 @@ public class EstimateDAO {
 					estimate.setId(result.getInt("id"));
 					estimate.setProductId(result.getInt("prdid"));
 					estimate.setEmployeeId(result.getInt("empid"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 				}	
 			}	
 		}	
@@ -103,7 +103,7 @@ public class EstimateDAO {
 					estimate.setId(result.getInt("id"));
 					estimate.setProductId(result.getInt("prdid"));
 					estimate.setCustomerId(result.getInt("usrid"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 				}	
 			}	
 		}	
@@ -131,7 +131,7 @@ public class EstimateDAO {
 					
 					estimate.setId(result.getInt("id"));
 					estimate.setProductId(result.getInt("prdid"));			
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 					estimates.add(estimate);
 				}
 			}
@@ -157,7 +157,7 @@ public class EstimateDAO {
 					estimate.setCustomerId(result.getInt("usrid"));
 					estimate.setProductId(result.getInt("prdid"));			
 					estimate.setEmployeeId(result.getInt("empid"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 					estimates.add(estimate);
 				}
 			}
@@ -199,19 +199,19 @@ public class EstimateDAO {
 					estimate.setCustomerId(result.getInt("usrid"));
 					estimate.setProductId(result.getInt("prdid"));
 					estimate.setEmployeeId(result.getInt("empid"));
-					estimate.setPrice(result.getFloat("price"));
+					estimate.setPrice(result.getDouble("price"));
 				}
 			}
 		}
 		return estimate;
 	}
 	
-	public void changeEstimatePrice(int estimateId, int employeeId, float price) throws SQLException {
+	public void changeEstimatePrice(int estimateId, int employeeId, double price) throws SQLException {
 		String query = "UPDATE estimate SET empid = ?, price = ? WHERE id = ?";
 		
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, employeeId);
-			pstatement.setFloat(2, price);
+			pstatement.setDouble(2, price);
 			pstatement.setInt(3, estimateId);
 			pstatement.executeUpdate();
 		}

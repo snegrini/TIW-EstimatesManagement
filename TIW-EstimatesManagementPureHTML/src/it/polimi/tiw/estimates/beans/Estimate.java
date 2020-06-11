@@ -5,7 +5,7 @@ public class Estimate {
 	private int productId;
 	private int customerId;
 	private int employeeId;
-	private float price;
+	private double price;
 
 	
 	public int getId() {
@@ -39,11 +39,11 @@ public class Estimate {
 		this.employeeId = employeeId;
 	}
 	
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 	
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
